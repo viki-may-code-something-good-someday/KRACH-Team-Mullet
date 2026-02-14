@@ -16,6 +16,7 @@ public class Wall_Data : MonoBehaviour
     [SerializeField] private float explosionForce;
     [SerializeField] private float explosionRadius;
 
+    private bool isDestroyed;
     [Header("Wall Pieces")]
     [SerializeField] private float piecesWallFadeOutSpeedMultiplier;
     private bool fadeOutSpeedIncreased; 
@@ -23,9 +24,16 @@ public class Wall_Data : MonoBehaviour
     private bool fadeOutPieces;
 
 
+    public float Health { get { return health; } }
+
+    private void Start()
+    {
+        isDestroyed = false;
+    }
+
     private void Update()
     {
-        if (health <= 0f)
+        if (health <= 0f && !isDestroyed )
         {
             TakeDamage(0f, transform.position, transform.forward);
 
@@ -52,12 +60,16 @@ public class Wall_Data : MonoBehaviour
 
     private void GetDestroyed(Vector3 _hitPoint, Vector3 _hitNormal)
     {
+        isDestroyed = true;
+
         //handle Wall Pieces
         WallPiecesSetup();
 
         //wall fractures
         wallNormal.SetActive(false);
         wallBroken.SetActive(true);
+
+        GameManager.Instance.WallWasDestroyed(this);
 
         List<Rigidbody> rigidbodies = wallBroken.transform.GetComponentsInChildren<Rigidbody>().ToList();
 

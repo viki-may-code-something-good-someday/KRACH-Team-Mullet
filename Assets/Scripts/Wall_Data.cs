@@ -5,13 +5,25 @@ using UnityEngine;
 
 public class Wall_Data : MonoBehaviour
 {
+    [Header("References")]
     [SerializeField] private GameObject wallNormal;
     [SerializeField] private GameObject wallBroken;
+    [SerializeField] private List<GameObject> wallPieces = new List<GameObject>();
+    [SerializeField] private PhysicsMaterial wallPiecesPhysicsMaterial;
+
+    [Header("Wall Data")]
     [SerializeField] private float health;
     [SerializeField] private float explosionForce;
     [SerializeField] private float explosionRadius;
 
     private bool isDestroyed;
+    [Header("Wall Pieces")]
+    [SerializeField] private float piecesWallFadeOutSpeedMultiplier;
+    private bool fadeOutSpeedIncreased; 
+
+    private bool fadeOutPieces;
+
+
     public float Health { get { return health; } }
 
     private void Start()
@@ -27,11 +39,18 @@ public class Wall_Data : MonoBehaviour
 
             health = 100f;
         }
+
+        if (fadeOutPieces)
+        {
+            FadeOutWallPieces();
+        }
     }
 
     public void TakeDamage(float _damage, Vector3 _hitPoint, Vector3 _hitNormal)
     {
         health -= _damage;
+
+        //wallPieces could shake?
 
         if (health <= 0f)
         {
@@ -43,6 +62,10 @@ public class Wall_Data : MonoBehaviour
     {
         isDestroyed = true;
 
+        //handle Wall Pieces
+        WallPiecesSetup();
+
+        //wall fractures
         wallNormal.SetActive(false);
         wallBroken.SetActive(true);
 
@@ -57,6 +80,55 @@ public class Wall_Data : MonoBehaviour
 
             rb.AddExplosionForce(explosionForce, _hitPoint, explosionRadius, 1f, ForceMode.Impulse);
 
+        }
+    }
+
+    private void WallPiecesSetup()
+    {
+        fadeOutPieces = true;
+
+        foreach (GameObject piece in wallPieces)
+        {
+            piece.transform.parent = null;
+
+            piece.AddComponent<Rigidbody>();
+
+            SphereCollider sc = piece.AddComponent<SphereCollider>();
+            sc.radius = 0.1f;
+            sc.sharedMaterial = wallPiecesPhysicsMaterial;
+            
+            piece.AddComponent<BillboardFacingCamera>();
+        }
+    }
+
+    private void FadeOutWallPieces()
+    {
+        for (int i = wallPieces.Count - 1; i >= 0; i--)
+        {
+            SpriteRenderer sr = wallPieces[i].GetComponent<SpriteRenderer>();
+
+            if (sr == null)
+            {
+                Destroy(wallPieces[i]);
+                wallPieces.RemoveAt(i);
+                continue;
+            }
+
+            Color currentColor = sr.material.color;
+            float newAlpha = currentColor.a - Time.deltaTime * piecesWallFadeOutSpeedMultiplier;
+            sr.material.color = new Color(currentColor.r, currentColor.g, currentColor.b, newAlpha);
+
+            
+            if (newAlpha <= 0f)
+            {
+                Destroy(wallPieces[i]);
+                wallPieces.RemoveAt(i);
+            }
+            else if(newAlpha <= 80f && !fadeOutSpeedIncreased)
+            {
+                fadeOutSpeedIncreased = true;
+                piecesWallFadeOutSpeedMultiplier *= 2f;
+            }
         }
     }
 }

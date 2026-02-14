@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="AudioFile" id="{3666688f-e2e4-41df-a9d2-4ebf13989351}">
+		<property name="assetPath">
+			<value>Music/Remix-Leads.wav</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>1</value>
+		</property>
+		<property name="length">
+			<value>154.66666666666666</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{c53bfd08-94fd-46c3-9d7a-6d42f48f59c2}</destination>
+		</relationship>
+	</object>
+</objects>

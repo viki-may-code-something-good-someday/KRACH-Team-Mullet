@@ -17,7 +17,7 @@ public class RoomObj: MonoBehaviour
     private void Start()
     {
         hasPlayerOpenedThisRoom = false;
-        musicEmitter.SetParameter("RoomOcclusion", 1f);
+        musicEmitter.SetParameter("RoomOcclusion", 1);
     }
 
     public void AssignWalls(Wall_Data[] walls)
@@ -62,7 +62,7 @@ public class RoomObj: MonoBehaviour
         if(hasPlayerOpenedThisRoom)
             if(musicEmitter != null)
             {
-                musicEmitter.SetParameter("RoomOcclusion", 0f);
+                musicEmitter.SetParameter("RoomOcclusion", 0);
                 Debug.Log("code reached this");
             }
     }

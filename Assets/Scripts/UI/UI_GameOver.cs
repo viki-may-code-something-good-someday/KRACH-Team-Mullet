@@ -7,6 +7,7 @@ public class UI_GameOver : MonoBehaviour
 {
     public TextMeshProUGUI scoreValue;
     public TextMeshProUGUI resultText;
+    public TextMeshProUGUI highestScore;
     public Dictionary<string, int> resultScorePairs = new Dictionary<string, int>()
     {
         { "Alles richtig gemacht!", 100 },
@@ -17,18 +18,24 @@ public class UI_GameOver : MonoBehaviour
 
     public static UI_GameOver Instance { get; private set; }
 
-    void Start()
+    private void Awake()
     {
-        Instance = this;
-        if(Instance != null && Instance != this)
+        if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
             return;
         }
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+
+        gameObject.SetActive(false);
     }
 
     public void SetGameOverScreenWithScore(int score)
     {
+        Debug.Log("This should be called with final score: " + score);
+        gameObject.SetActive(true);
+
         scoreValue.text = score.ToString();
 
         float scorePercentage = score / GameManager.Instance.maxScore * 100f;

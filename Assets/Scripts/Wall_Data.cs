@@ -81,27 +81,38 @@ public class Wall_Data : MonoBehaviour
         {
             piece.transform.parent = null;
 
-            Rigidbody rb = piece.AddComponent<Rigidbody>();
-            //rb.freezeRotation = true;
+            piece.AddComponent<Rigidbody>();
+
             SphereCollider sc = piece.AddComponent<SphereCollider>();
             sc.radius = 0.1f;
             sc.sharedMaterial = wallPiecesPhysicsMaterial;
+            
             piece.AddComponent<BillboardFacingCamera>();
         }
     }
 
     private void FadeOutWallPieces()
     {
-        foreach (GameObject piece in wallPieces)
+        for (int i = wallPieces.Count - 1; i >= 0; i--)
         {
-            Color currentColor = piece.GetComponent<SpriteRenderer>().material.color;
+            SpriteRenderer sr = wallPieces[i].GetComponent<SpriteRenderer>();
+
+            if (sr == null)
+            {
+                Destroy(wallPieces[i]);
+                wallPieces.RemoveAt(i);
+                continue;
+            }
+
+            Color currentColor = sr.material.color;
             float newAlpha = currentColor.a - Time.deltaTime * piecesWallFadeOutSpeedMultiplier;
-            piece.GetComponent<SpriteRenderer>().material.color = new Color(currentColor.r, currentColor.g, currentColor.b, newAlpha);
+            sr.material.color = new Color(currentColor.r, currentColor.g, currentColor.b, newAlpha);
 
             
             if (newAlpha <= 0f)
             {
-                Destroy(piece);
+                Destroy(wallPieces[i]);
+                wallPieces.RemoveAt(i);
             }
             else if(newAlpha <= 80f && !fadeOutSpeedIncreased)
             {

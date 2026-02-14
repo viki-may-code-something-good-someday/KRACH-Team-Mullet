@@ -23,8 +23,6 @@ public class Wall_Data : MonoBehaviour
     private bool fadeOutPieces;
 
 
-    public float Health { get { return health; } }
-
     private void Update()
     {
         if (health <= 0f)
@@ -86,7 +84,7 @@ public class Wall_Data : MonoBehaviour
             SphereCollider sc = piece.AddComponent<SphereCollider>();
             sc.radius = 0.1f;
             sc.sharedMaterial = wallPiecesPhysicsMaterial;
-            
+
             piece.AddComponent<BillboardFacingCamera>();
         }
     }

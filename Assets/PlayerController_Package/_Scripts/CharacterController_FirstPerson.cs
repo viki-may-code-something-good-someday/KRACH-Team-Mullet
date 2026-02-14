@@ -1,10 +1,16 @@
 using UnityEngine;
+using FMODUnity;
 
 [RequireComponent(typeof(CharacterController))]
 public class CharacterController_FirstPerson : MonoBehaviour
 {
     [Header("Movement Settings")]
     public float walkSpeed = 6f;
+
+    [Header("Audio")]
+    private string footstepEvent = "event:/SFX/Footstep";
+    private float baseStepInterval = 0.4f;
+    private float footstepTimer = 0f;
 
     [Header("Sprint Settings")]
     public bool ToggleToSprint = false;           // false = hold to sprint, true = press to sprint
@@ -117,6 +123,29 @@ public class CharacterController_FirstPerson : MonoBehaviour
 
         bool isMoving = x != 0 || z != 0;
 
+        // FOOTSTEP SOUND: trigger FMOD event in intervals which scale with movement speed.
+        if (isGrounded && isMoving)
+        {
+            // choose effective movement speed (sprint or walk)
+            float effectiveSpeed = (sprinting && isMoving && canSprint) ? currentSprintSpeed : walkSpeed;
+
+            // Interval scales inversely with speed: faster movement => smaller interval
+            float interval = baseStepInterval * (walkSpeed / Mathf.Max(0.0001f, effectiveSpeed));
+
+            footstepTimer += Time.deltaTime;
+            if (footstepTimer >= interval)
+            {
+                // Play one-shot footstep at the player's position
+                RuntimeManager.PlayOneShot(footstepEvent, transform.position);
+                footstepTimer = 0f;
+            }
+        }
+        else
+        {
+            // reset timer when not moving or not grounded so footsteps start immediately when moving again
+            footstepTimer = 0f;
+        }
+
         if (sprinting && isMoving && canSprint)
         {
             sprintTimer += Time.deltaTime;
@@ -149,6 +178,8 @@ public class CharacterController_FirstPerson : MonoBehaviour
 
     public void SetCanSprint(bool canSprint)
     {
+        // set the backing field so sprint availability is updated
+        this.canSprint = canSprint;
         if (!canSprint)
         {
             sprinting = false;

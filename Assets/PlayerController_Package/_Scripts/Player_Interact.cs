@@ -16,7 +16,7 @@ public class Player_Interact : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.E))
+        if (Input.GetMouseButtonDown(0))
         {
             Debug.Log("Interact Pressed");
             TryInteract();
@@ -36,8 +36,6 @@ public class Player_Interact : MonoBehaviour
             }
         }
 
-        var test = 1;
-        test += 1;
 
         //Destructable (hitinfo needed)
         if(Physics.Raycast(cameraMain.transform.position, cameraMain.transform.forward, out RaycastHit hitinfoDestructable, hitRange, LayerMask.GetMask("Destructable"), QueryTriggerInteraction.Ignore))

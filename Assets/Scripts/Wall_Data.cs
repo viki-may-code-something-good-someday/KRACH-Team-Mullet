@@ -7,14 +7,11 @@ public class Wall_Data : MonoBehaviour
 {
     [SerializeField] private GameObject wallNormal;
     [SerializeField] private GameObject wallBroken;
-    [SerializeField] private float health = 1f;
+    [SerializeField] private float health;
     [SerializeField] private float explosionForce;
     [SerializeField] private float explosionRadius;
 
     public float Health { get { return health; } }
-
-    float timerEnd = 5f;
-    float timer;
 
     private void Update()
     {

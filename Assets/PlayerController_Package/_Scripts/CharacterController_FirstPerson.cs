@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CharacterController))]
 public class CharacterController_FirstPerson : MonoBehaviour
@@ -53,6 +54,13 @@ public class CharacterController_FirstPerson : MonoBehaviour
     private float currentFallGravity;
     private float airTime;
 
+    [Header("Input References")]
+    InputAction sprintAction;
+    InputAction jumpAction;
+    InputAction moveAction;
+
+    private Vector2 moveInput;
+
     void Start()
     {
         controller = GetComponent<CharacterController>();
@@ -63,29 +71,38 @@ public class CharacterController_FirstPerson : MonoBehaviour
         {
             playerCamera.fieldOfView = normalFOV;
         }
+
+        sprintAction = InputSystem.actions.FindAction("Sprint");
+        moveAction = InputSystem.actions.FindAction("Move");
+        jumpAction = InputSystem.actions.FindAction("Jump");
     }
 
     void Update()
     {
-        HandleSprintInput();
         HandleMovement();
         HandleJump();
         HandleFOV();
     }
 
-    private void HandleSprintInput()
+    public void OnSprint(InputAction.CallbackContext context)
     {
+        Debug.Log("is being called");
         if (ToggleToSprint)
         {
-            if (Input.GetKeyDown(KeyCode.LeftShift))
+            if (context.started)
             {
                 sprinting = !sprinting;
             }
         }
         else
         {
-            sprinting = Input.GetKey(KeyCode.LeftShift);
+            sprinting = context.ReadValueAsButton();
         }
+    }
+
+    public void OnMove(InputAction.CallbackContext context)
+    {
+        moveInput = context.ReadValue<Vector2>();
     }
 
     void HandleMovement()

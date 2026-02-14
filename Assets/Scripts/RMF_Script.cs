@@ -10,6 +10,9 @@ public enum RMF_State
 public class RMF_Script : MonoBehaviour
 {
     private Toggle toggle;
+    private float rmfCurrentValue = 0f;
+    public float rmfValueTriggeringHigh = 0.6f;
+    public float waitingThreshold = 0.5f;
     public RMF_State currentRMFstate;
 
     void Start()
@@ -22,12 +25,26 @@ public class RMF_Script : MonoBehaviour
     {
         if(currentRMFstate == RMF_State.High)
         {
-            toggle.SetIsOnWithoutNotify(false);
+            toggle.SetIsOnWithoutNotify(true);
 
         }
         else
         {
             toggle.SetIsOnWithoutNotify(false);
         }
+    }
+
+    public void SetRMFValue(float value)
+    {
+            rmfCurrentValue = value;
+    
+            if(rmfCurrentValue >= rmfValueTriggeringHigh)
+            {
+                currentRMFstate = RMF_State.High;
+            }
+            else
+            {
+                currentRMFstate = RMF_State.Low;
+            }
     }
 }

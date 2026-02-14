@@ -15,7 +15,7 @@ public class UI_GameOver : MonoBehaviour
         { "Hat wohl schnell aufgegeben...", 0 }
     };
 
-    UI_GameOver Instance { get; set; }
+    public static UI_GameOver Instance { get; private set; }
 
     void Start()
     {

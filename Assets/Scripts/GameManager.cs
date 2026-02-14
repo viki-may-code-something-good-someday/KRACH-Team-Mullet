@@ -24,8 +24,9 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
             return;
         }
-
     }
+
+
 
     void Update()
     {
@@ -36,6 +37,7 @@ public class GameManager : MonoBehaviour
     {
         currentPlaytime = 0f;
 
+
         ResumeGame();
     }
 
@@ -44,6 +46,8 @@ public class GameManager : MonoBehaviour
         currentState = GameState.GameOver;
         int finalScore = CalculateScore();
         Debug.Log($"Game Over! Final Score: {finalScore} - You {(won ? "won" : "lost")}!");
+
+        UI_GameOver.Instance.SetGameOverScreenWithScore(finalScore);
     }
 
     public void PauseGame()

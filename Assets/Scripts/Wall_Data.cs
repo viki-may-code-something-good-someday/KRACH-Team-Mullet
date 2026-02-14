@@ -15,12 +15,12 @@ public class Wall_Data : MonoBehaviour
 
     private void Update()
     {
-        // if (health <= 0f)
-        // {
-        //     TakeDamage(0f, transform.position, transform.forward);
+        if (health <= 0f)
+        {
+            TakeDamage(0f, transform.position, transform.forward);
 
-        //     health = 100f;
-        // }
+            health = 100f;
+        }
     }
 
     public void TakeDamage(float _damage, Vector3 _hitPoint, Vector3 _hitNormal)

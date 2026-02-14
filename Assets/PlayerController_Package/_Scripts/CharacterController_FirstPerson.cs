@@ -8,6 +8,7 @@ public class CharacterController_FirstPerson : MonoBehaviour
 
     [Header("Sprint Settings")]
     public bool ToggleToSprint = false;           // false = hold to sprint, true = press to sprint
+    public bool canSprint;
     public float baseSprintSpeed = 9f;            // initial sprint speed
     public float maxSprintSpeed = 15f;            // maximum sprint speed
     public float sprintAcceleration = 1.7f;       // acceleration before sprintBurstThreshold
@@ -116,7 +117,7 @@ public class CharacterController_FirstPerson : MonoBehaviour
 
         bool isMoving = x != 0 || z != 0;
 
-        if (sprinting && isMoving)
+        if (sprinting && isMoving && canSprint)
         {
             sprintTimer += Time.deltaTime;
 
@@ -144,6 +145,16 @@ public class CharacterController_FirstPerson : MonoBehaviour
         controller.Move(move * speed * Time.deltaTime);
 
         controller.Move(velocity * Time.deltaTime);
+    }
+
+    public void SetCanSprint(bool canSprint)
+    {
+        if (!canSprint)
+        {
+            sprinting = false;
+            currentSprintSpeed = baseSprintSpeed;
+            sprintTimer = 0f;
+        }
     }
 
     private void HandleJump()

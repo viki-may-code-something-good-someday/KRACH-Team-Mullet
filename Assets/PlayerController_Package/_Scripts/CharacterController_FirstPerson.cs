@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CharacterController))]
 public class CharacterController_FirstPerson : MonoBehaviour
@@ -54,13 +53,6 @@ public class CharacterController_FirstPerson : MonoBehaviour
     private float currentFallGravity;
     private float airTime;
 
-    [Header("Input References")]
-    InputAction sprintAction;
-    InputAction jumpAction;
-    InputAction moveAction;
-
-    private Vector2 moveInput;
-
     void Start()
     {
         controller = GetComponent<CharacterController>();
@@ -71,38 +63,29 @@ public class CharacterController_FirstPerson : MonoBehaviour
         {
             playerCamera.fieldOfView = normalFOV;
         }
-
-        sprintAction = InputSystem.actions.FindAction("Sprint");
-        moveAction = InputSystem.actions.FindAction("Move");
-        jumpAction = InputSystem.actions.FindAction("Jump");
     }
 
     void Update()
     {
+        HandleSprintInput();
         HandleMovement();
         HandleJump();
         HandleFOV();
     }
 
-    public void OnSprint(InputAction.CallbackContext context)
+    private void HandleSprintInput()
     {
-        Debug.Log("is being called");
         if (ToggleToSprint)
         {
-            if (context.started)
+            if (Input.GetKeyDown(KeyCode.LeftShift))
             {
                 sprinting = !sprinting;
             }
         }
         else
         {
-            sprinting = context.ReadValueAsButton();
+            sprinting = Input.GetKey(KeyCode.LeftShift);
         }
-    }
-
-    public void OnMove(InputAction.CallbackContext context)
-    {
-        moveInput = context.ReadValue<Vector2>();
     }
 
     void HandleMovement()
@@ -200,6 +183,7 @@ public class CharacterController_FirstPerson : MonoBehaviour
 
 
         // Cancel jump if falling
+        if (velocity.y <= 0)
         if (velocity.y <= 0)
         {
             isJumping = false;

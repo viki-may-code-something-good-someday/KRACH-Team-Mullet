@@ -1,9 +1,11 @@
+using FMODUnity;
 using UnityEngine;
 
 [System.Serializable]
 public class RoomObj: MonoBehaviour
 {
     public bool isEnemyInThisRoom;
+    public StudioEventEmitter musicEmitter;
     public bool hasPlayerOpenedThisRoom;
     [SerializeField] public Wall_Data[] wallsInThisRoom;
 
@@ -15,6 +17,7 @@ public class RoomObj: MonoBehaviour
     private void Start()
     {
         hasPlayerOpenedThisRoom = false;
+        musicEmitter.SetParameter("RoomOcclusion", 1f);
     }
 
     public void AssignWalls(Wall_Data[] walls)
@@ -24,6 +27,8 @@ public class RoomObj: MonoBehaviour
 
     public void RemoveWallFromRoomArray(Wall_Data wallToRemove)
     {
+        SetPlayerHasOpenedThisRoom(true);
+
         if (wallsInThisRoom == null || wallsInThisRoom.Length == 0) return;
 
         for (int i = 0; i < wallsInThisRoom.Length; i++)
@@ -37,6 +42,7 @@ public class RoomObj: MonoBehaviour
                 break;
             }
         }
+
     }
 
     public Vector3 GetEnemyPosition()
@@ -53,5 +59,11 @@ public class RoomObj: MonoBehaviour
      public void SetPlayerHasOpenedThisRoom(bool hasPlayerOpenedThisRoom)
     {
         this.hasPlayerOpenedThisRoom = hasPlayerOpenedThisRoom;
+        if(hasPlayerOpenedThisRoom)
+            if(musicEmitter != null)
+            {
+                musicEmitter.SetParameter("RoomOcclusion", 0f);
+                Debug.Log("code reached this");
+            }
     }
 }

@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
-
+using FMOD.Studio;
+using FMODUnity;
 public enum GameState
 {
     MainMenu,
@@ -108,6 +109,7 @@ public class GameManager : MonoBehaviour
             {
                 if (rooms[i].wallsInThisRoom[j] == wall)
                 {
+                    rooms[i].RemoveWallFromRoomArray(wall);
                     if (rooms[i].isEnemyInThisRoom)
                     {
                         Debug.Log("Enemy was in this room!");

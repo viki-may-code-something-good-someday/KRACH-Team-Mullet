@@ -1127,9 +1127,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Wall_Data
   wallNormal: {fileID: 3671108214043795730}
   wallBroken: {fileID: 3995930024737658038}
+  wallPieces: []
+  wallPiecesPhysicsMaterial: {fileID: 13400000, guid: ea4d112fbe51e1e4db050ec6485eb6ac, type: 2}
   health: 1
   explosionForce: 1000
   explosionRadius: 1
+  piecesWallFadeOutSpeedMultiplier: 0.2
 --- !u!1 &3030823522732643769
 GameObject:
   m_ObjectHideFlags: 0

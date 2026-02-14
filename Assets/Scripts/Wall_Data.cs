@@ -18,6 +18,7 @@ public class Wall_Data : MonoBehaviour
 
     [Header("Wall Pieces")]
     [SerializeField] private float piecesWallFadeOutSpeedMultiplier;
+    private bool fadeOutSpeedIncreased; 
 
     private bool fadeOutPieces;
 
@@ -97,13 +98,15 @@ public class Wall_Data : MonoBehaviour
             float newAlpha = currentColor.a - Time.deltaTime * piecesWallFadeOutSpeedMultiplier;
             piece.GetComponent<SpriteRenderer>().material.color = new Color(currentColor.r, currentColor.g, currentColor.b, newAlpha);
 
-            if(newAlpha <= 80f)
-            {
-                piecesWallFadeOutSpeedMultiplier *= 2f;
-            }
-            else if (newAlpha <= 0f)
+            
+            if (newAlpha <= 0f)
             {
                 Destroy(piece);
+            }
+            else if(newAlpha <= 80f && !fadeOutSpeedIncreased)
+            {
+                fadeOutSpeedIncreased = true;
+                piecesWallFadeOutSpeedMultiplier *= 2f;
             }
         }
     }

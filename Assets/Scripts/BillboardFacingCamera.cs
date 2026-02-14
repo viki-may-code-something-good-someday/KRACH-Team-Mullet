@@ -2,19 +2,27 @@ using UnityEngine;
 
 public class BillboardFacingCamera : MonoBehaviour
 {
-    Camera mainCamera;
+    private Camera mainCamera;
 
+    [SerializeField] private bool flippedSprite;
 
-    void Start()
+    private void Start()
     {
         mainCamera = Camera.main; 
     }
 
-    void Update()
+    private void Update()
     {
         Vector3 directionToCamera = mainCamera.transform.position - transform.position;
         directionToCamera.y = 0.0f;
 
-        transform.rotation = Quaternion.LookRotation(directionToCamera);
+        if(flippedSprite)
+        {
+            transform.rotation = Quaternion.LookRotation(directionToCamera);
+        }
+        else
+        {
+            transform.rotation = Quaternion.LookRotation(directionToCamera) * Quaternion.Euler(0, 180, 0);
+        }
     }
 }

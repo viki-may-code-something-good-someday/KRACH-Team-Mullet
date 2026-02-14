@@ -324,7 +324,7 @@ Transform:
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -15.14}
+  m_LocalPosition: {x: 0, y: 1, z: -4.24}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -663,11 +663,11 @@ MonoBehaviour:
   CollisionTag: 
   EventReference:
     Guid:
-      Data1: 1494729036
-      Data2: 1139171829
-      Data3: -1232215362
-      Data4: 1221607310
-    Path: event:/Music/M_Bass
+      Data1: 1395814957
+      Data2: 1281742464
+      Data3: 1108443285
+      Data4: 1678104668
+    Path: event:/Music/M_Schubert_Remix
   Event: 
   EventPlayTrigger: 1
   EventStopTrigger: 0
@@ -838,11 +838,11 @@ MonoBehaviour:
   CollisionTag: 
   EventReference:
     Guid:
-      Data1: 1494729036
-      Data2: 1139171829
-      Data3: -1232215362
-      Data4: 1221607310
-    Path: event:/Music/M_Bass
+      Data1: -1999092502
+      Data2: 1133629084
+      Data3: 997130157
+      Data4: 464883419
+    Path: event:/Music/M_Schubert_Classic
   Event: 
   EventPlayTrigger: 0
   EventStopTrigger: 0
@@ -854,6 +854,50 @@ MonoBehaviour:
   OverrideAttenuation: 0
   OverrideMinDistance: 1
   OverrideMaxDistance: 20
+--- !u!1 &1402163744
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1402163746}
+  - component: {fileID: 1402163745}
+  m_Layer: 0
+  m_Name: SoundManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1402163745
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1402163744}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c3feea4572cb7314cbe4e93ad8bb5a79, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SoundManager
+--- !u!4 &1402163746
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1402163744}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 9.2921, y: -0, z: 0.50723}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1607677231
 GameObject:
   m_ObjectHideFlags: 0
@@ -924,4 +968,5 @@ SceneRoots:
   - {fileID: 330585546}
   - {fileID: 410087041}
   - {fileID: 832575519}
+  - {fileID: 1402163746}
   - {fileID: 423783971}

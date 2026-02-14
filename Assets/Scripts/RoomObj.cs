@@ -17,7 +17,7 @@ public class RoomObj: MonoBehaviour
     private void Start()
     {
         hasPlayerOpenedThisRoom = false;
-        musicEmitter.SetParameter("RoomOcclusion", 0f);
+        musicEmitter.SetParameter("RoomOcclusion", 1f);
     }
 
     public void AssignWalls(Wall_Data[] walls)
@@ -27,6 +27,8 @@ public class RoomObj: MonoBehaviour
 
     public void RemoveWallFromRoomArray(Wall_Data wallToRemove)
     {
+        SetPlayerHasOpenedThisRoom(true);
+
         if (wallsInThisRoom == null || wallsInThisRoom.Length == 0) return;
 
         for (int i = 0; i < wallsInThisRoom.Length; i++)
@@ -40,6 +42,7 @@ public class RoomObj: MonoBehaviour
                 break;
             }
         }
+
     }
 
     public Vector3 GetEnemyPosition()
@@ -58,6 +61,9 @@ public class RoomObj: MonoBehaviour
         this.hasPlayerOpenedThisRoom = hasPlayerOpenedThisRoom;
         if(hasPlayerOpenedThisRoom)
             if(musicEmitter != null)
-                musicEmitter.SetParameter("RoomOcclusion", 1f);
+            {
+                musicEmitter.SetParameter("RoomOcclusion", 0f);
+                Debug.Log("code reached this");
+            }
     }
 }

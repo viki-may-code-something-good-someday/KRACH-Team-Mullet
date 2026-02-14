@@ -12,7 +12,9 @@ GameObject:
   - component: {fileID: 1597876357490965763}
   - component: {fileID: 4376172046630305978}
   - component: {fileID: 3159534273627049395}
-  m_Layer: 3
+  - component: {fileID: 4724447605563298357}
+  - component: {fileID: 8448123267095305124}
+  m_Layer: 6
   m_Name: PlayerCharacter_FirstPerson
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -126,6 +128,48 @@ MonoBehaviour:
     m_Bits: 1
   groundDistance: 0.4
   velocity: {x: 0, y: 0, z: 0}
+--- !u!114 &4724447605563298357
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1608425576210504766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 62899f850307741f2a39c98a8b639597, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Unity.InputSystem::UnityEngine.InputSystem.PlayerInput
+  m_Actions: {fileID: -944628639613478452, guid: 052faaac586de48259a63d0c4782560b, type: 3}
+  m_NotificationBehavior: 0
+  m_UIInputModule: {fileID: 0}
+  m_DeviceLostEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_DeviceRegainedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ControlsChangedEvent:
+    m_PersistentCalls:
+      m_Calls: []
+  m_ActionEvents: []
+  m_NeverAutoSwitchControlSchemes: 0
+  m_DefaultControlScheme: Keyboard&Mouse
+  m_DefaultActionMap: 
+  m_SplitScreenIndex: -1
+  m_Camera: {fileID: 0}
+--- !u!114 &8448123267095305124
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1608425576210504766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d576b423a226aa24b8245bd1c021a17f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Player_Interact
 --- !u!1 &2462909931220215103
 GameObject:
   m_ObjectHideFlags: 0
@@ -137,7 +181,7 @@ GameObject:
   - component: {fileID: 7319542856001595817}
   - component: {fileID: 4096398955503951708}
   - component: {fileID: 4441607650478964956}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Capsule
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -226,7 +270,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 791636370496168659}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Meshes
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -262,7 +306,7 @@ GameObject:
   - component: {fileID: 5819573355307635468}
   - component: {fileID: 1024899313175598030}
   - component: {fileID: 1040092028980444162}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Player Camera
   m_TagString: MainCamera
   m_Icon: {fileID: 0}
@@ -413,7 +457,7 @@ GameObject:
   - component: {fileID: 8264225017406654132}
   - component: {fileID: 4592963879363556378}
   - component: {fileID: 6474616862922322393}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Footsteps
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -571,7 +615,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1825494035574137379}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: GroundCheck
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -604,7 +648,7 @@ GameObject:
   - component: {fileID: 8518752899884575899}
   - component: {fileID: 1453659451235587477}
   - component: {fileID: 2037682483826846795}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: Cylinder
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -692,7 +736,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7229640499008521558}
-  m_Layer: 3
+  m_Layer: 6
   m_Name: CameraTarget
   m_TagString: Untagged
   m_Icon: {fileID: 0}

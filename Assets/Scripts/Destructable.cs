@@ -1,15 +1,11 @@
 using UnityEngine;
-using UnityEngine.Events;
 
 public class Destructable : MonoBehaviour
 {
+    [SerializeField] private Wall_Data wallData;
 
-    public void Destruct(Vector3 _hitPoint, Vector3 _hitNormal)
+    public void Destruct(float _damage, Vector3 _hitPoint, Vector3 _hitNormal)
     {
-        Wall_Data wallData = GetComponent<Wall_Data>();
-        if (wallData != null)
-        {
-            wallData.TakeDamage(1f, _hitPoint, _hitNormal);
-        }
+        wallData.TakeDamage(_damage, _hitPoint, _hitNormal);
     }
 }

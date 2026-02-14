@@ -1,13 +1,11 @@
-using TMPro;
 using UnityEngine;
 
 public class Player_Interact : MonoBehaviour
 {
-    Camera cameraMain;
-    float hitRange = 2f;
-    Interactable targetInteractable;
-    Destructable targetDestructable;
+    [SerializeField] private float hitRange;
+    [SerializeField] private float hitDamage;
 
+    private Camera cameraMain;
 
 
     void Start()
@@ -27,29 +25,28 @@ public class Player_Interact : MonoBehaviour
 
     private void TryInteract()
     {
-        RaycastHit hitinfo;
         //Interactable 
-        if (Physics.Raycast(cameraMain.transform.position, cameraMain.transform.forward, out hitinfo, hitRange, LayerMask.GetMask("Interactable"), QueryTriggerInteraction.Ignore))
+        if (Physics.Raycast(cameraMain.transform.position, cameraMain.transform.forward, out RaycastHit hitinfo, hitRange, LayerMask.GetMask("Interactable"), QueryTriggerInteraction.Ignore))
         {
+            Debug.Log("1" + hitinfo.transform.name);
             hitinfo.collider.TryGetComponent<Interactable>(out Interactable interactableObj);
             if (interactableObj != null)
             {
-                targetInteractable = interactableObj;
-                targetInteractable.Interact();
+                interactableObj.Interact();
             }
         }
-        Debug.Log($"hit: {hitinfo.transform.name}");
 
-        RaycastHit hitinfoDestructable;
+        var test = 1;
+        test += 1;
+
         //Destructable (hitinfo needed)
-        if(Physics.Raycast(cameraMain.transform.position, cameraMain.transform.forward, out hitinfoDestructable, hitRange, LayerMask.GetMask("Destructable"), QueryTriggerInteraction.Ignore))
+        if(Physics.Raycast(cameraMain.transform.position, cameraMain.transform.forward, out RaycastHit hitinfoDestructable, hitRange, LayerMask.GetMask("Destructable"), QueryTriggerInteraction.Ignore))
         {
-            Debug.Log($"hit: {hitinfoDestructable.transform.name}");
+            Debug.Log("2" + hitinfoDestructable.transform.name);
             hitinfoDestructable.collider.TryGetComponent<Destructable>(out Destructable destructableObject);
             if (destructableObject != null)
             {
-                targetDestructable = destructableObject;
-                targetDestructable.Destruct(hitinfoDestructable.point, hitinfoDestructable.normal);
+                destructableObject.Destruct(hitDamage,hitinfoDestructable.point, hitinfoDestructable.normal);
             }
         }
     }

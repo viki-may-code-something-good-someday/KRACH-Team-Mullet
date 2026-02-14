@@ -1927,7 +1927,7 @@ MonoBehaviour:
       Data4: 346481125
     Path: event:/Music/M_Neighbour
   Event: 
-  EventPlayTrigger: 0
+  EventPlayTrigger: 1
   EventStopTrigger: 0
   AllowFadeout: 1
   TriggerOnce: 0
@@ -1935,8 +1935,8 @@ MonoBehaviour:
   NonRigidbodyVelocity: 0
   Params: []
   OverrideAttenuation: 0
-  OverrideMinDistance: 1
-  OverrideMaxDistance: 7.6
+  OverrideMinDistance: 2.8
+  OverrideMaxDistance: 9
 --- !u!4 &842856737
 Transform:
   m_ObjectHideFlags: 0

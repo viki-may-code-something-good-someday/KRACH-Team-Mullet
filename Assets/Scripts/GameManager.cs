@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using UnityEngine;
-
+using FMOD.Studio;
+using FMODUnity;
 public enum GameState
 {
     MainMenu,

@@ -1,9 +1,11 @@
+using FMODUnity;
 using UnityEngine;
 
 [System.Serializable]
 public class RoomObj: MonoBehaviour
 {
     public bool isEnemyInThisRoom;
+    public StudioEventEmitter musicEmitter;
     public bool hasPlayerOpenedThisRoom;
     [SerializeField] public Wall_Data[] wallsInThisRoom;
 
@@ -53,5 +55,8 @@ public class RoomObj: MonoBehaviour
      public void SetPlayerHasOpenedThisRoom(bool hasPlayerOpenedThisRoom)
     {
         this.hasPlayerOpenedThisRoom = hasPlayerOpenedThisRoom;
+        if(hasPlayerOpenedThisRoom)
+            if(musicEmitter != null)
+                musicEmitter.Play();
     }
 }

@@ -140,3 +140,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fbd62801c7c7d8d43838a45309cfc23e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SoundBox
+  health: 1

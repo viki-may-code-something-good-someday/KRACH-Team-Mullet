@@ -184,6 +184,7 @@ public class CharacterController_FirstPerson : MonoBehaviour
 
         // Cancel jump if falling
         if (velocity.y <= 0)
+        if (velocity.y <= 0)
         {
             isJumping = false;
         }

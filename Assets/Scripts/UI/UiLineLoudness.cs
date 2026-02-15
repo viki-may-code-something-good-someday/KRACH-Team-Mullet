@@ -32,6 +32,13 @@ public class UiLineLoudness : MonoBehaviour
     private Image uiImage;
     private Renderer meshRenderer;
     private LineRenderer lineRenderer;
+    
+    // Rotation wiggle (left-right)
+    [SerializeField] private float rotationAmplitude = 5f; // degrees
+    [SerializeField] private float rotationFrequency = 1.5f; // Hz
+    [SerializeField] private float rotationLerpSpeed = 8f;
+    private float rotationTimer = 0f;
+    private float currentRotationAngle = 0f;
 
     void Start()
     {
@@ -90,6 +97,12 @@ public class UiLineLoudness : MonoBehaviour
 
         // Timer für Sinus-Schwankung erhöhen
         swingTimer += Time.deltaTime;
+
+        // Rotation wiggle
+        rotationTimer += Time.deltaTime;
+        float targetAngle = Mathf.Sin(rotationTimer * rotationFrequency * Mathf.PI * 2f) * rotationAmplitude;
+        currentRotationAngle = Mathf.LerpAngle(currentRotationAngle, targetAngle, rotationLerpSpeed * Time.deltaTime);
+        line.localRotation = Quaternion.Euler(0f, 0f, currentRotationAngle);
 
         // Frequenz zufällig ändern
         frequencyChangeTimer += Time.deltaTime;

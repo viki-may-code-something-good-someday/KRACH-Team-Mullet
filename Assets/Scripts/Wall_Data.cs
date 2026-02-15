@@ -11,6 +11,7 @@ public class Wall_Data : MonoBehaviour
     [SerializeField] private GameObject wallBroken;
     [SerializeField] private List<GameObject> wallPieces = new List<GameObject>();
     [SerializeField] private PhysicsMaterial wallPiecesPhysicsMaterial;
+    [SerializeField] private ParticleSystem wallBreakVFX;
 
     [Header("Wall Data")]
     [SerializeField] private float health;
@@ -64,6 +65,11 @@ public class Wall_Data : MonoBehaviour
     private void GetDestroyed(Vector3 _hitPoint, Vector3 _hitNormal)
     {
         isDestroyed = true;
+
+        if (wallBreakVFX != null)
+        {
+            wallBreakVFX.Play();    // vfx
+        }
 
         RuntimeManager.PlayOneShot("event:/SFX/WallBreakdown", _hitPoint);    // sound
 

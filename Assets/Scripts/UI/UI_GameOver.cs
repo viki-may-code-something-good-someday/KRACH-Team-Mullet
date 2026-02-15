@@ -1,3 +1,4 @@
+using FMODUnity;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -55,6 +56,8 @@ public class UI_GameOver : MonoBehaviour
 
                 scoreValue.text = score.ToString();
 
+                RuntimeManager.PlayOneShot("event:/SFX/GameOver");
+
                 float scorePercentage = score / GameManager.Instance.maxScore * 100f;
 
                 resultText.text = GetResultTextForScore(Mathf.RoundToInt(scorePercentage));
@@ -63,7 +66,10 @@ public class UI_GameOver : MonoBehaviour
                 break;
             case 1: // player won
                 Debug.Log("This should be called with final score: " + score);
+
                 gameObject.SetActive(true);
+
+                RuntimeManager.PlayOneShot("event:/SFX/GameWon");
 
                 scoreValue.text = score.ToString();
 
@@ -77,6 +83,8 @@ public class UI_GameOver : MonoBehaviour
                 Debug.Log("This should be called with final score: " + score);
                 gameObject.SetActive(true);
 
+                RuntimeManager.PlayOneShot("event:/SFX/GameOver");
+
                 scoreValue.text = score.ToString();
 
                 float scorePercentage3 = score / GameManager.Instance.maxScore * 100f;
@@ -88,6 +96,8 @@ public class UI_GameOver : MonoBehaviour
             case 3: //player ran out of time
                 Debug.Log("This should be called with final score: " + score);
                 gameObject.SetActive(true);
+
+                RuntimeManager.PlayOneShot("event:/SFX/GameOver");
 
                 scoreValue.text = score.ToString();
 

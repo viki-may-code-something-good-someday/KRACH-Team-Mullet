@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="AudioFile" id="{28703501-e7c5-4a27-86aa-cfb4ca47dc70}">
+		<property name="assetPath">
+			<value>SFX/Destruct/ESM_SPG_fx_breakable_crash_clatter_impact_explosion_metal_02.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>1.5492970521541951</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{c53bfd08-94fd-46c3-9d7a-6d42f48f59c2}</destination>
+		</relationship>
+	</object>
+</objects>

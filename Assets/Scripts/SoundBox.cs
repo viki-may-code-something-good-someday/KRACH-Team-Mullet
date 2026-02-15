@@ -1,8 +1,23 @@
 using UnityEngine;
+using FMODUnity;
 
 public class SoundBox : MonoBehaviour
 {
     [SerializeField] private float health;
+
+    // public enum SoundBoxType
+    // {
+    //     Base,
+    //     Drum,
+    //     Lead,
+    //     Sfx,
+    // }
+    // public SoundBoxType soundBoxType;
+
+    // private void Initialize()
+    // {
+        
+    // }
 
     public void TakeDamage(float _damage, Vector3 _hitPoint, Vector3 _hitNormal)
     {
@@ -16,6 +31,7 @@ public class SoundBox : MonoBehaviour
 
     private void GetDestroyed(Vector3 _hitPoint, Vector3 _hitNormal)
     {
+        RuntimeManager.PlayOneShot("event:/SFX/SpeakerDestroy", transform.position);    // sound
         SoundBoxSpawner.Instance.DestroyedSoundbox(this);
         Destroy(gameObject);
     }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using FMODUnity;
 
 public class Wall_Data : MonoBehaviour
 {
@@ -50,6 +51,8 @@ public class Wall_Data : MonoBehaviour
     {
         health -= _damage;
 
+        RuntimeManager.PlayOneShot("event:/SFX/WallHit", _hitPoint);    // sound
+
         //wallPieces could shake?
 
         if (health <= 0f)
@@ -61,6 +64,8 @@ public class Wall_Data : MonoBehaviour
     private void GetDestroyed(Vector3 _hitPoint, Vector3 _hitNormal)
     {
         isDestroyed = true;
+
+        RuntimeManager.PlayOneShot("event:/SFX/WallBreakdown", _hitPoint);    // sound
 
         //handle Wall Pieces
         WallPiecesSetup();

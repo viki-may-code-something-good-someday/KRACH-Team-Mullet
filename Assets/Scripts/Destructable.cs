@@ -11,6 +11,7 @@ public class Destructable : MonoBehaviour
         if (wallData != null)
         {
             wallData.TakeDamage(_damage, _hitPoint, _hitNormal);
+            
         }
         else if (soundBox != null)
         {

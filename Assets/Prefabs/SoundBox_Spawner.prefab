@@ -44,7 +44,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 843c08e3f3872dd4f83db193165c3ee5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SoundBoxSpawner
-  SoundBoxWaves:
+  soundBoxWaves:
+  - {fileID: 11400000, guid: 18e57ad8483b41f4eadcede5bb1fb514, type: 2}
+  spawnParent: {fileID: 8846561200317962324}
+  spawnPoints:
   - {fileID: 0}
-  SoundBoxSpawnPoints:
   - {fileID: 0}
+  - {fileID: 0}
+  waveSpawnDelay: 10
+  currentWaveIndex: 0

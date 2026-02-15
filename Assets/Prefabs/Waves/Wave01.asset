@@ -15,6 +15,6 @@ MonoBehaviour:
   boxes:
   - {fileID: 1086694340420830532, guid: 374fa6d517b9e4649b9a2c8fff5b5c0a, type: 3}
   - {fileID: 1086694340420830532, guid: 374fa6d517b9e4649b9a2c8fff5b5c0a, type: 3}
-  spawnPosNumbers: 0000000001000000
+  spawnPosNumbers: 0500000000000000
   activeInstances: []
-  hasSpawned: 0
+  hasSpawned: 1

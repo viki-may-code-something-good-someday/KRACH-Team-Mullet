@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4313980363493063922}
   m_Layer: 0
   m_Name: RoomObj
-  m_TagString: Untagged
+  m_TagString: Neighbour
   m_Icon: {fileID: 1206586993520771344, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -47,6 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::RoomObj
   isEnemyInThisRoom: 1
+  musicEmitter: {fileID: 0}
   hasPlayerOpenedThisRoom: 0
   wallsInThisRoom:
   - {fileID: 0}

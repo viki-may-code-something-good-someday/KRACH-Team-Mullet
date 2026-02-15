@@ -60,7 +60,7 @@ public class SoundManager : MonoBehaviour
         classicSchubertInstance = RuntimeManager.CreateInstance(classicSchubertEvent);
         remixSchubertInstance = RuntimeManager.CreateInstance(remixSchubertEvent);
         
-        remixSchubertInstance.start();
+        classicSchubertInstance.start();
     }
 
     void Update()

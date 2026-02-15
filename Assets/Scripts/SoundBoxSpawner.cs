@@ -13,7 +13,7 @@ public class SoundBoxSpawner : MonoBehaviour
     [SerializeField] private Transform spawnParent;
     [SerializeField] private List<SoundBoxSpawnPoint> spawnPoints = new List<SoundBoxSpawnPoint>();
 
-    [SerializeField] private float waveSpawnDelay = 10f;   // delay between clearing a wave and spawning the next one
+    [SerializeField] private float waveSpawnDelay = 6f;   // delay between clearing a wave and spawning the next one
 
     private SoundManager soundManager;
     private bool wonGame = false;

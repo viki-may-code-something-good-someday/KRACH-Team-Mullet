@@ -10,6 +10,8 @@ public class SoundBoxSpawner : MonoBehaviour
     [SerializeField] private List<SoundBoxSpawnPoint> soundBoxSpawnPoints = new List<SoundBoxSpawnPoint>();
     [SerializeField] private Transform spawnParent;
 
+    [SerializeField] private float waveSpawnDelay = 10f;   // delay between clearing a wave and spawning the next one
+
     private int currentWaveIndex = 0;
 
 
@@ -110,7 +112,24 @@ public class SoundBoxSpawner : MonoBehaviour
         Debug.LogWarning("DestroyedSoundbox: instance not found in any active wave.");
     }
 
+    private void ClearWave()
+    {
+        RuntimeManager.PlayOneShot("event:/SFX/AllSpeakersDestroyed");    // sound on all destroyed soundboxes in the wave
+
+        // Start timer before next wave
+        StartCoroutine(NextWaveSpawnDelay(waveSpawnDelay));
+    }
+
+    private IEnumerator NextWaveSpawnDelay(float delay)
+    {
+        RuntimeManager.Play("event:/Music/M_Schubert_Classic");    // classic music
+        yield return new WaitForSeconds(delay);
+        RuntimeManager.CoreSystem.setPaused("event:/Music/M_Schubert_Classic");
+        // start all sound emitter of remix here or play them automatically on PreFab Component
+    }
+
 }
+
 
 
 [Serializable]

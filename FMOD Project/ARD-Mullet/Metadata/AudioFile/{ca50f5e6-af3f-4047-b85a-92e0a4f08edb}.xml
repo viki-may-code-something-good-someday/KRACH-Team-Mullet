@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.03.00">
 	<object class="AudioFile" id="{ca50f5e6-af3f-4047-b85a-92e0a4f08edb}">
 		<property name="assetPath">
-			<value>Punch/ESM_CH_fx_impacts_combat_punch_swing_hard_fist_04.wav</value>
+			<value>SFX/Punch/ESM_CH_fx_impacts_combat_punch_swing_hard_fist_04.wav</value>
 		</property>
 		<property name="frequencyInKHz">
 			<value>96</value>

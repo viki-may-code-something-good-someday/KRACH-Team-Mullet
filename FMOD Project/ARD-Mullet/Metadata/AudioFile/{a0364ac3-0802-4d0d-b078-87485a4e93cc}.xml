@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="AudioFile" id="{a0364ac3-0802-4d0d-b078-87485a4e93cc}">
+		<property name="assetPath">
+			<value>SFX/Speaker/ESM_GB_cinematic_fx_foley_one_shot_dsgndist_bit_crushed_general_ground_drop_fall_slip.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>96</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>0.63472916666666668</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{c53bfd08-94fd-46c3-9d7a-6d42f48f59c2}</destination>
+		</relationship>
+	</object>
+</objects>

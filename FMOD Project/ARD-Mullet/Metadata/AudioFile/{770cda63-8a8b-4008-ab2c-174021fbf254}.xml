@@ -2,7 +2,7 @@
 <objects serializationModel="Studio.02.03.00">
 	<object class="AudioFile" id="{770cda63-8a8b-4008-ab2c-174021fbf254}">
 		<property name="assetPath">
-			<value>Punch/BRS_Punch_Face_Low_Crack_Big.wav</value>
+			<value>SFX/Punch/BRS_Punch_Face_Low_Crack_Big.wav</value>
 		</property>
 		<property name="frequencyInKHz">
 			<value>44.0999985</value>

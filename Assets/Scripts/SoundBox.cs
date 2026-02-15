@@ -16,6 +16,7 @@ public class SoundBox : MonoBehaviour
 
     private void GetDestroyed(Vector3 _hitPoint, Vector3 _hitNormal)
     {
+        RuntimeManager.PlayOneShot("event:/SFX/SpeakerDestroy", transform.position);    // sound
         SoundBoxSpawner.Instance.DestroyedSoundbox(this);
         Destroy(gameObject);
     }

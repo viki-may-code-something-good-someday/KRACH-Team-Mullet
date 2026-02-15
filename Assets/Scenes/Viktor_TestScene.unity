@@ -2207,15 +2207,15 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 4317857988139111238, guid: 8958f9f1e77ae644183e4b1c945314c0, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 3.834
+      value: 6.876
       objectReference: {fileID: 0}
     - target: {fileID: 4317857988139111238, guid: 8958f9f1e77ae644183e4b1c945314c0, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.667
+      value: 2.106
       objectReference: {fileID: 0}
     - target: {fileID: 4317857988139111238, guid: 8958f9f1e77ae644183e4b1c945314c0, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 2.118
+      value: -1.046
       objectReference: {fileID: 0}
     - target: {fileID: 4317857988139111238, guid: 8958f9f1e77ae644183e4b1c945314c0, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2569,6 +2569,10 @@ PrefabInstance:
     - target: {fileID: 959777621270717550, guid: fbddb5bcaae4dfc4fb5a678f78546259, type: 3}
       propertyPath: EmissionModule.m_BurstCount
       value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 959777621270717550, guid: fbddb5bcaae4dfc4fb5a678f78546259, type: 3}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1.0000
       objectReference: {fileID: 0}
     - target: {fileID: 959777621270717550, guid: fbddb5bcaae4dfc4fb5a678f78546259, type: 3}
       propertyPath: EmissionModule.m_Bursts.Array.size
@@ -2955,5 +2959,5 @@ SceneRoots:
   - {fileID: 3268877029598003387}
   - {fileID: 8820819689279730850}
   - {fileID: 3599975078352242716}
-  - {fileID: 3155548481995757514}
   - {fileID: 1346023714}
+  - {fileID: 3155548481995757514}

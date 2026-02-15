@@ -9824,6 +9824,10 @@ PrefabInstance:
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8904730114808629814, guid: fbddb5bcaae4dfc4fb5a678f78546259, type: 3}
+      propertyPath: isFirstWall
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8904730114808629814, guid: fbddb5bcaae4dfc4fb5a678f78546259, type: 3}
       propertyPath: wallPieces.Array.size
       value: 1
       objectReference: {fileID: 0}

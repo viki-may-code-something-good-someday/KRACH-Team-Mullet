@@ -59,7 +59,7 @@ public class SoundBoxSpawner : MonoBehaviour
         if (currentWaveIndex >= soundBoxWaves.Count)
             return;
 
-        var currentWave = soundBoxWaves[currentWaveIndex];
+        SoundBoxWave currentWave = soundBoxWaves[currentWaveIndex];
 
         // Spawn the wave once
         if (!currentWave.hasSpawned)
@@ -92,14 +92,14 @@ public class SoundBoxSpawner : MonoBehaviour
 
         for (int i = 0; i < wave.prefabs.Count; i++)
         {
-            var prefab = wave.prefabs[i];
+            SoundBox prefab = wave.prefabs[i];
             if (prefab == null) continue;
 
-            var spawnPoint = soundBoxSpawnPoints[UnityEngine.Random.Range(0, soundBoxSpawnPoints.Count)];
-            var pos = spawnPoint != null ? spawnPoint.transform.position : Vector3.zero;
+            SoundBoxSpawnPoint spawnPoint = soundBoxSpawnPoints[UnityEngine.Random.Range(0, soundBoxSpawnPoints.Count)];
+            Vector3 pos = spawnPoint != null ? spawnPoint.transform.position : Vector3.zero;
 
             // Instantiate and keep the SoundBox component reference
-            var spawned = Instantiate(prefab, pos, Quaternion.identity, spawnParent);
+            SoundBox spawned = Instantiate(prefab, pos, Quaternion.identity, spawnParent);
             wave.activeInstances.Add(spawned);
         }
     }
@@ -109,13 +109,13 @@ public class SoundBoxSpawner : MonoBehaviour
         //Win Game Logic
     }
 
-    public void DestroyedSoundbox(SoundBox soundBox)
+    public void DestroyingSoundBox(SoundBox soundBox)
     {
         if (soundBox == null) return;
 
         for (int i = 0; i < soundBoxWaves.Count; i++)
         {
-            var wave = soundBoxWaves[i];
+            SoundBoxWave wave = soundBoxWaves[i];
             if (wave.activeInstances.Remove(soundBox))
             {
                 // wave completion handled in Update
@@ -123,7 +123,9 @@ public class SoundBoxSpawner : MonoBehaviour
             }
         }
 
-        Debug.LogWarning("DestroyedSoundbox: instance not found in any active wave.");
+        Destroy(soundBox.gameObject);
+
+        Debug.LogWarning("DestroyedSoundBox: instance not found in any active wave.");
     }
 
     private void ClearWave()

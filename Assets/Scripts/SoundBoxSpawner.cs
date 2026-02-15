@@ -17,7 +17,7 @@ public class SoundBoxSpawner : MonoBehaviour
 
     private SoundManager soundManager;
 
-    private int currentWaveIndex = 0;
+    [SerializeField] private int currentWaveIndex = 0;
 
 
     private void Awake()
@@ -32,6 +32,7 @@ public class SoundBoxSpawner : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+
     private void Start()
     {
         soundManager = FindFirstObjectByType<SoundManager>();
@@ -39,6 +40,7 @@ public class SoundBoxSpawner : MonoBehaviour
         {
             Debug.LogWarning("SoundBoxSpawner: SoundManager not found in scene.");
         }
+
     }
 
     private void OnDestroy()
@@ -57,9 +59,11 @@ public class SoundBoxSpawner : MonoBehaviour
 
         // Guard current index
         if (currentWaveIndex >= soundBoxWaves.Count)
+        {
             return;
+        }
 
-        var currentWave = soundBoxWaves[currentWaveIndex];
+        SoundBoxWave currentWave = soundBoxWaves[currentWaveIndex];
 
         // Spawn the wave once
         if (!currentWave.hasSpawned)
@@ -92,30 +96,31 @@ public class SoundBoxSpawner : MonoBehaviour
 
         for (int i = 0; i < wave.prefabs.Count; i++)
         {
-            var prefab = wave.prefabs[i];
+            SoundBox prefab = wave.prefabs[i];
             if (prefab == null) continue;
 
-            var spawnPoint = soundBoxSpawnPoints[UnityEngine.Random.Range(0, soundBoxSpawnPoints.Count)];
-            var pos = spawnPoint != null ? spawnPoint.transform.position : Vector3.zero;
+            SoundBoxSpawnPoint spawnPoint = soundBoxSpawnPoints[UnityEngine.Random.Range(0, soundBoxSpawnPoints.Count)];
+            Vector3 pos = spawnPoint != null ? spawnPoint.transform.position : Vector3.zero;
 
             // Instantiate and keep the SoundBox component reference
-            var spawned = Instantiate(prefab, pos, Quaternion.identity, spawnParent);
+            SoundBox spawned = Instantiate(prefab, pos, Quaternion.identity, spawnParent);
             wave.activeInstances.Add(spawned);
         }
     }
 
     private void WinGame()
     {
+        Debug.Log("All waves cleared! You win!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         //Win Game Logic
     }
 
-    public void DestroyedSoundbox(SoundBox soundBox)
+    public void DestroyingSoundBox(SoundBox soundBox)
     {
         if (soundBox == null) return;
 
         for (int i = 0; i < soundBoxWaves.Count; i++)
         {
-            var wave = soundBoxWaves[i];
+            SoundBoxWave wave = soundBoxWaves[i];
             if (wave.activeInstances.Remove(soundBox))
             {
                 // wave completion handled in Update
@@ -123,7 +128,9 @@ public class SoundBoxSpawner : MonoBehaviour
             }
         }
 
-        Debug.LogWarning("DestroyedSoundbox: instance not found in any active wave.");
+        Destroy(soundBox.gameObject);
+
+        Debug.LogWarning("DestroyedSoundBox: instance not found in any active wave.");
     }
 
     private void ClearWave()
@@ -137,16 +144,19 @@ public class SoundBoxSpawner : MonoBehaviour
     private IEnumerator NextWaveSpawnDelay(float delay)
     {
         soundManager.PlayClassicMusic();    // classic music
-        yield return new WaitForSeconds(delay);
+        yield return new WaitForSeconds(delay/0.5f);
         soundManager.StopClassicMusic();
-        // start all sound emitter of remix here or play them automatically on PreFab Component
+        RuntimeManager.PlayOneShot("event:/SFX/NextWave");    // sound for next wave incoming
+        // BLACKOUT SCREEN HERE (Elevator Transition)
+        yield return new WaitForSeconds(delay/0.5f);
+        soundManager.PlayRemixMusic();
     }
 }
 
 
 
-[Serializable]
-public class SoundBoxWave
+[Serializable, CreateAssetMenu(fileName = "SoundBoxWave", menuName = "Scriptable Objects/SoundBoxWave")]
+public class SoundBoxWave : ScriptableObject
 {
     [Tooltip("SoundBox prefab references to spawn for this wave.")]
     public List<SoundBox> prefabs = new List<SoundBox>();

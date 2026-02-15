@@ -60,6 +60,8 @@ public class GameManager : MonoBehaviour
 
     public void GameOver(bool won)
     {         
+        RuntimeManager.PlayOneShot("event:/SFX/GameOver");    // sound
+
         currentState = GameState.GameOver;
         int finalScore = CalculateScore();
         Debug.Log($"Game Over! Final Score: {finalScore} - You {(won ? "won" : "lost")}!");
@@ -74,6 +76,13 @@ public class GameManager : MonoBehaviour
         Debug.Log($"Game Over! Final Score: {finalScore} - You lost because you destroyed a wall when RMF was low!");
 
         UI_GameOver.Instance.SetGameOverScreenWithScore(finalScore, 2);
+    }
+
+    public void WinGame()
+    {
+        RuntimeManager.PlayOneShot("event:/SFX/GameWon");    // sound
+
+        // End game with screen
     }
 
     public void PauseGame()

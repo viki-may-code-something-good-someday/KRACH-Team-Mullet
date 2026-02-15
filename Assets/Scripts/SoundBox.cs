@@ -4,6 +4,20 @@ public class SoundBox : MonoBehaviour
 {
     [SerializeField] private float health;
 
+    // public enum SoundBoxType
+    // {
+    //     Base,
+    //     Drum,
+    //     Lead,
+    //     Sfx,
+    // }
+    // public SoundBoxType soundBoxType;
+
+    // private void Initialize()
+    // {
+        
+    // }
+
     public void TakeDamage(float _damage, Vector3 _hitPoint, Vector3 _hitNormal)
     {
         health -= _damage;

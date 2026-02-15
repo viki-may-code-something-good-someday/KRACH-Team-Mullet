@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UiLineLoudness : MonoBehaviour
 {
@@ -22,6 +23,23 @@ public class UiLineLoudness : MonoBehaviour
     private float frequencyChangeTimer = 0f;
     [SerializeField] private float frequencyChangeInterval = 3f;  // Frequenz alle 3 Sekunden ändern
 
+    // Color Lerp
+    [SerializeField] private Color startColor = new Color(0.8431373f, 0.38039216f, 1f); // #D761FF
+    [SerializeField] private Color endColor = new Color(0.5137255f, 1f, 0.3843137f);   // #83FF62
+    [SerializeField] private float colorLerpSpeed = 5f;
+    private Color currentColor;
+    private SpriteRenderer spriteRenderer;
+    private Image uiImage;
+    private Renderer meshRenderer;
+    private LineRenderer lineRenderer;
+    
+    // Rotation wiggle (left-right)
+    [SerializeField] private float rotationAmplitude = 5f; // degrees
+    [SerializeField] private float rotationFrequency = 1.5f; // Hz
+    [SerializeField] private float rotationLerpSpeed = 8f;
+    private float rotationTimer = 0f;
+    private float currentRotationAngle = 0f;
+
     void Start()
     {
         if (line != null)
@@ -30,6 +48,18 @@ public class UiLineLoudness : MonoBehaviour
             targetY = currentY;
         }
         RandomizeSwingFrequency();
+
+        // Cache renderer components for color updates
+        if (line != null)
+        {
+            spriteRenderer = line.GetComponent<SpriteRenderer>();
+            uiImage = line.GetComponent<Image>();
+            meshRenderer = line.GetComponent<Renderer>();
+            lineRenderer = line.GetComponent<LineRenderer>();
+        }
+
+        currentColor = startColor;
+        ApplyColor(currentColor);
     }
 
     void Update()
@@ -60,8 +90,19 @@ public class UiLineLoudness : MonoBehaviour
         newPos.y = finalY;
         line.localPosition = newPos;
 
+        // Color lerp: Ziel basierend auf currentValue
+        Color targetColor = Color.Lerp(startColor, endColor, currentValue);
+        currentColor = Color.Lerp(currentColor, targetColor, colorLerpSpeed * Time.deltaTime);
+        ApplyColor(currentColor);
+
         // Timer für Sinus-Schwankung erhöhen
         swingTimer += Time.deltaTime;
+
+        // Rotation wiggle
+        rotationTimer += Time.deltaTime;
+        float targetAngle = Mathf.Sin(rotationTimer * rotationFrequency * Mathf.PI * 2f) * rotationAmplitude;
+        currentRotationAngle = Mathf.LerpAngle(currentRotationAngle, targetAngle, rotationLerpSpeed * Time.deltaTime);
+        line.localRotation = Quaternion.Euler(0f, 0f, currentRotationAngle);
 
         // Frequenz zufällig ändern
         frequencyChangeTimer += Time.deltaTime;
@@ -94,5 +135,29 @@ public class UiLineLoudness : MonoBehaviour
     private void RandomizeSwingFrequency()
     {
         swingFrequency = Random.Range(1f, 4f);  // Frequenz zwischen 1 und 4 Hz
+    }
+
+    private void ApplyColor(Color color)
+    {
+        if (spriteRenderer != null)
+        {
+            spriteRenderer.color = color;
+        }
+
+        if (uiImage != null)
+        {
+            uiImage.color = color;
+        }
+
+        if (meshRenderer != null && spriteRenderer == null && uiImage == null)
+        {
+            meshRenderer.material.color = color;
+        }
+
+        if (lineRenderer != null)
+        {
+            lineRenderer.startColor = color;
+            lineRenderer.endColor = color;
+        }
     }
 }

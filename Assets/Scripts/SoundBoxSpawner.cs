@@ -10,8 +10,8 @@ public class SoundBoxSpawner : MonoBehaviour
     public static SoundBoxSpawner Instance { get; private set; }
 
     [SerializeField] private List<SoundBoxWave> soundBoxWaves = new List<SoundBoxWave>();
-    [SerializeField] private List<SoundBoxSpawnPoint> soundBoxSpawnPoints = new List<SoundBoxSpawnPoint>();
     [SerializeField] private Transform spawnParent;
+    [SerializeField] private List<SoundBoxSpawnPoint> spawnPoints = new List<SoundBoxSpawnPoint>();
 
     [SerializeField] private float waveSpawnDelay = 10f;   // delay between clearing a wave and spawning the next one
 
@@ -84,9 +84,12 @@ public class SoundBoxSpawner : MonoBehaviour
     private void SpawnSoundBoxWave(SoundBoxWave wave)
     {
         if (wave == null || wave.boxes == null || wave.boxes.Count == 0)
+        {
+            Debug.LogWarning("SoundBoxSpawner: wave has no boxes to spawn.");
             return;
+        }
 
-        if (soundBoxSpawnPoints == null || soundBoxSpawnPoints.Count == 0)
+        if (spawnPoints == null || spawnPoints.Count == 0)
         {
             Debug.LogWarning("SoundBoxSpawner: no spawn points assigned.");
             return;
@@ -99,11 +102,10 @@ public class SoundBoxSpawner : MonoBehaviour
             SoundBox thisBox = wave.boxes[i];
             if (thisBox == null) continue;
 
-            SoundBoxSpawnPoint spawnPoint = soundBoxSpawnPoints[UnityEngine.Random.Range(0, soundBoxSpawnPoints.Count)];
-            Vector3 pos = spawnPoint != null ? spawnPoint.transform.position : Vector3.zero;
+            SoundBoxSpawnPoint spawnPoint = spawnPoints[wave.spawnPosNumbers[i]];
 
             // Instantiate and keep the SoundBox component reference
-            SoundBox spawned = Instantiate(thisBox, pos, Quaternion.identity, spawnParent);
+            SoundBox spawned = Instantiate(thisBox, spawnPoint.transform.position, Quaternion.identity, spawnParent);
             wave.activeInstances.Add(spawned);
         }
     }
@@ -111,7 +113,7 @@ public class SoundBoxSpawner : MonoBehaviour
     private void WinGame()
     {
         Debug.Log("All waves cleared! You win!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        //Win Game Logic
+        //Win Game Logic über den game manager??
     }
 
     public void DestroyingSoundBox(SoundBox soundBox)

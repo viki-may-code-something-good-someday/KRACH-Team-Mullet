@@ -1,10 +1,16 @@
 using UnityEngine;
 using FMODUnity;
+using System;
+using DG.Tweening;
+using System.Collections.Generic;
 
 public class SoundBox : MonoBehaviour
 {
     [SerializeField] private float health;
     [SerializeField] private StudioEventEmitter musicEmitter;
+
+    [SerializeField] private GameObject hitAnimsContainer;
+
 
     // public enum SoundBoxType
     // {
@@ -38,6 +44,11 @@ public class SoundBox : MonoBehaviour
     public void TakeDamage(float _damage, Vector3 _hitPoint, Vector3 _hitNormal)
     {
         health -= _damage;
+
+        foreach (DOTweenAnimation anim in hitAnimsContainer.GetComponentsInChildren<DOTweenAnimation>())
+        {
+            if (anim != null) anim.DORestart();
+        }
 
         if (health <= 0f)
         {

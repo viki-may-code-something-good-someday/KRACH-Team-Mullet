@@ -16,6 +16,7 @@ public class SoundBoxSpawner : MonoBehaviour
     [SerializeField] private float waveSpawnDelay = 10f;   // delay between clearing a wave and spawning the next one
 
     private SoundManager soundManager;
+    private bool wonGame = false;
 
     [SerializeField] private int currentWaveIndex = 0;
 
@@ -112,6 +113,10 @@ public class SoundBoxSpawner : MonoBehaviour
 
     private void WinGame()
     {
+        if(wonGame) return;
+
+        wonGame = true;
+
         Debug.Log("All waves cleared! You win!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         GameManager.Instance.WinGame();
     }

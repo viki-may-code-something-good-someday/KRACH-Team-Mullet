@@ -66,7 +66,9 @@ public class Wall_Data : MonoBehaviour
 
     private void GetDestroyed(Vector3 _hitPoint, Vector3 _hitNormal)
     {
-       // GameManager.Instance.StartCameraShake(1f, 0.2f);
+        // GameManager.Instance.StartCameraShake(1f, 0.2f);
+
+
 
         isDestroyed = true;
 
@@ -79,7 +81,14 @@ public class Wall_Data : MonoBehaviour
         wallNormal.SetActive(false);
         wallBroken.SetActive(true);
 
-        GameManager.Instance.WallWasDestroyed(this);
+        /*RMF_State rmfState = SoundManager.Instance.GetCurrentRMFState();
+        if(rmfState == RMF_State.Low)
+        {
+                GameManager.Instance.GameOverBecauseWallDestroyedWithLowRMF(); // player lost because they destroyed a wall when RMF was low
+        }
+        */
+
+            GameManager.Instance.WallWasDestroyed(this);
 
         List<Rigidbody> rigidbodies = wallBroken.transform.GetComponentsInChildren<Rigidbody>().ToList();
 
@@ -99,6 +108,8 @@ public class Wall_Data : MonoBehaviour
                 GameManager.Instance.GameOverBecauseWallDestroyedWithLowRMF(); // player lost because they destroyed a wall when RMF was low
             }
         }
+
+        
     }
 
     private void WallPiecesSetup()

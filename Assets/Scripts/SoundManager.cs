@@ -104,6 +104,11 @@ public class SoundManager : MonoBehaviour
         //Debug.Log($"Current Loudness: {currentLoudness}, Volume Multiplier: {currentVolumeMultiplier:F2}");
     }
 
+    public RMF_State GetCurrentRMFState()
+    {
+        return (currentLoudness == 0) ? RMF_State.Low : RMF_State.High;
+    }
+
     private void ScheduleNextReduction()
     {
         float randomInterval;

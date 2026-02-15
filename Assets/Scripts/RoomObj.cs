@@ -63,7 +63,6 @@ public class RoomObj: MonoBehaviour
             if(musicEmitter != null)
             {
                 musicEmitter.SetParameter("RoomOcclusion", 0);
-                Debug.Log("code reached this");
             }
     }
 }

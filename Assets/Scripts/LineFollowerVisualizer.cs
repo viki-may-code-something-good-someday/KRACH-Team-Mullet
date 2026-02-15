@@ -41,13 +41,19 @@ public class LineFollowerVisualizer : MonoBehaviour
     [SerializeField] private float lowMax = 0.4f;
     [SerializeField] private float highMin = 0.6f;
     [SerializeField] private float highMax = 1f;
-    [SerializeField] private float minAmplitude = 0.02f; // minimale Sinusamplitude
+    [SerializeField] private float minAmplitude = 0.02f;
+    [SerializeField] private float maxAmplitude = 0.1f;// minimale Sinusamplitude
     [SerializeField] private float minPeriodLow = 0.5f;     // minimale Periode (s)
     [SerializeField] private float maxPeriodLow = 1f;     // maximale Periode (s)
     [SerializeField] private float minPeriodHigh = 0.05f;
     [SerializeField] private float maxPeriodHigh = 0.5f;
     [SerializeField] private float changeIntervalMin = 2f; // wie oft neue Zufallswerte
     [SerializeField] private float changeIntervalMax = 5f;
+
+    public SpriteRenderer upperHalf;
+    public float upperHalfInitialAlpha;
+    public SpriteRenderer lowerHalf;
+    public float lowerHalfInitialAlpha;
 
     void Awake()
     {
@@ -63,6 +69,7 @@ public class LineFollowerVisualizer : MonoBehaviour
         {
             float sineValue = Mathf.Clamp01(sineCenter + sineAmplitude * Mathf.Sin(sinePhase));
             SetValue(sineValue); // <-- hier wird das Ergebnis in die vorhandene Methode übertragen
+            SetTransparencyOfHalf(rmfState, sineValue); 
         }
 
         float targetHeight = targetValue01 * heightMultiplier;
@@ -96,6 +103,9 @@ public class LineFollowerVisualizer : MonoBehaviour
             float x = i * xSpacing;
             line.SetPosition(i, new Vector3(x, 0, 0));
         }
+
+        SetValue(0f);
+        StartSine(RMF_State.Low);
     }
 
     public void SetRmfHighValue(float value)
@@ -149,6 +159,25 @@ public class LineFollowerVisualizer : MonoBehaviour
         {
             phaseTween.Kill();
             phaseTween = null;
+        }
+    }
+
+    public void SetTransparencyOfHalf(RMF_State state, float alpha)
+    {
+        alpha = Mathf.Clamp01(alpha);
+        if (state == RMF_State.Low)
+        {
+            alpha *= lowerHalfInitialAlpha;
+            Color c = lowerHalf.color;
+            c.a = alpha;
+            lowerHalf.color = c;
+        }
+        else
+        {
+            alpha *= upperHalfInitialAlpha;
+            Color c = upperHalf.color;
+            c.a = alpha;
+            upperHalf.color = c;
         }
     }
 
@@ -211,7 +240,7 @@ public class LineFollowerVisualizer : MonoBehaviour
         float ampMax = Mathf.Max(minAmplitude, maxHalfRange);
 
         // amplitude zufällig, aber nicht größer als die halbe Bandbreite
-        float amp = Random.Range(minAmplitude, ampMax);
+        float amp = Random.Range(minAmplitude, maxAmplitude);
         // center so wählen, dass center +/- amp innerhalb [min,max] bleibt
         float centerMin = min + amp;
         float centerMax = max - amp;

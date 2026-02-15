@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="AudioFile" id="{e95bf305-f74c-429b-9e35-a0726ae1e653}">
+		<property name="assetPath">
+			<value>SFX/Neighbour/DS_TOKI_vocal_phrase_male_what_main.wav</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>0.38240362811791384</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{c53bfd08-94fd-46c3-9d7a-6d42f48f59c2}</destination>
+		</relationship>
+	</object>
+</objects>

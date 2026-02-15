@@ -1,4 +1,5 @@
 using UnityEngine;
+using FMODUnity;
 
 public class Player_Interact : MonoBehaviour
 {
@@ -25,6 +26,8 @@ public class Player_Interact : MonoBehaviour
 
     private void TryInteract()
     {
+        bool punchedAir = false;
+
         //Interactable 
         if (Physics.Raycast(cameraMain.transform.position, cameraMain.transform.forward, out RaycastHit hitinfo, hitRange, LayerMask.GetMask("Interactable"), QueryTriggerInteraction.Ignore))
         {
@@ -33,9 +36,10 @@ public class Player_Interact : MonoBehaviour
             if (interactableObj != null)
             {
                 interactableObj.Interact();
+                RuntimeManager.PlayOneShot("event:/SFX/Punch");
             }
         }
-
+        else punchedAir = true; 
 
         //Destructable (hitinfo needed)
         if(Physics.Raycast(cameraMain.transform.position, cameraMain.transform.forward, out RaycastHit hitinfoDestructable, hitRange, LayerMask.GetMask("Destructable"), QueryTriggerInteraction.Ignore))
@@ -45,8 +49,12 @@ public class Player_Interact : MonoBehaviour
             if (destructableObject != null)
             {
                 destructableObject.Destruct(hitDamage,hitinfoDestructable.point, hitinfoDestructable.normal);
+                RuntimeManager.PlayOneShot("event:/SFX/Punch");
             }
         }
+        else punchedAir = true;
+        
+        if (punchedAir) RuntimeManager.PlayOneShot("event:/SFX/PunchAir");    // sound
     }
 
 }

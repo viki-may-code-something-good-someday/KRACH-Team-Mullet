@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.Events;
+using FMODUnity;
 
 public class Interactable : MonoBehaviour
 {

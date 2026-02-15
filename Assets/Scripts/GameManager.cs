@@ -1,8 +1,9 @@
-﻿using System.Collections;
-using UnityEngine;
-using FMOD.Studio;
+﻿using FMOD.Studio;
 using FMODUnity;
+using System.Collections;
+using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.SocialPlatforms.Impl;
 public enum GameState
 {
     EndMenu,
@@ -29,6 +30,10 @@ public class GameManager : MonoBehaviour
 
     public float maxPlaytimeInSeconds;
 
+    public GameObject arms;
+
+    [SerializeField] public EventInstance gameOverSound;
+
     public static GameManager Instance { get; private set; }
 
     private void Awake()
@@ -49,7 +54,7 @@ public class GameManager : MonoBehaviour
     public void Update()
     {
         if(currentState == GameState.Playing) UpdateInternalTimer();
-        if(currentState == GameState.EndMenu && Input.GetKeyDown(KeyCode.Space))
+        if(currentState == GameState.GameOver && Input.GetKeyDown(KeyCode.Space))
         {
             RestartGame();
         }
@@ -57,6 +62,11 @@ public class GameManager : MonoBehaviour
     
     public void RestartGame()
     {
+        if (gameOverSound.isValid())
+        {
+            gameOverSound.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            gameOverSound.release();
+        }
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
@@ -67,6 +77,11 @@ public class GameManager : MonoBehaviour
         ChooseRandomRoomForEnemy();
 
         ResumeGame();
+    }
+
+    public void StartCameraShake(float duration, float magnitude)
+    {
+        StartCoroutine(CameraShake(duration, magnitude));
     }
 
     public void ChooseRandomRoomForEnemy()
@@ -215,6 +230,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
+
     IEnumerator CameraShake(float duration, float magnitude)
     {
         Vector3 originalPos = playerCamera.transform.localPosition;
@@ -232,6 +248,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator EndSequence(RoomObj room)
     {
+        arms.SetActive(false);
         Debug.Log("Starting end sequence for room: " + room.name);
         currentState = GameState.Sequence;
 

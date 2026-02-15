@@ -1,3 +1,4 @@
+using FMOD.Studio;
 using FMODUnity;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -17,8 +18,10 @@ public class UI_GameOver : MonoBehaviour
         { "Alles richtig gemacht!", 100 },
         { "Beeindruckend!", 80 },
         { "Stabil!", 50 },
-        { "Hat wohl schnell aufgegeben...", 0 }
+        { "Wo gibt's denn sowas?", 0 }
     };
+
+    public EventInstance gameOverSound;
 
     [Description("0: default: player destroyed wall of room with enemy in it, or player ran out of time; 1: player won")]
     public string[] reasonForGameOverString;
@@ -44,6 +47,7 @@ public class UI_GameOver : MonoBehaviour
 
     }
 
+   
     public void SetGameOverScreenWithScore(int score, int reasonForGameOver)
     {
 
@@ -56,7 +60,11 @@ public class UI_GameOver : MonoBehaviour
 
                 scoreValue.text = score.ToString();
 
-                RuntimeManager.PlayOneShot("event:/SFX/GameOver");
+                gameOverSound = RuntimeManager.CreateInstance("event:/SFX/GameOver");
+                if (gameOverSound.isValid())
+                {
+                    gameOverSound.start();
+                }
 
                 float scorePercentage = score / GameManager.Instance.maxScore * 100f;
 
@@ -83,7 +91,11 @@ public class UI_GameOver : MonoBehaviour
                 Debug.Log("This should be called with final score: " + score);
                 gameObject.SetActive(true);
 
-                RuntimeManager.PlayOneShot("event:/SFX/GameOver");
+                gameOverSound = RuntimeManager.CreateInstance("event:/SFX/GameOver");
+                if (gameOverSound.isValid())
+                {
+                    gameOverSound.start();
+                }
 
                 scoreValue.text = score.ToString();
 
@@ -97,7 +109,11 @@ public class UI_GameOver : MonoBehaviour
                 Debug.Log("This should be called with final score: " + score);
                 gameObject.SetActive(true);
 
-                RuntimeManager.PlayOneShot("event:/SFX/GameOver");
+                gameOverSound = RuntimeManager.CreateInstance("event:/SFX/GameOver");
+                if (gameOverSound.isValid())
+                {
+                    gameOverSound.start();
+                }
 
                 scoreValue.text = score.ToString();
 
@@ -110,6 +126,7 @@ public class UI_GameOver : MonoBehaviour
         }
         
     }
+
 
     public string GetResultTextForScore(int score)
     {

@@ -60,7 +60,7 @@ public class SoundManager : MonoBehaviour
         classicSchubertInstance = RuntimeManager.CreateInstance(classicSchubertEvent);
         remixSchubertInstance = RuntimeManager.CreateInstance(remixSchubertEvent);
         
-        remixSchubertInstance.start();
+        classicSchubertInstance.start();
     }
 
     void Update()
@@ -99,10 +99,14 @@ public class SoundManager : MonoBehaviour
         // Update currentLoudness basierend auf Reduktion
         currentLoudness = (targetVolumeMultiplier == reductionMultiplier) ? 0 : 1;
 
-        RMF_Script.Instance.SetRMFValue(currentLoudness);
 
         // Debug Info
-        Debug.Log($"Current Loudness: {currentLoudness}, Volume Multiplier: {currentVolumeMultiplier:F2}");
+        //Debug.Log($"Current Loudness: {currentLoudness}, Volume Multiplier: {currentVolumeMultiplier:F2}");
+    }
+
+    public RMF_State GetCurrentRMFState()
+    {
+        return (currentLoudness == 0) ? RMF_State.Low : RMF_State.High;
     }
 
     private void ScheduleNextReduction()
@@ -137,7 +141,7 @@ public class SoundManager : MonoBehaviour
             {
                 soundboxEmitters[i].EventReference = soundboxEvents[i];
                 PlaySoundBoxEvent(i);    // play soundbox event on start
-                Debug.Log($"SoundManager: Assigned event {soundboxEvents[i].Path} to SoundBox {soundboxes[i].name}");
+                //Debug.Log($"SoundManager: Assigned event {soundboxEvents[i].Path} to SoundBox {soundboxes[i].name}");
             }
         }
     }

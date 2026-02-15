@@ -19,6 +19,8 @@ public class SoundBoxSpawner : MonoBehaviour
     private bool wonGame = false;
 
     [SerializeField] private int currentWaveIndex = 0;
+    private bool waitingForNextWave = false;
+
 
 
     private void Awake()
@@ -77,13 +79,15 @@ public class SoundBoxSpawner : MonoBehaviour
     }
 
     // IMPORTANT: only check clear if it had instances
-    if (currentWave.hasSpawned &&
+    if (!waitingForNextWave &&
+        currentWave.hasSpawned &&
         currentWave.activeInstances.Count == 0 &&
         currentWave.boxes.Count > 0)
     {
         Debug.Log("Wave " + currentWaveIndex + " cleared");
 
-        currentWaveIndex++;
+        waitingForNextWave = true;
+        ClearWave();
     }
 }
 
@@ -161,12 +165,18 @@ public class SoundBoxSpawner : MonoBehaviour
 
     private IEnumerator NextWaveSpawnDelay(float delay)
     {
-        soundManager.PlayClassicMusic();    // classic music
-        yield return new WaitForSeconds(delay/0.5f);
+        soundManager.PlayClassicMusic();
+        soundManager.StopRemixMusic();
+        yield return new WaitForSeconds(5f);
+
         soundManager.StopClassicMusic();
-        RuntimeManager.PlayOneShot("event:/SFX/NextWave");    // sound for next wave incoming
-        // BLACKOUT SCREEN HERE (Elevator Transition)
-        yield return new WaitForSeconds(delay/0.5f);
+
+        yield return new WaitForSeconds(3f);
+
         soundManager.PlayRemixMusic();
+
+        currentWaveIndex++;        // <-- WAVE INDEX ERST HIER ERHÖHEN
+        waitingForNextWave = false;
     }
+
 }

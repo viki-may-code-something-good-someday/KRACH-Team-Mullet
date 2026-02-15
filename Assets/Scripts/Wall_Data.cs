@@ -51,6 +51,8 @@ public class Wall_Data : MonoBehaviour
 
     public void TakeDamage(float _damage, Vector3 _hitPoint, Vector3 _hitNormal)
     {
+       // GameManager.Instance.StartCameraShake(0.3f, 0.1f);
+
         health -= _damage;
         
         RuntimeManager.PlayOneShot("event:/SFX/WallHit", _hitPoint);    // sound
@@ -64,6 +66,10 @@ public class Wall_Data : MonoBehaviour
 
     private void GetDestroyed(Vector3 _hitPoint, Vector3 _hitNormal)
     {
+        // GameManager.Instance.StartCameraShake(1f, 0.2f);
+
+
+
         isDestroyed = true;
 
         RuntimeManager.PlayOneShot("event:/SFX/WallBreakdown", _hitPoint);    // sound
@@ -75,7 +81,14 @@ public class Wall_Data : MonoBehaviour
         wallNormal.SetActive(false);
         wallBroken.SetActive(true);
 
-        GameManager.Instance.WallWasDestroyed(this);
+        /*RMF_State rmfState = SoundManager.Instance.GetCurrentRMFState();
+        if(rmfState == RMF_State.Low)
+        {
+                GameManager.Instance.GameOverBecauseWallDestroyedWithLowRMF(); // player lost because they destroyed a wall when RMF was low
+        }
+        */
+
+            GameManager.Instance.WallWasDestroyed(this);
 
         List<Rigidbody> rigidbodies = wallBroken.transform.GetComponentsInChildren<Rigidbody>().ToList();
 
@@ -95,6 +108,8 @@ public class Wall_Data : MonoBehaviour
                 GameManager.Instance.GameOverBecauseWallDestroyedWithLowRMF(); // player lost because they destroyed a wall when RMF was low
             }
         }
+
+        
     }
 
     private void WallPiecesSetup()

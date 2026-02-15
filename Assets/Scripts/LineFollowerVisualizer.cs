@@ -1,7 +1,6 @@
 using DG.Tweening;
 using UnityEngine;
 using System.Collections;
-using static UnityEditor.PlayerSettings;
 
 [RequireComponent(typeof(LineRenderer))]
 [ExecuteAlways]
@@ -25,7 +24,7 @@ public class LineFollowerVisualizer : MonoBehaviour
     private float[] yValues;
     private float xSpacing;
 
-    public float targetValue01; // Extern gesetzter Wert (0–1)
+    public float targetValue01; // Extern gesetzter Wert (0ï¿½1)
 
     // interne Sine-Variablen
     private float sinePhase;
@@ -68,7 +67,7 @@ public class LineFollowerVisualizer : MonoBehaviour
         if (phaseTween != null && phaseTween.IsActive())
         {
             float sineValue = Mathf.Clamp01(sineCenter + sineAmplitude * Mathf.Sin(sinePhase));
-            SetValue(sineValue); // <-- hier wird das Ergebnis in die vorhandene Methode übertragen
+            SetValue(sineValue); // <-- hier wird das Ergebnis in die vorhandene Methode ï¿½bertragen
             SetTransparencyOfHalf(rmfState, sineValue); 
         }
 
@@ -81,7 +80,7 @@ public class LineFollowerVisualizer : MonoBehaviour
             delta * followSpeed
         );
 
-        // Rest folgt jeweils dem Vorgänger
+        // Rest folgt jeweils dem Vorgï¿½nger
         for (int i = 1; i < pointCount; i++)
         {
             float lerpFactor = 1f - Mathf.Exp(-followSpeed * delta);
@@ -143,7 +142,7 @@ public class LineFollowerVisualizer : MonoBehaviour
             sineCoroutine = StartCoroutine(SineControllerCoroutine(forState));
         }
 
-        // starte neue Coroutine, die in Intervallen neue Zufallswerte wählt
+        // starte neue Coroutine, die in Intervallen neue Zufallswerte wï¿½hlt
         
     }
 
@@ -198,7 +197,7 @@ public class LineFollowerVisualizer : MonoBehaviour
 
         while (true)
         {
-            // Erzeuge einen periodischen Tween, der sinePhase kontinuierlich erhöht
+            // Erzeuge einen periodischen Tween, der sinePhase kontinuierlich erhï¿½ht
             if (phaseTween != null && phaseTween.IsActive())
             {
                 phaseTween.Kill();
@@ -221,13 +220,13 @@ public class LineFollowerVisualizer : MonoBehaviour
                                 .SetEase(Ease.Linear)
                                 .SetLoops(-1, LoopType.Incremental);
 
-            // Warte ein zufälliges Intervall bevor neue Parameter gewählt werden (stilistische Variation)
+            // Warte ein zufï¿½lliges Intervall bevor neue Parameter gewï¿½hlt werden (stilistische Variation)
             float wait = Random.Range(changeIntervalMin, changeIntervalMax);
             yield return new WaitForSeconds(wait);
 
-            // Wähle neue Parameter (Center/Amplitude/evtl. schneller/langsamer)
+            // Wï¿½hle neue Parameter (Center/Amplitude/evtl. schneller/langsamer)
             ChooseNewSineParameters(forState);
-            // PhaseTween wird im nächsten Loop neu erstellt mit neuem Periodenwert
+            // PhaseTween wird im nï¿½chsten Loop neu erstellt mit neuem Periodenwert
         }
     }
 
@@ -245,13 +244,13 @@ public class LineFollowerVisualizer : MonoBehaviour
             max = highMax;
         }
 
-        // maximale mögliche halbe Bandbreite
+        // maximale mï¿½gliche halbe Bandbreite
         float maxHalfRange = (max - min) * 0.5f;
         float ampMax = Mathf.Max(minAmplitude, maxHalfRange);
 
-        // amplitude zufällig, aber nicht größer als die halbe Bandbreite
+        // amplitude zufï¿½llig, aber nicht grï¿½ï¿½er als die halbe Bandbreite
         float amp = Random.Range(minAmplitude, maxAmplitude);
-        // center so wählen, dass center +/- amp innerhalb [min,max] bleibt
+        // center so wï¿½hlen, dass center +/- amp innerhalb [min,max] bleibt
         float centerMin = min + amp;
         float centerMax = max - amp;
         if (centerMax < centerMin) centerMax = centerMin; // Fallback

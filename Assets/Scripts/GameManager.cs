@@ -60,11 +60,20 @@ public class GameManager : MonoBehaviour
 
     public void GameOver(bool won)
     {         
+        RuntimeManager.PlayOneShot("event:/SFX/GameOver");    // sound
+
         currentState = GameState.GameOver;
         int finalScore = CalculateScore();
         Debug.Log($"Game Over! Final Score: {finalScore} - You {(won ? "won" : "lost")}!");
 
         UI_GameOver.Instance.SetGameOverScreenWithScore(finalScore);
+    }
+
+    public void WinGame()
+    {
+        RuntimeManager.PlayOneShot("event:/SFX/GameWon");    // sound
+
+        // End game with screen
     }
 
     public void PauseGame()

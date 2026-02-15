@@ -166,12 +166,12 @@ public class SoundBoxSpawner : MonoBehaviour
     private IEnumerator NextWaveSpawnDelay(float delay)
     {
         soundManager.PlayClassicMusic();
-        yield return new WaitForSeconds(delay);
+        soundManager.StopRemixMusic();
+        yield return new WaitForSeconds(5f);
 
         soundManager.StopClassicMusic();
-        RuntimeManager.PlayOneShot("event:/SFX/NextWave");
 
-        yield return new WaitForSeconds(delay);
+        yield return new WaitForSeconds(3f);
 
         soundManager.PlayRemixMusic();
 

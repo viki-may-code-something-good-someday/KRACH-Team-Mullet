@@ -4,6 +4,7 @@ using FMODUnity;
 public class SoundBox : MonoBehaviour
 {
     [SerializeField] private float health;
+    private StudioEventEmitter musicEmitter;
 
     // public enum SoundBoxType
     // {
@@ -32,6 +33,7 @@ public class SoundBox : MonoBehaviour
     private void GetDestroyed(Vector3 _hitPoint, Vector3 _hitNormal)
     {
         RuntimeManager.PlayOneShot("event:/SFX/SpeakerDestroy", transform.position);    // sound
+        musicEmitter.Stop();
         SoundBoxSpawner.Instance.DestroyedSoundbox(this);
         Destroy(gameObject);
     }

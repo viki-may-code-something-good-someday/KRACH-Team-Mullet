@@ -139,9 +139,12 @@ public class SoundBoxSpawner : MonoBehaviour
     private IEnumerator NextWaveSpawnDelay(float delay)
     {
         soundManager.PlayClassicMusic();    // classic music
-        yield return new WaitForSeconds(delay);
+        yield return new WaitForSeconds(delay/0.5f);
         soundManager.StopClassicMusic();
-        // start all sound emitter of remix here or play them automatically on PreFab Component
+        RuntimeManager.PlayOneShot("event:/SFX/NextWave");    // sound for next wave incoming
+        // BLACKOUT SCREEN HERE (Elevator Transition)
+        yield return new WaitForSeconds(delay/0.5f);
+        soundManager.PlayRemixMusic();
     }
 }
 

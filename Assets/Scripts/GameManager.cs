@@ -64,7 +64,16 @@ public class GameManager : MonoBehaviour
         int finalScore = CalculateScore();
         Debug.Log($"Game Over! Final Score: {finalScore} - You {(won ? "won" : "lost")}!");
 
-        UI_GameOver.Instance.SetGameOverScreenWithScore(finalScore);
+        UI_GameOver.Instance.SetGameOverScreenWithScore(finalScore, 0);
+    }
+
+    public void GameOverBecauseWallDestroyedWithLowRMF()
+    {
+        currentState = GameState.GameOver;
+        int finalScore = CalculateScore();
+        Debug.Log($"Game Over! Final Score: {finalScore} - You lost because you destroyed a wall when RMF was low!");
+
+        UI_GameOver.Instance.SetGameOverScreenWithScore(finalScore, 2);
     }
 
     public void PauseGame()
@@ -126,6 +135,21 @@ public class GameManager : MonoBehaviour
             }
 
         }
+    }
+
+    IEnumerator CameraShake(float duration, float magnitude)
+    {
+        Vector3 originalPos = playerCamera.transform.localPosition;
+        float elapsed = 0.0f;
+        while (elapsed < duration)
+        {
+            float x = Random.Range(-1f, 1f) * magnitude;
+            float y = Random.Range(-1f, 1f) * magnitude;
+            playerCamera.transform.localPosition = new Vector3(x, y, originalPos.z);
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+        playerCamera.transform.localPosition = originalPos;
     }
 
     IEnumerator EndSequence(RoomObj room)

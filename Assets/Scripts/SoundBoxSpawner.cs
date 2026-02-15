@@ -42,6 +42,10 @@ public class SoundBoxSpawner : MonoBehaviour
             Debug.LogWarning("SoundBoxSpawner: SoundManager not found in scene.");
         }
 
+        for (int i = 0; i < soundBoxWaves.Count; i++)
+        {
+            soundBoxWaves[i].hasSpawned = false;
+        }
     }
 
     private void OnDestroy()

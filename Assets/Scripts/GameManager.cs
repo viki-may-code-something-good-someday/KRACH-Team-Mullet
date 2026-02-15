@@ -40,8 +40,6 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-            rooms[1].SetEnemeyIsInThisRoom(true);
-
         StartGame();
     }
 
@@ -56,8 +54,31 @@ public class GameManager : MonoBehaviour
     {
         currentPlaytime = 0f;
 
+        ChooseRandomRoomForEnemy();
 
         ResumeGame();
+    }
+
+    public void ChooseRandomRoomForEnemy()
+    {         
+        int randomRoomIndex = Random.Range(0, rooms.Length);
+        rooms[randomRoomIndex].isEnemyInThisRoom = true;
+        SetOtherEnemiesDisabled(randomRoomIndex);
+        Debug.Log("Enemy is in room: " + rooms[randomRoomIndex].name);
+    }
+
+    private void SetOtherEnemiesDisabled(int roomIndexForRoomWithEnemy)
+    {
+        for (int i = 0; i < rooms.Length; i++)
+        {
+            if (i != roomIndexForRoomWithEnemy)
+            {
+                rooms[i].SetEnemeyIsInThisRoom(false);
+            }
+            else            {
+                rooms[i].SetEnemeyIsInThisRoom(true);
+            }
+        }
     }
 
     public void GameOver(bool won)

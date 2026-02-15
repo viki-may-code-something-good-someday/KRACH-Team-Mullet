@@ -40,7 +40,6 @@ public class UI_GameOver : MonoBehaviour
             return;
         }
         Instance = this;
-        DontDestroyOnLoad(gameObject);
 
         gameObject.SetActive(false);
 
@@ -125,6 +124,15 @@ public class UI_GameOver : MonoBehaviour
                 break;
         }
         
+    }
+
+    private void OnDestroy()
+    {
+        if (gameOverSound.isValid())
+        {
+            gameOverSound.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            gameOverSound.release();
+        }
     }
 
 

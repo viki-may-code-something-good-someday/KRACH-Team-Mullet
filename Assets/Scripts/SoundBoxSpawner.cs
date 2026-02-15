@@ -83,7 +83,7 @@ public class SoundBoxSpawner : MonoBehaviour
 
     private void SpawnSoundBoxWave(SoundBoxWave wave)
     {
-        if (wave == null || wave.prefabs == null || wave.prefabs.Count == 0)
+        if (wave == null || wave.boxes == null || wave.boxes.Count == 0)
             return;
 
         if (soundBoxSpawnPoints == null || soundBoxSpawnPoints.Count == 0)
@@ -94,16 +94,16 @@ public class SoundBoxSpawner : MonoBehaviour
 
         wave.activeInstances.Clear();
 
-        for (int i = 0; i < wave.prefabs.Count; i++)
+        for (int i = 0; i < wave.boxes.Count; i++)
         {
-            SoundBox prefab = wave.prefabs[i];
-            if (prefab == null) continue;
+            SoundBox thisBox = wave.boxes[i];
+            if (thisBox == null) continue;
 
             SoundBoxSpawnPoint spawnPoint = soundBoxSpawnPoints[UnityEngine.Random.Range(0, soundBoxSpawnPoints.Count)];
             Vector3 pos = spawnPoint != null ? spawnPoint.transform.position : Vector3.zero;
 
             // Instantiate and keep the SoundBox component reference
-            SoundBox spawned = Instantiate(prefab, pos, Quaternion.identity, spawnParent);
+            SoundBox spawned = Instantiate(thisBox, pos, Quaternion.identity, spawnParent);
             wave.activeInstances.Add(spawned);
         }
     }
@@ -151,16 +151,4 @@ public class SoundBoxSpawner : MonoBehaviour
         yield return new WaitForSeconds(delay/0.5f);
         soundManager.PlayRemixMusic();
     }
-}
-
-
-
-[Serializable, CreateAssetMenu(fileName = "SoundBoxWave", menuName = "Scriptable Objects/SoundBoxWave")]
-public class SoundBoxWave : ScriptableObject
-{
-    [Tooltip("SoundBox prefab references to spawn for this wave.")]
-    public List<SoundBox> prefabs = new List<SoundBox>();
-
-    [HideInInspector] public List<SoundBox> activeInstances = new List<SoundBox>();
-    [HideInInspector] public bool hasSpawned = false;
 }

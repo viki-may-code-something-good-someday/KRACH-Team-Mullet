@@ -51,6 +51,8 @@ public class Wall_Data : MonoBehaviour
 
     public void TakeDamage(float _damage, Vector3 _hitPoint, Vector3 _hitNormal)
     {
+       // GameManager.Instance.StartCameraShake(0.3f, 0.1f);
+
         health -= _damage;
         
         RuntimeManager.PlayOneShot("event:/SFX/WallHit", _hitPoint);    // sound
@@ -64,6 +66,8 @@ public class Wall_Data : MonoBehaviour
 
     private void GetDestroyed(Vector3 _hitPoint, Vector3 _hitNormal)
     {
+       // GameManager.Instance.StartCameraShake(1f, 0.2f);
+
         isDestroyed = true;
 
         RuntimeManager.PlayOneShot("event:/SFX/WallBreakdown", _hitPoint);    // sound

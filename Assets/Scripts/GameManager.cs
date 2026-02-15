@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using UnityEngine;
-using FMOD.Studio;
 using FMODUnity;
 using UnityEngine.SceneManagement;
+using FMOD.Studio;
 public enum GameState
 {
     EndMenu,
@@ -29,6 +29,8 @@ public class GameManager : MonoBehaviour
 
     public float maxPlaytimeInSeconds;
 
+    [SerializeField] public EventInstance gameOverSound;
+
     public static GameManager Instance { get; private set; }
 
     private void Awake()
@@ -49,7 +51,7 @@ public class GameManager : MonoBehaviour
     public void Update()
     {
         if(currentState == GameState.Playing) UpdateInternalTimer();
-        if(currentState == GameState.EndMenu && Input.GetKeyDown(KeyCode.Space))
+        if(currentState == GameState.GameOver && Input.GetKeyDown(KeyCode.Space))
         {
             RestartGame();
         }
@@ -57,6 +59,11 @@ public class GameManager : MonoBehaviour
     
     public void RestartGame()
     {
+        if (gameOverSound.isValid())
+        {
+            gameOverSound.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
+            gameOverSound.release();
+        }
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
@@ -67,6 +74,11 @@ public class GameManager : MonoBehaviour
         ChooseRandomRoomForEnemy();
 
         ResumeGame();
+    }
+
+    public void StartCameraShake(float duration, float magnitude)
+    {
+        StartCoroutine(CameraShake(duration, magnitude));
     }
 
     public void ChooseRandomRoomForEnemy()

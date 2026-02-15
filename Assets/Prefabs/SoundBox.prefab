@@ -193,6 +193,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Destructable
   wallData: {fileID: 0}
   soundBox: {fileID: 1086694340420830532}
+  dustParticles: {fileID: 286782459826712307, guid: 8958f9f1e77ae644183e4b1c945314c0, type: 3}
+  soundboxDamageParticles: {fileID: 286782459826712307, guid: 0c3c9789b17d55b44be4d68f0264ed9f, type: 3}
 --- !u!114 &1086694340420830532
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -206,7 +208,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SoundBox
   health: 1
-  musicEmitter: {fileID: 2861686247985521660}
+  musicEmitter: {fileID: 0}
 --- !u!114 &2861686247985521660
 MonoBehaviour:
   m_ObjectHideFlags: 0

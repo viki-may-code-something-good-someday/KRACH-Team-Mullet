@@ -111,7 +111,7 @@ public class SoundBoxSpawner : MonoBehaviour
     private void WinGame()
     {
         Debug.Log("All waves cleared! You win!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-        //Win Game Logic
+        GameManager.Instance.WinGame();
     }
 
     public void DestroyingSoundBox(SoundBox soundBox)

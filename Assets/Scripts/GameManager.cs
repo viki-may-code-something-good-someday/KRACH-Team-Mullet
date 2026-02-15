@@ -1,8 +1,9 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using FMOD.Studio;
 using FMODUnity;
+using System.Collections;
+using UnityEngine;
 using UnityEngine.SceneManagement;
-using FMOD.Studio;
+using UnityEngine.SocialPlatforms.Impl;
 public enum GameState
 {
     EndMenu,
@@ -28,6 +29,8 @@ public class GameManager : MonoBehaviour
     public int gameLostScorePenalty = 500;
 
     public float maxPlaytimeInSeconds;
+
+    public GameObject arms;
 
     [SerializeField] public EventInstance gameOverSound;
 
@@ -227,6 +230,7 @@ public class GameManager : MonoBehaviour
         }
     }
 
+
     IEnumerator CameraShake(float duration, float magnitude)
     {
         Vector3 originalPos = playerCamera.transform.localPosition;
@@ -244,6 +248,7 @@ public class GameManager : MonoBehaviour
 
     IEnumerator EndSequence(RoomObj room)
     {
+        arms.SetActive(false);
         Debug.Log("Starting end sequence for room: " + room.name);
         currentState = GameState.Sequence;
 

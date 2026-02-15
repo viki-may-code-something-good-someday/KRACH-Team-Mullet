@@ -12,6 +12,7 @@ public class Wall_Data : MonoBehaviour
     [SerializeField] private GameObject wallBroken;
     [SerializeField] private List<GameObject> wallPieces = new List<GameObject>();
     [SerializeField] private PhysicsMaterial wallPiecesPhysicsMaterial;
+    public bool isFirstWall = false;
 
 
     [Header("Wall Data")]
@@ -68,7 +69,10 @@ public class Wall_Data : MonoBehaviour
     {
         // GameManager.Instance.StartCameraShake(1f, 0.2f);
 
-
+        if(SoundManager.Instance.currentLoudness == 0 && !isFirstWall)
+        {             
+            GameManager.Instance.GameOverBecauseWallDestroyedWithLowRMF(); // player lost because they destroyed a wall when RMF was low
+        }
 
         isDestroyed = true;
 

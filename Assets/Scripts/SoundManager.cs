@@ -1,6 +1,7 @@
 using UnityEngine;
 using FMODUnity;
 using FMOD.Studio;
+using System.Collections;
 
 public class SoundManager : MonoBehaviour
 {
@@ -33,6 +34,7 @@ public class SoundManager : MonoBehaviour
     private float targetVolumeMultiplier = 1f; // Ziel Lautstärke-Multiplikator
     private float timeSinceVolumeChange = 0f;
     [SerializeField] private float volumeLerpDuration = 1f; // Dauer des Lerp in Sekunden
+    bool activeUpdate = false;
 
 
     private void Awake()
@@ -52,19 +54,23 @@ public class SoundManager : MonoBehaviour
 
         // Get neighbour GameObject
         neighbourGO = GameObject.FindWithTag("Neighbour");
-    }
 
-    void Start()
-    {
         //InitializeSoundboxEmitters();
         classicSchubertInstance = RuntimeManager.CreateInstance(classicSchubertEvent);
         remixSchubertInstance = RuntimeManager.CreateInstance(remixSchubertEvent);
-        
-        classicSchubertInstance.start();
+    }
+
+    private IEnumerator Start()
+    {
+
+
+        yield return new WaitForSeconds(10f); // Wait a bit to ensure all other objects are initialized
+        activeUpdate = true;
     }
 
     void Update()
     {
+        if (!activeUpdate) return;
         // Musik-Lautstärke Reduktion mit Random-Intervallen
         if (Time.time >= nextReductionTime)
         {
@@ -106,7 +112,14 @@ public class SoundManager : MonoBehaviour
 
     public RMF_State GetCurrentRMFState()
     {
-        return (currentLoudness == 0) ? RMF_State.Low : RMF_State.High;
+        if(currentLoudness == 0)
+        {
+            return RMF_State.Low;
+        }
+        else
+        {
+            return RMF_State.High;
+        }
     }
 
     private void ScheduleNextReduction()
@@ -159,13 +172,13 @@ public class SoundManager : MonoBehaviour
         classicSchubertInstance.getPlaybackState(out PLAYBACK_STATE state);
         if (state != PLAYBACK_STATE.PLAYING)
         {
-            classicSchubertInstance.setPaused(false);
+            classicSchubertInstance.start();
         }
     }
 
     public void StopClassicMusic()
     {
-        classicSchubertInstance.setPaused(true);
+        classicSchubertInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
     }
 
     public void PlayRemixMusic()
@@ -173,12 +186,12 @@ public class SoundManager : MonoBehaviour
         remixSchubertInstance.getPlaybackState(out PLAYBACK_STATE state);
         if (state != PLAYBACK_STATE.PLAYING)
         {
-            remixSchubertInstance.setPaused(false);
+            remixSchubertInstance.start();
         }
     }
 
     public void StopRemixMusic()
     {
-        remixSchubertInstance.setPaused(true);
+        remixSchubertInstance.stop(FMOD.Studio.STOP_MODE.ALLOWFADEOUT);
     }
 }

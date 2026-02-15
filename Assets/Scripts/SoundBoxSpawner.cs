@@ -20,6 +20,7 @@ public class SoundBoxSpawner : MonoBehaviour
 
     [SerializeField] private int currentWaveIndex = 0;
     private bool waitingForNextWave = false;
+    bool activeUpdate = false;
 
 
 
@@ -35,8 +36,15 @@ public class SoundBoxSpawner : MonoBehaviour
     }
 
 
-    private void Start()
+    private IEnumerator Start()
     {
+        SoundManager.Instance.PlayClassicMusic();
+        yield return new WaitForSeconds(10f); // Wait a bit to ensure all other objects are initialized
+
+        SoundManager.Instance.StopClassicMusic();
+        SoundManager.Instance.PlayRemixMusic();
+
+
         soundManager = FindFirstObjectByType<SoundManager>();
         if (soundManager == null)
         {
@@ -51,6 +59,7 @@ public class SoundBoxSpawner : MonoBehaviour
         currentWaveIndex = 0;
         wonGame = false;
 
+        activeUpdate = true;
     }
 
     private void OnDestroy()
@@ -60,6 +69,8 @@ public class SoundBoxSpawner : MonoBehaviour
 
     private void Update()
 {
+    if (!activeUpdate) return;
+
     if (currentWaveIndex >= soundBoxWaves.Count)
     {
         WinGame();

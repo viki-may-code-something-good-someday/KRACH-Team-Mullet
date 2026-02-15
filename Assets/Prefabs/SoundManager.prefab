@@ -102,5 +102,5 @@ MonoBehaviour:
   maxNormalInterval: 11
   minReducedInterval: 2
   maxReducedInterval: 6
-  reductionMultiplier: 0.22
-  volumeLerpDuration: 0.7
+  reductionMultiplier: 0.19
+  volumeLerpDuration: 0.1

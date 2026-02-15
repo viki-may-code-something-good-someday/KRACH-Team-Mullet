@@ -49,3 +49,5 @@ MonoBehaviour:
   playerCamera: {fileID: 0}
   playerController: {fileID: 0}
   rooms: []
+  gameLostScorePenalty: 500
+  maxPlaytimeInSeconds: 0

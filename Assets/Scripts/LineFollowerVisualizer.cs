@@ -171,6 +171,11 @@ public class LineFollowerVisualizer : MonoBehaviour
             Color c = lowerHalf.color;
             c.a = alpha;
             lowerHalf.color = c;
+
+            alpha *= upperHalfInitialAlpha;
+            Color d = upperHalf.color;
+            d.a = upperHalfInitialAlpha;
+            upperHalf.color = d;
         }
         else
         {
@@ -178,6 +183,11 @@ public class LineFollowerVisualizer : MonoBehaviour
             Color c = upperHalf.color;
             c.a = alpha;
             upperHalf.color = c;
+
+            alpha *= lowerHalfInitialAlpha;
+            Color d = lowerHalf.color;
+            d.a = lowerHalfInitialAlpha;
+            lowerHalf.color = d;
         }
     }
 

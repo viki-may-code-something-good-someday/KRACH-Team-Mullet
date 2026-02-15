@@ -45,6 +45,7 @@ public class UI_GameOver : MonoBehaviour
 
     public void SetGameOverScreenWithScore(int score, int reasonForGameOver)
     {
+
         buttonText.text = buttonTextRestart[Random.Range(0, buttonTextRestart.Length - 1)];
         switch (reasonForGameOver)
         {

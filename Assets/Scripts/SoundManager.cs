@@ -14,7 +14,6 @@ public class SoundManager : MonoBehaviour
     private EventInstance classicSchubertInstance;
     private EventInstance remixSchubertInstance;
     private EventInstance neighbourInstance;
-    private EventInstance neightbourlistensInstance;
     private GameObject neighbourGO;
     
     public EventReference[] soundboxEvents;
@@ -72,10 +71,14 @@ public class SoundManager : MonoBehaviour
             // Wechsle zwischen Reduktion und Normal (1.0)
             targetVolumeMultiplier = (targetVolumeMultiplier == 1f) ? reductionMultiplier : 1f;
             timeSinceVolumeChange = 0f;
-            ScheduleNextReduction();
+            
+            // Play Neighbour Sound only when reducing (not when volume goes back up)
+            if (targetVolumeMultiplier == reductionMultiplier)
+            {
+                RuntimeManager.PlayOneShot(neightbourlistensEvent, neighbourGO.transform.position);
+            }
 
-            // Play Neighbour Sound when reduction happens
-            RuntimeManager.PlayOneShot(neighbourEvent, neighbourGO.transform.position);
+            ScheduleNextReduction();
         }
 
         // Lerpe die Lautstärke-Änderung
@@ -95,6 +98,8 @@ public class SoundManager : MonoBehaviour
 
         // Update currentLoudness basierend auf Reduktion
         currentLoudness = (targetVolumeMultiplier == reductionMultiplier) ? 0 : 1;
+
+        RMF_Script.Instance.SetRMFValue(currentLoudness);
 
         // Debug Info
         Debug.Log($"Current Loudness: {currentLoudness}, Volume Multiplier: {currentVolumeMultiplier:F2}");

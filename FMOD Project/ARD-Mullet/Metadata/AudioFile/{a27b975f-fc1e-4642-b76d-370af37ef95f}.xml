@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="AudioFile" id="{a27b975f-fc1e-4642-b76d-370af37ef95f}">
+		<property name="assetPath">
+			<value>SFX/Condition/PJ_PPLIII_Orchestra_Hit_Bell_Note_D#.wav</value>
+		</property>
+		<property name="isStreaming">
+			<value>true</value>
+		</property>
+		<property name="frequencyInKHz">
+			<value>44.0999985</value>
+		</property>
+		<property name="channelCount">
+			<value>2</value>
+		</property>
+		<property name="length">
+			<value>5.689659863945578</value>
+		</property>
+		<relationship name="masterAssetFolder">
+			<destination>{c53bfd08-94fd-46c3-9d7a-6d42f48f59c2}</destination>
+		</relationship>
+	</object>
+</objects>

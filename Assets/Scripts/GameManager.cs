@@ -211,7 +211,7 @@ public class GameManager : MonoBehaviour
         currentState = GameState.Sequence;
 
         playerController.walkSpeed = 1f;
-        
+        playerController.SetCursor(true);
 
         yield return new WaitForSeconds(1f);
 

@@ -70,11 +70,24 @@ public class GameManager : MonoBehaviour
     }
 
     public void ChooseRandomRoomForEnemy()
-    {         
-        int randomRoomIndex = Random.Range(0, rooms.Length);
-        rooms[randomRoomIndex].isEnemyInThisRoom = true;
-        SetOtherEnemiesDisabled(randomRoomIndex);
-        Debug.Log("Enemy is in room: " + rooms[randomRoomIndex].name);
+    { 
+        for(int i = 0; i < rooms.Length; i++)
+        {
+            int randomRoomIndex = Random.Range(0, rooms.Length);
+            if (rooms[randomRoomIndex].canEnemySpawnInThisRoom)
+            {
+                rooms[randomRoomIndex].isEnemyInThisRoom = true;
+                SetOtherEnemiesDisabled(randomRoomIndex);
+                Debug.Log("Enemy is in room: " + rooms[randomRoomIndex].name);
+                return;
+            }
+            else
+            {
+                continue;
+            }
+           
+        }
+        
     }
 
     private void SetOtherEnemiesDisabled(int roomIndexForRoomWithEnemy)

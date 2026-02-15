@@ -208,7 +208,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SoundBox
   health: 1
-  musicEmitter: {fileID: 0}
+  musicEmitter: {fileID: 2861686247985521660}
 --- !u!114 &2861686247985521660
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -92,6 +92,14 @@ public class Wall_Data : MonoBehaviour
             rb.AddExplosionForce(explosionForce, _hitPoint, explosionRadius, 1f, ForceMode.Impulse);
 
         }
+
+        if(RMF_Script.Instance != null)
+        {
+            if(RMF_Script.Instance.IsRMFHigh())
+            {
+                GameManager.Instance.GameOverBecauseWallDestroyedWithLowRMF(); // player lost because they destroyed a wall when RMF was low
+            }
+        }
     }
 
     private void WallPiecesSetup()

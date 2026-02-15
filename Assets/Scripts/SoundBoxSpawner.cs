@@ -70,6 +70,9 @@ public class SoundBoxSpawner : MonoBehaviour
     {
         SpawnSoundBoxWave(currentWave);
         currentWave.hasSpawned = true;
+
+        SoundManager.Instance.InitializeSoundboxEmitters();
+
         return;
     }
 

@@ -56,7 +56,7 @@ public class SoundManager : MonoBehaviour
 
     void Start()
     {
-        InitializeSoundboxEmitters();
+        //InitializeSoundboxEmitters();
         classicSchubertInstance = RuntimeManager.CreateInstance(classicSchubertEvent);
         remixSchubertInstance = RuntimeManager.CreateInstance(remixSchubertEvent);
         
@@ -123,7 +123,7 @@ public class SoundManager : MonoBehaviour
         nextReductionTime = Time.time + randomInterval;
     }
 
-    void InitializeSoundboxEmitters()
+    public void InitializeSoundboxEmitters()
     {
         // Find all SoundBox Objects and then take the soundemitter component and fill in the array.
         GameObject[] soundboxes = GameObject.FindGameObjectsWithTag("SoundBox");

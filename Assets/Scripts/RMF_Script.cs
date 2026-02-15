@@ -12,8 +12,25 @@ public class RMF_Script : MonoBehaviour
     private Toggle toggle;
     private float rmfCurrentValue = 0f;
     public float rmfValueTriggeringHigh = 0.6f;
-    public float waitingThreshold = 0.5f;
+    public float waitingToleranceTimeAfterFallingBelowThreshold = 0.5f;
     public RMF_State currentRMFstate;
+
+    [Range(0,1)]public float testRMFValue;
+
+    public LineFollowerVisualizer lineAnimator;
+    public static RMF_Script Instance { get; private set; }
+
+    private void Awake()
+    {
+        if (Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+
+        lineAnimator.SetRmfHighValue(rmfValueTriggeringHigh);
+    }
 
     void Start()
     {
@@ -23,28 +40,43 @@ public class RMF_Script : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(currentRMFstate == RMF_State.High)
-        {
-            toggle.SetIsOnWithoutNotify(true);
+        SetRMFValue(testRMFValue);
+        
+    }
 
+    public void ActivateFakeSinus(RMF_State ForState)
+    {
+        lineAnimator.StartSine(ForState);
+        
+        /*if (ForState == RMF_State.High)
+        {
+            lineAnimator.StartSine(ForState);
         }
         else
         {
-            toggle.SetIsOnWithoutNotify(false);
+            lineAnimator.StartSine(ForState);
         }
+        */
+    }
+
+    public bool IsRMFHigh()
+    {
+        return currentRMFstate == RMF_State.High;
     }
 
     public void SetRMFValue(float value)
     {
-            rmfCurrentValue = value;
+       rmfCurrentValue = Mathf.Clamp01(value);
     
-            if(rmfCurrentValue >= rmfValueTriggeringHigh)
-            {
+       if(rmfCurrentValue >= rmfValueTriggeringHigh)
+       {
                 currentRMFstate = RMF_State.High;
-            }
-            else
-            {
+            ActivateFakeSinus(RMF_State.High);
+        }
+       else
+       {
                 currentRMFstate = RMF_State.Low;
-            }
+            ActivateFakeSinus(RMF_State.Low);
+        }
     }
 }

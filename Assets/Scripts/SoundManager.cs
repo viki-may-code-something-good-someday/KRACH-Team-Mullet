@@ -8,6 +8,7 @@ public class SoundManager : MonoBehaviour
 
     public EventInstance classicSchubertEvent;
     public EventInstance remixSchubertEvent;
+    public EventReference neighbourEvent;
     
     public EventReference[] soundboxEvents;
     StudioEventEmitter [] soundboxEmitters;

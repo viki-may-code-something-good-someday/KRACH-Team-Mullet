@@ -1,0 +1,78 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &8412215623549724772
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4912288177698206678}
+  - component: {fileID: 4592026187632203751}
+  m_Layer: 0
+  m_Name: SoundManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4912288177698206678
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8412215623549724772}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -11.40267, y: 0, z: -64.56292}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4592026187632203751
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8412215623549724772}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 702b1cdae7fb4a5409a45fdffe01c720, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::SoundManager
+  neighbourEvent:
+    Guid:
+      Data1: -1942938094
+      Data2: 1256211102
+      Data3: 75218588
+      Data4: 346481125
+    Path: event:/Music/M_Neighbour
+  soundboxEvents:
+  - Guid:
+      Data1: 1494729036
+      Data2: 1139171829
+      Data3: -1232215362
+      Data4: 1221607310
+    Path: event:/Music/M_Bass
+  - Guid:
+      Data1: 59899567
+      Data2: 1124745975
+      Data3: 1089493933
+      Data4: 1855819727
+    Path: event:/Music/M_Drums
+  - Guid:
+      Data1: -1972099346
+      Data2: 1176239825
+      Data3: -1147392353
+      Data4: 501147737
+    Path: event:/Music/M_Leads
+  - Guid:
+      Data1: -1370252177
+      Data2: 1075549123
+      Data3: -1780804683
+      Data4: -1669596325
+    Path: event:/Music/M_SFX

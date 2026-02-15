@@ -1,4 +1,5 @@
 using UnityEngine;
+using FMODUnity;
 
 public class SoundBox : MonoBehaviour
 {

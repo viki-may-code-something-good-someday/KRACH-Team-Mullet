@@ -1,6 +1,9 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using FMODUnity;
+using FMOD.Studio;
 
 public class SoundBoxSpawner : MonoBehaviour
 {
@@ -11,6 +14,8 @@ public class SoundBoxSpawner : MonoBehaviour
     [SerializeField] private Transform spawnParent;
 
     [SerializeField] private float waveSpawnDelay = 10f;   // delay between clearing a wave and spawning the next one
+
+    private SoundManager soundManager;
 
     private int currentWaveIndex = 0;
 
@@ -25,6 +30,15 @@ public class SoundBoxSpawner : MonoBehaviour
 
         Instance = this;
         DontDestroyOnLoad(gameObject);
+    }
+
+    private void Start()
+    {
+        soundManager = FindFirstObjectByType<SoundManager>();
+        if (soundManager == null)
+        {
+            Debug.LogWarning("SoundBoxSpawner: SoundManager not found in scene.");
+        }
     }
 
     private void OnDestroy()
@@ -122,12 +136,11 @@ public class SoundBoxSpawner : MonoBehaviour
 
     private IEnumerator NextWaveSpawnDelay(float delay)
     {
-        RuntimeManager.Play("event:/Music/M_Schubert_Classic");    // classic music
+        soundManager.PlayClassicMusic();    // classic music
         yield return new WaitForSeconds(delay);
-        RuntimeManager.CoreSystem.setPaused("event:/Music/M_Schubert_Classic");
+        soundManager.StopClassicMusic();
         // start all sound emitter of remix here or play them automatically on PreFab Component
     }
-
 }
 
 

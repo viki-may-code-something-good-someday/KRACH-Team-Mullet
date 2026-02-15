@@ -22,4 +22,9 @@ public class SoundManager : MonoBehaviour
             classicMusicEvent.Play();
         }
     }
+
+    public void StopClassicMusic()
+    {
+        classicMusicEvent.Stop();
+    }
 }

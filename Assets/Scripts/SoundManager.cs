@@ -106,7 +106,14 @@ public class SoundManager : MonoBehaviour
 
     public RMF_State GetCurrentRMFState()
     {
-        return (currentLoudness == 0) ? RMF_State.Low : RMF_State.High;
+        if(currentLoudness == 0)
+        {
+            return RMF_State.Low;
+        }
+        else
+        {
+            return RMF_State.High;
+        }
     }
 
     private void ScheduleNextReduction()

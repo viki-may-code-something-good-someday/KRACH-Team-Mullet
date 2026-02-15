@@ -32,8 +32,6 @@ public class GameManager : MonoBehaviour
 
     public GameObject arms;
 
-    [SerializeField] public EventInstance gameOverSound;
-
     public static GameManager Instance { get; private set; }
 
     private void Awake()
@@ -62,11 +60,7 @@ public class GameManager : MonoBehaviour
     
     public void RestartGame()
     {
-        if (gameOverSound.isValid())
-        {
-            gameOverSound.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);
-            gameOverSound.release();
-        }
+        
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 

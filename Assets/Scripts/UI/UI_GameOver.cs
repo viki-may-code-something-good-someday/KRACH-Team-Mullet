@@ -25,6 +25,7 @@ public class UI_GameOver : MonoBehaviour
 
     private void Awake()
     {
+
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -34,6 +35,8 @@ public class UI_GameOver : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         gameObject.SetActive(false);
+
+
     }
 
     public void SetGameOverScreenWithScore(int score, int reasonForGameOver)
@@ -75,6 +78,18 @@ public class UI_GameOver : MonoBehaviour
                 resultText.text = GetResultTextForScore(Mathf.RoundToInt(scorePercentage3));
 
                 reasonText.text = reasonForGameOverString[2];
+                break;
+            case 3: //player ran out of time
+                Debug.Log("This should be called with final score: " + score);
+                gameObject.SetActive(true);
+
+                scoreValue.text = score.ToString();
+
+                float scorePercentage4 = score / GameManager.Instance.maxScore * 100f;
+
+                resultText.text = GetResultTextForScore(Mathf.RoundToInt(scorePercentage4));
+
+                reasonText.text = reasonForGameOverString[3];
                 break;
         }
         

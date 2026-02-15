@@ -26,6 +26,8 @@ public class GameManager : MonoBehaviour
 
     public int gameLostScorePenalty = 500;
 
+    public float maxPlaytimeInSeconds;
+
     public static GameManager Instance { get; private set; }
 
     private void Awake()
@@ -135,6 +137,14 @@ public class GameManager : MonoBehaviour
     private void UpdateInternalTimer()
     {
         currentPlaytime += Time.deltaTime;
+
+        if(currentPlaytime >= maxPlaytimeInSeconds)
+        {
+            currentState = GameState.GameOver;
+            int finalScore = CalculateScore(false);
+
+            UI_GameOver.Instance.SetGameOverScreenWithScore(finalScore, 3);
+        }
     }
 
     private int CalculateScore(bool gameWon)

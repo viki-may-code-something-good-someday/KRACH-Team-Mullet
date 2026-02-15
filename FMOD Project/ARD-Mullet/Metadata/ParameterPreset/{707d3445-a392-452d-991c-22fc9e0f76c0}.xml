@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="ParameterPreset" id="{707d3445-a392-452d-991c-22fc9e0f76c0}">
+		<property name="name">
+			<value>RoomOcclusion</value>
+		</property>
+		<relationship name="folder">
+			<destination>{85a99da1-0641-4a5f-8b40-01f0053153be}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{dffd6e63-59c3-4fec-baea-f4499db4ebac}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{dffd6e63-59c3-4fec-baea-f4499db4ebac}">
+		<property name="initialValue">
+			<value>1</value>
+		</property>
+		<relationship name="modulators">
+			<destination>{2d102d56-25c0-4aac-a86f-6a711c32fb04}</destination>
+		</relationship>
+	</object>
+	<object class="SeekModulator" id="{2d102d56-25c0-4aac-a86f-6a711c32fb04}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>cursorPosition</value>
+		</property>
+		<property name="speedAscending">
+			<value>10</value>
+		</property>
+	</object>
+</objects>

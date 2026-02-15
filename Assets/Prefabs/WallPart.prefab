@@ -1128,7 +1128,6 @@ MonoBehaviour:
   wallBroken: {fileID: 3995930024737658038}
   wallPieces: []
   wallPiecesPhysicsMaterial: {fileID: 13400000, guid: ea4d112fbe51e1e4db050ec6485eb6ac, type: 2}
-  wallBreakVFX: {fileID: 0}
   health: 1
   explosionForce: 1000
   explosionRadius: 1
@@ -1568,6 +1567,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Destructable
   wallData: {fileID: 8904730114808629814}
   soundBox: {fileID: 0}
+  dustParticles: {fileID: 286782459826712307, guid: 8958f9f1e77ae644183e4b1c945314c0, type: 3}
+  soundboxDamageParticles: {fileID: 286782459826712307, guid: 0c3c9789b17d55b44be4d68f0264ed9f, type: 3}
 --- !u!1 &3995930024737658038
 GameObject:
   m_ObjectHideFlags: 0

@@ -475,6 +475,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: WallPart (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 2868715675856972208, guid: fbddb5bcaae4dfc4fb5a678f78546259, type: 3}
+      propertyPath: dustParticles
+      value: 
+      objectReference: {fileID: 286782459826712307, guid: 0c3c9789b17d55b44be4d68f0264ed9f, type: 3}
     - target: {fileID: 8904730114808629814, guid: fbddb5bcaae4dfc4fb5a678f78546259, type: 3}
       propertyPath: wallPieces.Array.size
       value: 1
@@ -2170,6 +2174,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Destructable
   wallData: {fileID: 0}
   soundBox: {fileID: 0}
+  dustParticles: {fileID: 0}
+  soundboxDamageParticles: {fileID: 0}
 --- !u!54 &2101955639
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -2197,63 +2203,6 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!1001 &3155548481995757514
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4317857988139111238, guid: 8958f9f1e77ae644183e4b1c945314c0, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 6.876
-      objectReference: {fileID: 0}
-    - target: {fileID: 4317857988139111238, guid: 8958f9f1e77ae644183e4b1c945314c0, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 2.106
-      objectReference: {fileID: 0}
-    - target: {fileID: 4317857988139111238, guid: 8958f9f1e77ae644183e4b1c945314c0, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: -1.046
-      objectReference: {fileID: 0}
-    - target: {fileID: 4317857988139111238, guid: 8958f9f1e77ae644183e4b1c945314c0, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 0.500077
-      objectReference: {fileID: 0}
-    - target: {fileID: 4317857988139111238, guid: 8958f9f1e77ae644183e4b1c945314c0, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0.50007653
-      objectReference: {fileID: 0}
-    - target: {fileID: 4317857988139111238, guid: 8958f9f1e77ae644183e4b1c945314c0, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0.4999232
-      objectReference: {fileID: 0}
-    - target: {fileID: 4317857988139111238, guid: 8958f9f1e77ae644183e4b1c945314c0, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0.4999234
-      objectReference: {fileID: 0}
-    - target: {fileID: 4317857988139111238, guid: 8958f9f1e77ae644183e4b1c945314c0, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0.018
-      objectReference: {fileID: 0}
-    - target: {fileID: 4317857988139111238, guid: 8958f9f1e77ae644183e4b1c945314c0, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 4317857988139111238, guid: 8958f9f1e77ae644183e4b1c945314c0, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 90
-      objectReference: {fileID: 0}
-    - target: {fileID: 8227121862972152157, guid: 8958f9f1e77ae644183e4b1c945314c0, type: 3}
-      propertyPath: m_Name
-      value: DustEmitter Burst
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 8958f9f1e77ae644183e4b1c945314c0, type: 3}
 --- !u!1001 &3268877029598003387
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2457,6 +2406,10 @@ PrefabInstance:
       propertyPath: musicEmitter
       value: 
       objectReference: {fileID: 215694118}
+    - target: {fileID: 4676982833602372420, guid: 374fa6d517b9e4649b9a2c8fff5b5c0a, type: 3}
+      propertyPath: soundboxDamageParticles
+      value: 
+      objectReference: {fileID: 286782459826712307, guid: 0c3c9789b17d55b44be4d68f0264ed9f, type: 3}
     - target: {fileID: 5289083897964861194, guid: 374fa6d517b9e4649b9a2c8fff5b5c0a, type: 3}
       propertyPath: m_LocalPosition.x
       value: -2.1825
@@ -2960,4 +2913,3 @@ SceneRoots:
   - {fileID: 8820819689279730850}
   - {fileID: 3599975078352242716}
   - {fileID: 1346023714}
-  - {fileID: 3155548481995757514}

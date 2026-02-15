@@ -99,6 +99,8 @@ public class SoundManager : MonoBehaviour
         // Update currentLoudness basierend auf Reduktion
         currentLoudness = (targetVolumeMultiplier == reductionMultiplier) ? 0 : 1;
 
+        RMF_Script.Instance.SetRMFValue(currentLoudness);
+
         // Debug Info
         Debug.Log($"Current Loudness: {currentLoudness}, Volume Multiplier: {currentVolumeMultiplier:F2}");
     }

@@ -5,6 +5,7 @@ using UnityEngine;
 public class RoomObj: MonoBehaviour
 {
     public bool isEnemyInThisRoom;
+    public bool canEnemySpawnInThisRoom;
     public StudioEventEmitter musicEmitter;
     public bool hasPlayerOpenedThisRoom;
     [SerializeField] public Wall_Data[] wallsInThisRoom;

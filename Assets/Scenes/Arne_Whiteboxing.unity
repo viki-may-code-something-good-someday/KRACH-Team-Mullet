@@ -469,6 +469,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7230038903653098735, guid: 58685aab55d9788418299f9a4a7e67eb, type: 3}
+      propertyPath: canEnemySpawnInThisRoom
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7230038903653098735, guid: 58685aab55d9788418299f9a4a7e67eb, type: 3}
       propertyPath: wallsInThisRoom.Array.size
       value: 12
       objectReference: {fileID: 0}
@@ -4150,6 +4154,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7230038903653098735, guid: 58685aab55d9788418299f9a4a7e67eb, type: 3}
+      propertyPath: canEnemySpawnInThisRoom
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7230038903653098735, guid: 58685aab55d9788418299f9a4a7e67eb, type: 3}
       propertyPath: wallsInThisRoom.Array.size
       value: 14
       objectReference: {fileID: 0}
@@ -5444,6 +5452,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1024899313175598030, guid: a2faea5b8dd51f3489349b73f5d418fe, type: 3}
+      propertyPath: m_Cameras.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1608425576210504766, guid: a2faea5b8dd51f3489349b73f5d418fe, type: 3}
       propertyPath: m_Name
       value: PlayerCharacter_FirstPerson
@@ -8563,7 +8575,7 @@ PrefabInstance:
       objectReference: {fileID: 959747522}
     - target: {fileID: 7956548004404623784, guid: 71e5a7587b39d554fadd21a11f37c8ad, type: 3}
       propertyPath: rooms.Array.size
-      value: 10
+      value: 15
       objectReference: {fileID: 0}
     - target: {fileID: 7956548004404623784, guid: 71e5a7587b39d554fadd21a11f37c8ad, type: 3}
       propertyPath: 'rooms.Array.data[0]'
@@ -8584,35 +8596,75 @@ PrefabInstance:
     - target: {fileID: 7956548004404623784, guid: 71e5a7587b39d554fadd21a11f37c8ad, type: 3}
       propertyPath: 'rooms.Array.data[4]'
       value: 
-      objectReference: {fileID: 1454288183}
+      objectReference: {fileID: 1254722727}
     - target: {fileID: 7956548004404623784, guid: 71e5a7587b39d554fadd21a11f37c8ad, type: 3}
       propertyPath: 'rooms.Array.data[5]'
       value: 
-      objectReference: {fileID: 149629056}
+      objectReference: {fileID: 1682960439}
     - target: {fileID: 7956548004404623784, guid: 71e5a7587b39d554fadd21a11f37c8ad, type: 3}
       propertyPath: 'rooms.Array.data[6]'
       value: 
-      objectReference: {fileID: 959270420}
+      objectReference: {fileID: 1473389924}
     - target: {fileID: 7956548004404623784, guid: 71e5a7587b39d554fadd21a11f37c8ad, type: 3}
       propertyPath: 'rooms.Array.data[7]'
       value: 
-      objectReference: {fileID: 75111065}
+      objectReference: {fileID: 1671265314}
     - target: {fileID: 7956548004404623784, guid: 71e5a7587b39d554fadd21a11f37c8ad, type: 3}
       propertyPath: 'rooms.Array.data[8]'
       value: 
-      objectReference: {fileID: 1956992990}
+      objectReference: {fileID: 2091536450}
     - target: {fileID: 7956548004404623784, guid: 71e5a7587b39d554fadd21a11f37c8ad, type: 3}
       propertyPath: 'rooms.Array.data[9]'
       value: 
-      objectReference: {fileID: 503705186}
+      objectReference: {fileID: 1454288183}
     - target: {fileID: 7956548004404623784, guid: 71e5a7587b39d554fadd21a11f37c8ad, type: 3}
       propertyPath: maxPlaytimeInSeconds
       value: 240
       objectReference: {fileID: 0}
     - target: {fileID: 7956548004404623784, guid: 71e5a7587b39d554fadd21a11f37c8ad, type: 3}
+      propertyPath: 'rooms.Array.data[10]'
+      value: 
+      objectReference: {fileID: 149629056}
+    - target: {fileID: 7956548004404623784, guid: 71e5a7587b39d554fadd21a11f37c8ad, type: 3}
+      propertyPath: 'rooms.Array.data[11]'
+      value: 
+      objectReference: {fileID: 959270420}
+    - target: {fileID: 7956548004404623784, guid: 71e5a7587b39d554fadd21a11f37c8ad, type: 3}
+      propertyPath: 'rooms.Array.data[12]'
+      value: 
+      objectReference: {fileID: 75111065}
+    - target: {fileID: 7956548004404623784, guid: 71e5a7587b39d554fadd21a11f37c8ad, type: 3}
+      propertyPath: 'rooms.Array.data[13]'
+      value: 
+      objectReference: {fileID: 1956992990}
+    - target: {fileID: 7956548004404623784, guid: 71e5a7587b39d554fadd21a11f37c8ad, type: 3}
+      propertyPath: 'rooms.Array.data[14]'
+      value: 
+      objectReference: {fileID: 503705186}
+    - target: {fileID: 7956548004404623784, guid: 71e5a7587b39d554fadd21a11f37c8ad, type: 3}
       propertyPath: playerCameraController
       value: 
       objectReference: {fileID: 554463124}
+    - target: {fileID: 7956548004404623784, guid: 71e5a7587b39d554fadd21a11f37c8ad, type: 3}
+      propertyPath: roomsEnemyCanSpawnIn.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 7956548004404623784, guid: 71e5a7587b39d554fadd21a11f37c8ad, type: 3}
+      propertyPath: 'roomsEnemyCanSpawnIn.Array.data[0]'
+      value: 
+      objectReference: {fileID: 25338301}
+    - target: {fileID: 7956548004404623784, guid: 71e5a7587b39d554fadd21a11f37c8ad, type: 3}
+      propertyPath: 'roomsEnemyCanSpawnIn.Array.data[1]'
+      value: 
+      objectReference: {fileID: 509422149}
+    - target: {fileID: 7956548004404623784, guid: 71e5a7587b39d554fadd21a11f37c8ad, type: 3}
+      propertyPath: 'roomsEnemyCanSpawnIn.Array.data[2]'
+      value: 
+      objectReference: {fileID: 149629056}
+    - target: {fileID: 7956548004404623784, guid: 71e5a7587b39d554fadd21a11f37c8ad, type: 3}
+      propertyPath: 'roomsEnemyCanSpawnIn.Array.data[3]'
+      value: 
+      objectReference: {fileID: 75111065}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -9779,6 +9831,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 58685aab55d9788418299f9a4a7e67eb, type: 3}
+--- !u!114 &1254722727 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7230038903653098735, guid: 58685aab55d9788418299f9a4a7e67eb, type: 3}
+  m_PrefabInstance: {fileID: 1254722726}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 741a4625a4ebd7447842466f01648b62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RoomObj
 --- !u!1001 &1258075783
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11710,6 +11773,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7230038903653098735, guid: 58685aab55d9788418299f9a4a7e67eb, type: 3}
+      propertyPath: canEnemySpawnInThisRoom
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 7230038903653098735, guid: 58685aab55d9788418299f9a4a7e67eb, type: 3}
       propertyPath: wallsInThisRoom.Array.size
       value: 7
       objectReference: {fileID: 0}
@@ -12047,6 +12114,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 58685aab55d9788418299f9a4a7e67eb, type: 3}
+--- !u!114 &1473389924 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7230038903653098735, guid: 58685aab55d9788418299f9a4a7e67eb, type: 3}
+  m_PrefabInstance: {fileID: 1473389923}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 741a4625a4ebd7447842466f01648b62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RoomObj
 --- !u!114 &1477376058 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 8904730114808629814, guid: fbddb5bcaae4dfc4fb5a678f78546259, type: 3}
@@ -13620,6 +13698,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 58685aab55d9788418299f9a4a7e67eb, type: 3}
+--- !u!114 &1671265314 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7230038903653098735, guid: 58685aab55d9788418299f9a4a7e67eb, type: 3}
+  m_PrefabInstance: {fileID: 1671265313}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 741a4625a4ebd7447842466f01648b62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RoomObj
 --- !u!1001 &1681120505
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -13823,6 +13912,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 58685aab55d9788418299f9a4a7e67eb, type: 3}
+--- !u!114 &1682960439 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7230038903653098735, guid: 58685aab55d9788418299f9a4a7e67eb, type: 3}
+  m_PrefabInstance: {fileID: 1682960438}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 741a4625a4ebd7447842466f01648b62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RoomObj
 --- !u!1001 &1683277673
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -15134,6 +15234,10 @@ PrefabInstance:
     - target: {fileID: 5871649437326830584, guid: 58685aab55d9788418299f9a4a7e67eb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7230038903653098735, guid: 58685aab55d9788418299f9a4a7e67eb, type: 3}
+      propertyPath: canEnemySpawnInThisRoom
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7230038903653098735, guid: 58685aab55d9788418299f9a4a7e67eb, type: 3}
       propertyPath: wallsInThisRoom.Array.size
@@ -16727,6 +16831,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 58685aab55d9788418299f9a4a7e67eb, type: 3}
+--- !u!114 &2091536450 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7230038903653098735, guid: 58685aab55d9788418299f9a4a7e67eb, type: 3}
+  m_PrefabInstance: {fileID: 2091536449}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 741a4625a4ebd7447842466f01648b62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RoomObj
 --- !u!1001 &2104361209
 PrefabInstance:
   m_ObjectHideFlags: 0

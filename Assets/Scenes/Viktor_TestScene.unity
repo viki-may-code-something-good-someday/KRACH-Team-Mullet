@@ -1565,6 +1565,10 @@ PrefabInstance:
       propertyPath: ShapeModule.radius.value
       value: 0.025178922
       objectReference: {fileID: 0}
+    - target: {fileID: 5593355096549517513, guid: b774737489e710444921997fcefd01fd, type: 3}
+      propertyPath: ShapeModule.radiusThickness
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []

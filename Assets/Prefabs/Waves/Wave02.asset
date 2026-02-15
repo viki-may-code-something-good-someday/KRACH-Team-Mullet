@@ -16,7 +16,6 @@ MonoBehaviour:
   - {fileID: 1086694340420830532, guid: 374fa6d517b9e4649b9a2c8fff5b5c0a, type: 3}
   - {fileID: 1086694340420830532, guid: 374fa6d517b9e4649b9a2c8fff5b5c0a, type: 3}
   - {fileID: 1086694340420830532, guid: 374fa6d517b9e4649b9a2c8fff5b5c0a, type: 3}
-  - {fileID: 1086694340420830532, guid: 374fa6d517b9e4649b9a2c8fff5b5c0a, type: 3}
-  spawnPosNumbers: 00000000010000000200000005000000
+  spawnPosNumbers: 000000000100000004000000
   activeInstances: []
   hasSpawned: 1

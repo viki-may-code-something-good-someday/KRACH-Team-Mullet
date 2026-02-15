@@ -18,7 +18,7 @@ public class UI_GameOver : MonoBehaviour
         { "Alles richtig gemacht!", 100 },
         { "Beeindruckend!", 80 },
         { "Stabil!", 50 },
-        { "Hat wohl schnell aufgegeben...", 0 }
+        { "Wo gibt's denn sowas?", 0 }
     };
 
     public EventInstance gameOverSound;
@@ -47,6 +47,7 @@ public class UI_GameOver : MonoBehaviour
 
     }
 
+   
     public void SetGameOverScreenWithScore(int score, int reasonForGameOver)
     {
 

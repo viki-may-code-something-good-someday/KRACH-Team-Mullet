@@ -6058,7 +6058,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a41ee026ef209594f99472843235be5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FadeOutStartScreen
-  startLogo: {fileID: 953780996}
+  cg: {fileID: 0}
 --- !u!114 &722760311 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 7754895337173820009, guid: ddca2604eb72d2d47ac80b0115badab7, type: 3}
@@ -7722,20 +7722,20 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6187399025995671698, guid: 4fde9de8f86144746a97f519c71f6f67, type: 3}
+      propertyPath: m_Alpha
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8098892771340018635, guid: 4fde9de8f86144746a97f519c71f6f67, type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 14
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 1117606917246121022, guid: 4fde9de8f86144746a97f519c71f6f67, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4fde9de8f86144746a97f519c71f6f67, type: 3}
---- !u!225 &953780996 stripped
-CanvasGroup:
-  m_CorrespondingSourceObject: {fileID: 6187399025995671698, guid: 4fde9de8f86144746a97f519c71f6f67, type: 3}
-  m_PrefabInstance: {fileID: 953780995}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &954215173 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 5552979022408172552, guid: 39d5db712762dce40a01b2fc0b0a3f30, type: 3}
@@ -11738,6 +11738,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8904730114808629814, guid: fbddb5bcaae4dfc4fb5a678f78546259, type: 3}
       propertyPath: health
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8904730114808629814, guid: fbddb5bcaae4dfc4fb5a678f78546259, type: 3}
+      propertyPath: isFirstWall
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8904730114808629814, guid: fbddb5bcaae4dfc4fb5a678f78546259, type: 3}

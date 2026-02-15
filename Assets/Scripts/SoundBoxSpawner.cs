@@ -17,7 +17,7 @@ public class SoundBoxSpawner : MonoBehaviour
 
     private SoundManager soundManager;
 
-    private int currentWaveIndex = 0;
+    [SerializeField] private int currentWaveIndex = 0;
 
 
     private void Awake()
@@ -32,6 +32,7 @@ public class SoundBoxSpawner : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+
     private void Start()
     {
         soundManager = FindFirstObjectByType<SoundManager>();
@@ -39,6 +40,7 @@ public class SoundBoxSpawner : MonoBehaviour
         {
             Debug.LogWarning("SoundBoxSpawner: SoundManager not found in scene.");
         }
+
     }
 
     private void OnDestroy()
@@ -57,7 +59,9 @@ public class SoundBoxSpawner : MonoBehaviour
 
         // Guard current index
         if (currentWaveIndex >= soundBoxWaves.Count)
+        {
             return;
+        }
 
         SoundBoxWave currentWave = soundBoxWaves[currentWaveIndex];
 
@@ -106,6 +110,7 @@ public class SoundBoxSpawner : MonoBehaviour
 
     private void WinGame()
     {
+        Debug.Log("All waves cleared! You win!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
         //Win Game Logic
     }
 
@@ -147,8 +152,8 @@ public class SoundBoxSpawner : MonoBehaviour
 
 
 
-[Serializable]
-public class SoundBoxWave
+[Serializable, CreateAssetMenu(fileName = "SoundBoxWave", menuName = "Scriptable Objects/SoundBoxWave")]
+public class SoundBoxWave : ScriptableObject
 {
     [Tooltip("SoundBox prefab references to spawn for this wave.")]
     public List<SoundBox> prefabs = new List<SoundBox>();

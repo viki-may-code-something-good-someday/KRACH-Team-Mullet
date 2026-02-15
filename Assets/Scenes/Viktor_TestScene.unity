@@ -5007,7 +5007,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8053420195148250518, guid: f187bd6ef417acd40a762b7911bbded3, type: 3}
       propertyPath: soundBoxWaves.Array.size
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 8053420195148250518, guid: f187bd6ef417acd40a762b7911bbded3, type: 3}
       propertyPath: 'spawnPoints.Array.data[0]'
@@ -5036,11 +5036,23 @@ PrefabInstance:
     - target: {fileID: 8053420195148250518, guid: f187bd6ef417acd40a762b7911bbded3, type: 3}
       propertyPath: 'soundBoxWaves.Array.data[0]'
       value: 
-      objectReference: {fileID: 11400000, guid: 18e57ad8483b41f4eadcede5bb1fb514, type: 2}
+      objectReference: {fileID: 11400000, guid: 0b32ad4475a39864aad1677569ca0e83, type: 2}
     - target: {fileID: 8053420195148250518, guid: f187bd6ef417acd40a762b7911bbded3, type: 3}
       propertyPath: 'soundBoxWaves.Array.data[1]'
       value: 
       objectReference: {fileID: 11400000, guid: a5745780f6b41924ebc5814d4aac9476, type: 2}
+    - target: {fileID: 8053420195148250518, guid: f187bd6ef417acd40a762b7911bbded3, type: 3}
+      propertyPath: 'soundBoxWaves.Array.data[2]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 9d5e7c2660fb8e24faa17e7e65cec7ca, type: 2}
+    - target: {fileID: 8053420195148250518, guid: f187bd6ef417acd40a762b7911bbded3, type: 3}
+      propertyPath: 'soundBoxWaves.Array.data[3]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 830cdfa2417b9df459a14590dd838632, type: 2}
+    - target: {fileID: 8053420195148250518, guid: f187bd6ef417acd40a762b7911bbded3, type: 3}
+      propertyPath: 'soundBoxWaves.Array.data[4]'
+      value: 
+      objectReference: {fileID: 11400000, guid: 0b32ad4475a39864aad1677569ca0e83, type: 2}
     - target: {fileID: 8104106039036484196, guid: f187bd6ef417acd40a762b7911bbded3, type: 3}
       propertyPath: m_Name
       value: SoundBox_Spawner

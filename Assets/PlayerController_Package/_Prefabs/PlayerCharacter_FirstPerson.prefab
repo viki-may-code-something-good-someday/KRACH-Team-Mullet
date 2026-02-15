@@ -477,10 +477,10 @@ Camera:
   field of view: 60
   orthographic: 0
   orthographic size: 5
-  m_Depth: -1
+  m_Depth: 1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 991
+    m_Bits: 4294967295
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -510,6 +510,7 @@ MonoBehaviour:
   m_CameraType: 0
   m_Cameras:
   - {fileID: 6239802661996215363}
+  - {fileID: 3426824967219324989}
   m_RendererIndex: -1
   m_VolumeLayerMask:
     serializedVersion: 2
@@ -766,9 +767,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7450086713371212750}
-  - component: {fileID: 4992476308068382667}
-  - component: {fileID: 8964487587224261374}
-  - component: {fileID: 8546605400901255971}
+  - component: {fileID: 3426824967219324989}
+  - component: {fileID: 1459766375861719337}
   m_Layer: 6
   m_Name: MusicRenderer
   m_TagString: Untagged
@@ -785,14 +785,14 @@ Transform:
   m_GameObject: {fileID: 6565054068139892501}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: -0.173}
+  m_LocalPosition: {x: 0.062, y: 0, z: -0.321}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7304225367109834025}
   m_Father: {fileID: 7229640499008521558}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!20 &4992476308068382667
+--- !u!20 &3426824967219324989
 Camera:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -831,7 +831,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 1024
+    m_Bits: 2048
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -843,15 +843,7 @@ Camera:
   m_OcclusionCulling: 1
   m_StereoConvergence: 10
   m_StereoSeparation: 0.022
---- !u!81 &8964487587224261374
-AudioListener:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6565054068139892501}
-  m_Enabled: 1
---- !u!114 &8546605400901255971
+--- !u!114 &1459766375861719337
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1015,8 +1007,8 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1837261994253399680}
-  - {fileID: 3040562175709920266}
   - {fileID: 7450086713371212750}
+  - {fileID: 3040562175709920266}
   m_Father: {fileID: 2111440495359995585}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1001 &1912879432244515262

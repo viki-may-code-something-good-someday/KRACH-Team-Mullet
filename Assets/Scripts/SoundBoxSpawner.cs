@@ -30,7 +30,6 @@ public class SoundBoxSpawner : MonoBehaviour
         }
 
         Instance = this;
-        DontDestroyOnLoad(gameObject);
     }
 
 
@@ -42,6 +41,14 @@ public class SoundBoxSpawner : MonoBehaviour
             Debug.LogWarning("SoundBoxSpawner: SoundManager not found in scene.");
         }
 
+        for (int i = soundBoxWaves.Count - 1; i >= 0 ; i--)
+        {
+            soundBoxWaves[i].hasSpawned = false;
+            soundBoxWaves[i].activeInstances.Clear();
+        }
+        currentWaveIndex = 0;
+        wonGame = false;
+
     }
 
     private void OnDestroy()
@@ -50,37 +57,33 @@ public class SoundBoxSpawner : MonoBehaviour
     }
 
     private void Update()
+{
+    if (currentWaveIndex >= soundBoxWaves.Count)
     {
-        // If there are no configured waves -> win
-        if (soundBoxWaves == null || soundBoxWaves.Count == 0)
-        {
-            WinGame();
-            return;
-        }
-
-        // Guard current index
-        if (currentWaveIndex >= soundBoxWaves.Count)
-        {
-            return;
-        }
-
-        SoundBoxWave currentWave = soundBoxWaves[currentWaveIndex];
-
-        // Spawn the wave once
-        if (!currentWave.hasSpawned)
-        {
-            SpawnSoundBoxWave(currentWave);
-            currentWave.hasSpawned = true;
-            return;
-        }
-
-        // If spawned and all instances are gone -> remove wave (next wave will occupy the same index)
-        if (currentWave.hasSpawned && currentWave.activeInstances.Count == 0)
-        {
-            soundBoxWaves.RemoveAt(currentWaveIndex);
-            // do not increment index; next wave (if any) is now at currentWaveIndex
-        }
+        WinGame();
+        return;
     }
+
+    SoundBoxWave currentWave = soundBoxWaves[currentWaveIndex];
+
+    if (!currentWave.hasSpawned)
+    {
+        SpawnSoundBoxWave(currentWave);
+        currentWave.hasSpawned = true;
+        return;
+    }
+
+    // IMPORTANT: only check clear if it had instances
+    if (currentWave.hasSpawned &&
+        currentWave.activeInstances.Count == 0 &&
+        currentWave.boxes.Count > 0)
+    {
+        Debug.Log("Wave " + currentWaveIndex + " cleared");
+
+        currentWaveIndex++;
+    }
+}
+
 
     private void SpawnSoundBoxWave(SoundBoxWave wave)
     {
@@ -109,6 +112,11 @@ public class SoundBoxSpawner : MonoBehaviour
             SoundBox spawned = Instantiate(thisBox, spawnPoint.transform.position, Quaternion.identity, spawnParent);
             wave.activeInstances.Add(spawned);
         }
+
+        Debug.Log("Spawning wave " + currentWaveIndex + " with " + wave.boxes.Count + " boxes.!!!!!!!!!!!!!!!!!!!!!!");
+
+        Debug.Log("!!!!!!!!!!!!!!!!!!!!!!!Spawned instances: " + wave.activeInstances.Count);
+
     }
 
     private void WinGame()

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using FMODUnity;
+using DG.Tweening;
 
 public class Wall_Data : MonoBehaviour
 {
@@ -11,6 +12,7 @@ public class Wall_Data : MonoBehaviour
     [SerializeField] private GameObject wallBroken;
     [SerializeField] private List<GameObject> wallPieces = new List<GameObject>();
     [SerializeField] private PhysicsMaterial wallPiecesPhysicsMaterial;
+
 
     [Header("Wall Data")]
     [SerializeField] private float health;
@@ -50,10 +52,9 @@ public class Wall_Data : MonoBehaviour
     public void TakeDamage(float _damage, Vector3 _hitPoint, Vector3 _hitNormal)
     {
         health -= _damage;
-
+        
         RuntimeManager.PlayOneShot("event:/SFX/WallHit", _hitPoint);    // sound
 
-        //wallPieces could shake?
 
         if (health <= 0f)
         {

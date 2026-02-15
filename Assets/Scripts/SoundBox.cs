@@ -20,10 +20,10 @@ public class SoundBox : MonoBehaviour
         
     // }
 
-    private void Start()
-    {
-        musicEmitter.GetComponent<StudioEventEmitter>();
-    }
+    // private void Start()
+    // {
+    //     musicEmitter.GetComponent<StudioEventEmitter>();
+    // }
 
     private void Update()
     {

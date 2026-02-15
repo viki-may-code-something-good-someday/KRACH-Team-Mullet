@@ -80,6 +80,11 @@ public class CharacterController_FirstPerson : MonoBehaviour
         HandleFOV();
     }
 
+    public void SetCursor(bool active)
+    {
+        Cursor.visible = active;
+    }
+
     private void HandleSprintInput()
     {
         if (ToggleToSprint)

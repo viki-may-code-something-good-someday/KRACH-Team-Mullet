@@ -1108,7 +1108,7 @@ Transform:
   m_LocalScale: {x: 100, y: 100, z: 100}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 6257489950564341073}
+  - {fileID: 2162533333241906914}
   - {fileID: 8963024136740322803}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1124,11 +1124,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c60ff3cb9a1d0d94da1ab996d3a67644, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Wall_Data
-  wallNormal: {fileID: 3671108214043795730}
+  wallNormal: {fileID: 4697260056197628034}
   wallBroken: {fileID: 3995930024737658038}
   wallPieces: []
   wallPiecesPhysicsMaterial: {fileID: 13400000, guid: ea4d112fbe51e1e4db050ec6485eb6ac, type: 2}
-  health: 1
+  health: 3
   explosionForce: 1000
   explosionRadius: 1
   piecesWallFadeOutSpeedMultiplier: 0.2
@@ -1451,10 +1451,8 @@ GameObject:
   - component: {fileID: 6257489950564341073}
   - component: {fileID: 5118571989366928516}
   - component: {fileID: 1137834722575431887}
-  - component: {fileID: 5306048675674130391}
-  - component: {fileID: 2868715675856972208}
   m_Layer: 9
-  m_Name: WallPart_Square
+  m_Name: Visuals
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1473,7 +1471,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 151400405414378543}
+  m_Father: {fileID: 2162533333241906914}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!33 &5118571989366928516
 MeshFilter:
@@ -1532,43 +1530,6 @@ MeshRenderer:
   m_SortingOrder: 0
   m_MaskInteraction: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &5306048675674130391
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3671108214043795730}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.003, y: 0.03999999, z: 0.03999999}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &2868715675856972208
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3671108214043795730}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ae91f288ebeb3d648839b114f4e82e85, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Destructable
-  wallData: {fileID: 8904730114808629814}
-  soundBox: {fileID: 0}
-  dustParticles: {fileID: 286782459826712307, guid: 8958f9f1e77ae644183e4b1c945314c0, type: 3}
-  soundboxDamageParticles: {fileID: 286782459826712307, guid: 0c3c9789b17d55b44be4d68f0264ed9f, type: 3}
 --- !u!1 &3995930024737658038
 GameObject:
   m_ObjectHideFlags: 0
@@ -1931,6 +1892,77 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+--- !u!1 &4697260056197628034
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2162533333241906914}
+  - component: {fileID: 7716098506952581668}
+  - component: {fileID: 2198956818752711186}
+  m_Layer: 9
+  m_Name: Container_Collider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2162533333241906914
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4697260056197628034}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 6257489950564341073}
+  m_Father: {fileID: 151400405414378543}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &7716098506952581668
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4697260056197628034}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 0.003, y: 0.03999999, z: 0.03999999}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2198956818752711186
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4697260056197628034}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ae91f288ebeb3d648839b114f4e82e85, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Destructable
+  wallData: {fileID: 8904730114808629814}
+  soundBox: {fileID: 0}
+  dustParticles: {fileID: 286782459826712307, guid: 8958f9f1e77ae644183e4b1c945314c0, type: 3}
+  soundboxDamageParticles: {fileID: 286782459826712307, guid: 0c3c9789b17d55b44be4d68f0264ed9f, type: 3}
 --- !u!1 &4750035103671171986
 GameObject:
   m_ObjectHideFlags: 0

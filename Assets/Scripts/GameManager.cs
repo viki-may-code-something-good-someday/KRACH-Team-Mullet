@@ -23,7 +23,11 @@ public class GameManager : MonoBehaviour
     public CharacterController_FirstPerson playerController;
 
     [SerializeField] public RoomObj[] rooms;
-     
+
+    public int gameLostScorePenalty = 500;
+
+    public float maxPlaytimeInSeconds;
+
     public static GameManager Instance { get; private set; }
 
     private void Awake()
@@ -38,8 +42,6 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
-            rooms[1].SetEnemeyIsInThisRoom(true);
-
         StartGame();
     }
 
@@ -54,8 +56,31 @@ public class GameManager : MonoBehaviour
     {
         currentPlaytime = 0f;
 
+        ChooseRandomRoomForEnemy();
 
         ResumeGame();
+    }
+
+    public void ChooseRandomRoomForEnemy()
+    {         
+        int randomRoomIndex = Random.Range(0, rooms.Length);
+        rooms[randomRoomIndex].isEnemyInThisRoom = true;
+        SetOtherEnemiesDisabled(randomRoomIndex);
+        Debug.Log("Enemy is in room: " + rooms[randomRoomIndex].name);
+    }
+
+    private void SetOtherEnemiesDisabled(int roomIndexForRoomWithEnemy)
+    {
+        for (int i = 0; i < rooms.Length; i++)
+        {
+            if (i != roomIndexForRoomWithEnemy)
+            {
+                rooms[i].SetEnemeyIsInThisRoom(false);
+            }
+            else            {
+                rooms[i].SetEnemeyIsInThisRoom(true);
+            }
+        }
     }
 
     public void GameOver(bool won)
@@ -63,7 +88,7 @@ public class GameManager : MonoBehaviour
         RuntimeManager.PlayOneShot("event:/SFX/GameOver");    // sound
 
         currentState = GameState.GameOver;
-        int finalScore = CalculateScore();
+        int finalScore = CalculateScore(won);
         Debug.Log($"Game Over! Final Score: {finalScore} - You {(won ? "won" : "lost")}!");
 
         UI_GameOver.Instance.SetGameOverScreenWithScore(finalScore, 0);
@@ -72,7 +97,7 @@ public class GameManager : MonoBehaviour
     public void GameOverBecauseWallDestroyedWithLowRMF()
     {
         currentState = GameState.GameOver;
-        int finalScore = CalculateScore();
+        int finalScore = CalculateScore(false);
         Debug.Log($"Game Over! Final Score: {finalScore} - You lost because you destroyed a wall when RMF was low!");
 
         UI_GameOver.Instance.SetGameOverScreenWithScore(finalScore, 2);
@@ -112,11 +137,30 @@ public class GameManager : MonoBehaviour
     private void UpdateInternalTimer()
     {
         currentPlaytime += Time.deltaTime;
+
+        if(currentPlaytime >= maxPlaytimeInSeconds)
+        {
+            currentState = GameState.GameOver;
+            int finalScore = CalculateScore(false);
+
+            UI_GameOver.Instance.SetGameOverScreenWithScore(finalScore, 3);
+        }
     }
 
-    private int CalculateScore()
+    private int CalculateScore(bool gameWon)
     {
-        return Mathf.FloorToInt(maxScore - currentPlaytime);
+        int score = Mathf.FloorToInt(maxScore - currentPlaytime);
+
+        if(gameWon)
+        {
+            score += 100;
+        }
+        else
+        {
+            score -= gameLostScorePenalty; // Penalty für Niederlage
+        }
+
+        return Mathf.FloorToInt(score);
     }
 
     public void WallWasDestroyed(Wall_Data wall)
@@ -167,7 +211,7 @@ public class GameManager : MonoBehaviour
         currentState = GameState.Sequence;
 
         playerController.walkSpeed = 1f;
-        
+        playerController.SetCursor(true);
 
         yield return new WaitForSeconds(1f);
 

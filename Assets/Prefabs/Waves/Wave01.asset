@@ -13,12 +13,8 @@ MonoBehaviour:
   m_Name: Wave01
   m_EditorClassIdentifier: Assembly-CSharp::SoundBoxWave
   boxes:
-  - {fileID: 5290804855181602813, guid: 374fa6d517b9e4649b9a2c8fff5b5c0a, type: 3}
-  - {fileID: 5290804855181602813, guid: 374fa6d517b9e4649b9a2c8fff5b5c0a, type: 3}
-  - {fileID: 5290804855181602813, guid: 374fa6d517b9e4649b9a2c8fff5b5c0a, type: 3}
-  spawnPosNumbers: 000000000100000002000000
-  activeInstances:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 1086694340420830532, guid: 374fa6d517b9e4649b9a2c8fff5b5c0a, type: 3}
+  - {fileID: 1086694340420830532, guid: 374fa6d517b9e4649b9a2c8fff5b5c0a, type: 3}
+  spawnPosNumbers: 0500000000000000
+  activeInstances: []
   hasSpawned: 1

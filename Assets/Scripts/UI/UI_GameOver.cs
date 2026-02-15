@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class UI_GameOver : MonoBehaviour
 {
@@ -23,8 +24,12 @@ public class UI_GameOver : MonoBehaviour
 
     public static UI_GameOver Instance { get; private set; }
 
+    public TextMeshProUGUI buttonText;
+    public string[] buttonTextRestart;
+
     private void Awake()
     {
+
         if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
@@ -34,11 +39,14 @@ public class UI_GameOver : MonoBehaviour
         DontDestroyOnLoad(gameObject);
 
         gameObject.SetActive(false);
+
+
     }
 
     public void SetGameOverScreenWithScore(int score, int reasonForGameOver)
     {
-        switch(reasonForGameOver)
+        buttonText.text = buttonTextRestart[Random.Range(0, buttonTextRestart.Length - 1)];
+        switch (reasonForGameOver)
         {
             case 0: // default: player destroyed wall of room with enemy in it, or player ran out of time
                 Debug.Log("This should be called with final score: " + score);
@@ -75,6 +83,18 @@ public class UI_GameOver : MonoBehaviour
                 resultText.text = GetResultTextForScore(Mathf.RoundToInt(scorePercentage3));
 
                 reasonText.text = reasonForGameOverString[2];
+                break;
+            case 3: //player ran out of time
+                Debug.Log("This should be called with final score: " + score);
+                gameObject.SetActive(true);
+
+                scoreValue.text = score.ToString();
+
+                float scorePercentage4 = score / GameManager.Instance.maxScore * 100f;
+
+                resultText.text = GetResultTextForScore(Mathf.RoundToInt(scorePercentage4));
+
+                reasonText.text = reasonForGameOverString[3];
                 break;
         }
         

@@ -3,14 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using FMODUnity;
+using DG.Tweening;
 
 public class Wall_Data : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private GameObject wallNormal;
     [SerializeField] private GameObject wallBroken;
-    [SerializeField] private List<GameObject> wallPieces = new List<GameObject>();
     [SerializeField] private PhysicsMaterial wallPiecesPhysicsMaterial;
+    // [SerializeField] private DOTweenAnimation wallHittedAnim;
+    // [SerializeField] private DOTweenAnimation wallHittedAnim2;
+    [SerializeField] private List<GameObject> wallPieces = new List<GameObject>();
+
 
     [Header("Wall Data")]
     [SerializeField] private float health;
@@ -49,11 +53,16 @@ public class Wall_Data : MonoBehaviour
 
     public void TakeDamage(float _damage, Vector3 _hitPoint, Vector3 _hitNormal)
     {
+        RuntimeManager.PlayOneShot("event:/SFX/WallHit", _hitPoint);    // sound
+        
+        // if (wallHittedAnim != null && wallHittedAnim2 != null)
+        // {
+        //     wallHittedAnim.DORestart();
+        //     wallHittedAnim2.DORestart();
+        // }
+        
         health -= _damage;
 
-        RuntimeManager.PlayOneShot("event:/SFX/WallHit", _hitPoint);    // sound
-
-        //wallPieces could shake?
 
         if (health <= 0f)
         {

@@ -135,8 +135,8 @@ public class CharacterController_FirstPerson : MonoBehaviour
             footstepTimer += Time.deltaTime;
             if (footstepTimer >= interval)
             {
-                // Play one-shot footstep at the player's position
-                RuntimeManager.PlayOneShot(footstepEvent, transform.position);
+                // Play one-shot footstep attached to the player's GameObject so it follows the player
+                RuntimeManager.PlayOneShotAttached(footstepEvent, gameObject);
                 footstepTimer = 0f;
             }
         }

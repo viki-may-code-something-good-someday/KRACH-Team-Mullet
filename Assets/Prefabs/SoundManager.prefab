@@ -44,6 +44,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 702b1cdae7fb4a5409a45fdffe01c720, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SoundManager
+  classicSchubertEvent:
+    Guid:
+      Data1: -1999092502
+      Data2: 1133629084
+      Data3: 997130157
+      Data4: 464883419
+    Path: event:/Music/M_Schubert_Classic
+  remixSchubertEvent:
+    Guid:
+      Data1: 1395814957
+      Data2: 1281742464
+      Data3: 1108443285
+      Data4: 1678104668
+    Path: event:/Music/M_Schubert_Remix
   neighbourEvent:
     Guid:
       Data1: -1942938094
@@ -51,6 +65,13 @@ MonoBehaviour:
       Data3: 75218588
       Data4: 346481125
     Path: event:/Music/M_Neighbour
+  neightbourlistensEvent:
+    Guid:
+      Data1: -1110754182
+      Data2: 1107032738
+      Data3: 1105983632
+      Data4: -773767184
+    Path: event:/SFX/NeighbourListens
   soundboxEvents:
   - Guid:
       Data1: 1494729036
@@ -76,3 +97,10 @@ MonoBehaviour:
       Data3: -1780804683
       Data4: -1669596325
     Path: event:/Music/M_SFX
+  currentLoudness: 0
+  minNormalInterval: 4
+  maxNormalInterval: 11
+  minReducedInterval: 2
+  maxReducedInterval: 6
+  reductionMultiplier: 0.19
+  volumeLerpDuration: 0.1

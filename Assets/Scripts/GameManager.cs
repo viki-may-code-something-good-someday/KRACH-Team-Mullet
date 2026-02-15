@@ -2,9 +2,10 @@
 using UnityEngine;
 using FMOD.Studio;
 using FMODUnity;
+using UnityEngine.SceneManagement;
 public enum GameState
 {
-    MainMenu,
+    EndMenu,
     Playing,
     Paused,
     Sequence,
@@ -45,11 +46,18 @@ public class GameManager : MonoBehaviour
         StartGame();
     }
 
-    public 
-
-    void Update()
+    public void Update()
     {
         if(currentState == GameState.Playing) UpdateInternalTimer();
+        if(currentState == GameState.EndMenu && Input.GetKeyDown(KeyCode.Space))
+        {
+            RestartGame();
+        }
+    }
+    
+    public void RestartGame()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
     public void StartGame()
@@ -127,6 +135,10 @@ public class GameManager : MonoBehaviour
     public void SetSequence()
         {
         currentState = GameState.Sequence;
+    }
+
+    public void SetMenu()
+    {         currentState = GameState.EndMenu;
     }
 
     public void EndSequence()

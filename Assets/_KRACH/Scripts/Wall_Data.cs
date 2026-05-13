@@ -130,7 +130,7 @@ public class Wall_Data : MonoBehaviour
             sc.radius = 0.1f;
             sc.sharedMaterial = wallPiecesPhysicsMaterial;
 
-            piece.AddComponent<BillboardFacingCamera>();
+            piece.AddComponent<BillboardObject>();
         }
     }
 

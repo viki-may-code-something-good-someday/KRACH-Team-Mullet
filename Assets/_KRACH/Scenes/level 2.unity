@@ -504,6 +504,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 447786811007858007, guid: 21be0e5214fd57346aea105131e6afcb, type: 3}
+      propertyPath: m_Cameras.Array.size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 6214146950371495464, guid: 21be0e5214fd57346aea105131e6afcb, type: 3}
       propertyPath: m_Name
       value: level 2

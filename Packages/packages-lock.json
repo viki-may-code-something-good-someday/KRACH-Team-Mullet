@@ -301,6 +301,12 @@
       },
       "url": "https://packages.unity.com"
     },
+    "com.unrealchan.foldercolorsettings": {
+      "version": "file:C:/Users/lukas/Downloads/UnityFolderColorSettings-main/UnityFolderColorSettings-main",
+      "depth": 0,
+      "source": "local",
+      "dependencies": {}
+    },
     "com.unity.modules.accessibility": {
       "version": "1.0.0",
       "depth": 0,

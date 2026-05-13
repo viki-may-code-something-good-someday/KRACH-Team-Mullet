@@ -24,6 +24,7 @@
   <Project Path="DOTweenPro.EditorScripts.csproj" />
   <Project Path="DOTweenPro.Scripts.csproj" />
   <Project Path="Mirror.CompilerSymbols.csproj" />
+  <Project Path="FolderColorSettings.Editor.csproj" />
   <Project Path="Sirenix.OdinInspector.Modules.UnityMathematics.csproj" />
   <Project Path="Assembly-CSharp-Editor.csproj" />
 </Solution>

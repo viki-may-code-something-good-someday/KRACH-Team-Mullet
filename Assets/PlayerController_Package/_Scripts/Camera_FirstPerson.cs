@@ -15,9 +15,26 @@ public class Camera_FirstPerson : MonoBehaviour
         Cursor.visible = false;
     }
 
+    public void SwitchCursorMode()
+    {
+        if (Cursor.lockState == CursorLockMode.Locked)
+        {
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.Locked;
+            Cursor.visible = false;
+        }
+    }
+
     void Update()
     {
+        if (Input.GetKeyDown(KeyCode.T)) { SwitchCursorMode(); }
+
         if (Mouse.current == null) return;
+        if (Cursor.lockState == CursorLockMode.None) return;
 
         // Get mouse movement delta
         Vector2 mouseDelta = Mouse.current.delta.ReadValue() * mouseSensitivity;

@@ -1,9 +1,7 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using FMODUnity;
-using DG.Tweening;
 
 public class Wall_Data : MonoBehaviour
 {
@@ -12,32 +10,31 @@ public class Wall_Data : MonoBehaviour
     [SerializeField] private GameObject wallBroken;
     [SerializeField] private List<GameObject> wallPieces = new List<GameObject>();
     [SerializeField] private PhysicsMaterial wallPiecesPhysicsMaterial;
-    public bool isFirstWall = false;
+    public bool isFirstWall = false; //deprecated
 
 
-    [Header("Wall Data")]
+    [Header("Settings")]
     [SerializeField] private float health;
     [SerializeField] private float explosionForce;
     [SerializeField] private float explosionRadius;
 
-    private bool isDestroyed;
     [Header("Wall Pieces")]
-    [SerializeField] private float piecesWallFadeOutSpeedMultiplier;
-    private bool fadeOutSpeedIncreased; 
-
-    private bool fadeOutPieces;
+    [SerializeField] private float wallPiecesFadeOutSpeedMultiplier = 0.2f;
+    [SerializeField] private float speedUpWallPiecesFadeOutSpeedMultiplier = 0.5f;
 
 
     public float Health { get { return health; } }
 
-    private void Start()
-    {
-        isDestroyed = false;
-    }
+    private bool fadeOutSpeedIncreased;
+    private bool isDestroyed = false;
+    private bool fadeOutPieces;
+
+
+
 
     private void Update()
     {
-        if (health <= 0f && !isDestroyed )
+        if (health <= 0f && !isDestroyed)
         {
             TakeDamage(0f, transform.position, transform.forward);
 
@@ -50,12 +47,12 @@ public class Wall_Data : MonoBehaviour
         }
     }
 
+
+
     public void TakeDamage(float _damage, Vector3 _hitPoint, Vector3 _hitNormal)
     {
-       // GameManager.Instance.StartCameraShake(0.3f, 0.1f);
-
         health -= _damage;
-        
+
         RuntimeManager.PlayOneShot("event:/SFX/WallHit", _hitPoint);    // sound
 
 
@@ -67,13 +64,6 @@ public class Wall_Data : MonoBehaviour
 
     private void GetDestroyed(Vector3 _hitPoint, Vector3 _hitNormal)
     {
-        // GameManager.Instance.StartCameraShake(1f, 0.2f);
-
-        if(SoundManager.Instance.currentLoudness == 0 && !isFirstWall)
-        {             
-            GameManager.Instance.GameOverBecauseWallDestroyedWithLowRMF(); // player lost because they destroyed a wall when RMF was low
-        }
-
         isDestroyed = true;
 
         RuntimeManager.PlayOneShot("event:/SFX/WallBreakdown", _hitPoint);    // sound
@@ -82,21 +72,14 @@ public class Wall_Data : MonoBehaviour
         WallPiecesSetup();
 
         //wall fractures
-        wallNormal.SetActive(false);
-        wallBroken.SetActive(true);
+        wallNormal.SetActive(false);  //needs rework
+        wallBroken.SetActive(true);   //needs rework
 
-        /*RMF_State rmfState = SoundManager.Instance.GetCurrentRMFState();
-        if(rmfState == RMF_State.Low)
-        {
-                GameManager.Instance.GameOverBecauseWallDestroyedWithLowRMF(); // player lost because they destroyed a wall when RMF was low
-        }
-        */
+        GameManager.Instance.WallWasDestroyed(this);
 
-            GameManager.Instance.WallWasDestroyed(this);
+        List<Rigidbody> rigidbodies = wallBroken.transform.GetComponentsInChildren<Rigidbody>().ToList(); //needs rework
 
-        List<Rigidbody> rigidbodies = wallBroken.transform.GetComponentsInChildren<Rigidbody>().ToList();
-
-        foreach (Rigidbody rb in rigidbodies)
+        foreach (Rigidbody rb in rigidbodies) //needs rework
         {
             rb.isKinematic = false;
             rb.useGravity = true;
@@ -105,18 +88,9 @@ public class Wall_Data : MonoBehaviour
 
         }
 
-        if(RMF_Script.Instance != null)
-        {
-            if(RMF_Script.Instance.IsRMFHigh())
-            {
-                GameManager.Instance.GameOverBecauseWallDestroyedWithLowRMF(); // player lost because they destroyed a wall when RMF was low
-            }
-        }
-
-        
     }
 
-    private void WallPiecesSetup()
+    private void WallPiecesSetup() //needs rework
     {
         fadeOutPieces = true;
 
@@ -148,19 +122,19 @@ public class Wall_Data : MonoBehaviour
             }
 
             Color currentColor = sr.material.color;
-            float newAlpha = currentColor.a - Time.deltaTime * piecesWallFadeOutSpeedMultiplier;
+            float newAlpha = currentColor.a - Time.deltaTime * wallPiecesFadeOutSpeedMultiplier;
             sr.material.color = new Color(currentColor.r, currentColor.g, currentColor.b, newAlpha);
 
-            
+
             if (newAlpha <= 0f)
             {
                 Destroy(wallPieces[i]);
                 wallPieces.RemoveAt(i);
             }
-            else if(newAlpha <= 80f && !fadeOutSpeedIncreased)
+            else if (newAlpha <= 80f && !fadeOutSpeedIncreased)
             {
                 fadeOutSpeedIncreased = true;
-                piecesWallFadeOutSpeedMultiplier *= 2f;
+                wallPiecesFadeOutSpeedMultiplier = speedUpWallPiecesFadeOutSpeedMultiplier;
             }
         }
     }

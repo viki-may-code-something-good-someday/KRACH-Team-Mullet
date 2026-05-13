@@ -21,7 +21,7 @@ public class SteamLobby : MonoBehaviour
 
     private void Start()
     {
-        if (!SteamManager.Initialized) { Debug.LogWarning("Steam not open"); return; }
+        if (!SteamManager.Initialized) { Debug.LogError("Steam not open"); lobbyNameText.text = "Fehlgeschlagen - Steam offen?"; return; }
 
         customManager = GetComponent<CustomNetworkManager>();
 

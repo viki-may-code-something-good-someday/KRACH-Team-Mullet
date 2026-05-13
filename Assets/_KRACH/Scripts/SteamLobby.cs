@@ -1,10 +1,10 @@
 using Mirror;
 using Steamworks;
-using TMPro;
 using UnityEngine;
 
 public class SteamLobby : MonoBehaviour
 {
+    public static SteamLobby instance;
     //Callbacks
     protected Callback<LobbyCreated_t> LobbyCreated;
     protected Callback<GameLobbyJoinRequested_t> JoinRequest;
@@ -15,13 +15,13 @@ public class SteamLobby : MonoBehaviour
     private const string hostAddressKey = "HostAddress";
     private CustomNetworkManager customManager;
 
-    public GameObject hostButton;
-    public TextMeshProUGUI lobbyNameText;
+
 
 
     private void Start()
     {
-        if (!SteamManager.Initialized) { Debug.LogError("Steam not open"); lobbyNameText.text = "Fehlgeschlagen - Steam offen?"; return; }
+        if (!SteamManager.Initialized) { Debug.LogError("Steam not open"); return; }
+        if (instance == null) { instance = this; }
 
         customManager = GetComponent<CustomNetworkManager>();
 
@@ -44,7 +44,7 @@ public class SteamLobby : MonoBehaviour
         customManager.StartHost();
 
         SteamMatchmaking.SetLobbyData(new CSteamID(callback.m_ulSteamIDLobby), hostAddressKey, SteamUser.GetSteamID().ToString());
-        SteamMatchmaking.SetLobbyData(new CSteamID(callback.m_ulSteamIDLobby), "name", "Lobby von: " + SteamFriends.GetPersonaName().ToString());
+        SteamMatchmaking.SetLobbyData(new CSteamID(callback.m_ulSteamIDLobby), "name", SteamFriends.GetPersonaName().ToString());
 
     }
 
@@ -57,10 +57,12 @@ public class SteamLobby : MonoBehaviour
     private void OnLobbyEntered(LobbyEnter_t callback)
     {
         //Everyone
-        hostButton.SetActive(false);
-        currentLobbyID = callback.m_ulSteamIDLobby;
+        /*hostButton.SetActive(false);
         lobbyNameText.gameObject.SetActive(true);
-        lobbyNameText.text = SteamMatchmaking.GetLobbyData(new CSteamID(callback.m_ulSteamIDLobby), "name");
+        lobbyNameText.text = SteamMatchmaking.GetLobbyData(new CSteamID(callback.m_ulSteamIDLobby), "name");*/
+
+        currentLobbyID = callback.m_ulSteamIDLobby;
+
 
         //Clients
         if (NetworkServer.active) { return; }

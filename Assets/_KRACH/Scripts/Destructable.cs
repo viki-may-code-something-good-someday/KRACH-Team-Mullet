@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class Destructable : MonoBehaviour
 {
-    [SerializeField] private Wall_Data wallData;
+    [SerializeField] private WallData wallData;
     [SerializeField] private SoundBox soundBox;
     [SerializeField] private ParticleSystem dustParticles;
     [SerializeField] private ParticleSystem soundboxDamageParticles;
@@ -17,7 +17,7 @@ public class Destructable : MonoBehaviour
             if (dustParticles != null) Instantiate(dustParticles, _hitPoint, Quaternion.LookRotation(_hitNormal));
 
             wallData.TakeDamage(_damage, _hitPoint, _hitNormal);
-            
+
         }
         else if (soundBox != null)
         {

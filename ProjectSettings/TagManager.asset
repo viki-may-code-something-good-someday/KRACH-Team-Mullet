@@ -6,6 +6,7 @@ TagManager:
   tags:
   - SoundBox
   - Neighbour
+  - NoOcclusion
   layers:
   - Default
   - TransparentFX

@@ -51,16 +51,16 @@ public class GameManager : MonoBehaviour
 
     public void Update()
     {
-        if(currentState == GameState.Playing) UpdateInternalTimer();
-        if(currentState == GameState.GameOver && Input.GetKeyDown(KeyCode.Space))
+        if (currentState == GameState.Playing) UpdateInternalTimer();
+        if (currentState == GameState.GameOver && Input.GetKeyDown(KeyCode.Space))
         {
             RestartGame();
         }
     }
-    
+
     public void RestartGame()
     {
-        
+
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 
@@ -79,8 +79,8 @@ public class GameManager : MonoBehaviour
     }
 
     public void ChooseRandomRoomForEnemy()
-    { 
-        for(int i = 0; i < rooms.Length; i++)
+    {
+        for (int i = 0; i < rooms.Length; i++)
         {
             int randomRoomIndex = Random.Range(0, rooms.Length);
             if (rooms[randomRoomIndex].canEnemySpawnInThisRoom)
@@ -94,9 +94,9 @@ public class GameManager : MonoBehaviour
             {
                 continue;
             }
-           
+
         }
-        
+
     }
 
     private void SetOtherEnemiesDisabled(int roomIndexForRoomWithEnemy)
@@ -107,14 +107,15 @@ public class GameManager : MonoBehaviour
             {
                 rooms[i].SetEnemeyIsInThisRoom(false);
             }
-            else            {
+            else
+            {
                 rooms[i].SetEnemeyIsInThisRoom(true);
             }
         }
     }
 
     public void GameOver(bool won)
-    {         
+    {
         RuntimeManager.PlayOneShot("event:/SFX/GameOver");    // sound
 
         currentState = GameState.GameOver;
@@ -155,12 +156,13 @@ public class GameManager : MonoBehaviour
     }
 
     public void SetSequence()
-        {
+    {
         currentState = GameState.Sequence;
     }
 
     public void SetMenu()
-    {         currentState = GameState.EndMenu;
+    {
+        currentState = GameState.EndMenu;
     }
 
     public void EndSequence()
@@ -172,7 +174,7 @@ public class GameManager : MonoBehaviour
     {
         currentPlaytime += Time.deltaTime;
 
-        if(currentPlaytime >= maxPlaytimeInSeconds)
+        if (currentPlaytime >= maxPlaytimeInSeconds)
         {
             currentState = GameState.GameOver;
             int finalScore = CalculateScore(false);
@@ -185,7 +187,7 @@ public class GameManager : MonoBehaviour
     {
         int score = Mathf.FloorToInt(maxScore - currentPlaytime);
 
-        if(gameWon)
+        if (gameWon)
         {
             score += 100;
         }
@@ -197,11 +199,11 @@ public class GameManager : MonoBehaviour
         return Mathf.FloorToInt(score);
     }
 
-    public void WallWasDestroyed(Wall_Data wall)
+    public void WallWasDestroyed(WallData wall)
     {
         for (int i = 0; i < rooms.Length; i++)
         {
-            for(int j = 0; j < rooms[i].wallsInThisRoom.Length; j++)
+            for (int j = 0; j < rooms[i].wallsInThisRoom.Length; j++)
             {
                 if (rooms[i].wallsInThisRoom[j] == wall)
                 {
@@ -218,7 +220,7 @@ public class GameManager : MonoBehaviour
                     }
                     Debug.Log("Enemy wasnt in this room");
                 }
-                    
+
             }
 
         }

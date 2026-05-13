@@ -59,6 +59,17 @@ public class Player_Interact : MonoBehaviour
             }
         }
         else punchedAir = true;
+
+        //Billboard Objects
+        if(Physics.Raycast(cameraMain.transform.position, cameraMain.transform.forward, out RaycastHit hitinfoBillboard, hitRange, LayerMask.GetMask("Default"), QueryTriggerInteraction.Ignore))
+        {
+            hitinfoBillboard.collider.TryGetComponent<BillboardObject>(out BillboardObject billboardObject);
+            if (billboardObject != null)
+            {
+                billboardObject.TakePunch(cameraMain.transform.position);
+                RuntimeManager.PlayOneShot("event:/SFX/Punch");
+            }
+        }
         
         if (punchedAir) RuntimeManager.PlayOneShot("event:/SFX/PunchAir");    // sound
     }

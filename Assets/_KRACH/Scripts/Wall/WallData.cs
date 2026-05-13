@@ -3,24 +3,24 @@ using System.Linq;
 using UnityEngine;
 using FMODUnity;
 
-public class Wall_Data : MonoBehaviour
+public class WallData : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] private GameObject wallNormal;
     [SerializeField] private GameObject wallBroken;
-    [SerializeField] private List<GameObject> wallPieces = new List<GameObject>();
-    [SerializeField] private PhysicsMaterial wallPiecesPhysicsMaterial;
-    public bool isFirstWall = false; //deprecated
+    [SerializeField] private List<GameObject> wallDecorations = new List<GameObject>();
+    [SerializeField] private List<Rigidbody> wallChunks;
 
 
     [Header("Settings")]
+    [SerializeField] private bool indestructable;
     [SerializeField] private float health;
     [SerializeField] private float explosionForce;
     [SerializeField] private float explosionRadius;
 
-    [Header("Wall Pieces")]
-    [SerializeField] private float wallPiecesFadeOutSpeedMultiplier = 0.2f;
-    [SerializeField] private float speedUpWallPiecesFadeOutSpeedMultiplier = 0.5f;
+    [Header("Wall Decorations")]
+    [SerializeField] private float wallDecorationsFadeOutSpeedMultiplier = 0.2f;
+    [SerializeField] private float speedUpWallDecorationsFadeOutSpeedMultiplier = 0.5f;
 
 
     public float Health { get { return health; } }
@@ -34,6 +34,11 @@ public class Wall_Data : MonoBehaviour
 
     private void Update()
     {
+        CheckWallDestruction();
+    }
+
+    private void CheckWallDestruction()
+    {
         if (health <= 0f && !isDestroyed)
         {
             TakeDamage(0f, transform.position, transform.forward);
@@ -43,14 +48,14 @@ public class Wall_Data : MonoBehaviour
 
         if (fadeOutPieces)
         {
-            FadeOutWallPieces();
+            FadeOutWallDecorations();
         }
     }
 
-
-
     public void TakeDamage(float _damage, Vector3 _hitPoint, Vector3 _hitNormal)
     {
+        if (indestructable || isDestroyed) return;
+
         health -= _damage;
 
         RuntimeManager.PlayOneShot("event:/SFX/WallHit", _hitPoint);    // sound
@@ -68,14 +73,12 @@ public class Wall_Data : MonoBehaviour
 
         RuntimeManager.PlayOneShot("event:/SFX/WallBreakdown", _hitPoint);    // sound
 
-        //handle Wall Pieces
-        WallPiecesSetup();
+        //handle Wall Decorations
+        WallDecorationsSetup();
 
         //wall fractures
         wallNormal.SetActive(false);  //needs rework
         wallBroken.SetActive(true);   //needs rework
-
-        GameManager.Instance.WallWasDestroyed(this);
 
         List<Rigidbody> rigidbodies = wallBroken.transform.GetComponentsInChildren<Rigidbody>().ToList(); //needs rework
 
@@ -90,11 +93,11 @@ public class Wall_Data : MonoBehaviour
 
     }
 
-    private void WallPiecesSetup() //needs rework
+    private void WallDecorationsSetup() //needs rework
     {
         fadeOutPieces = true;
 
-        foreach (GameObject piece in wallPieces)
+        foreach (GameObject piece in wallDecorations)
         {
             piece.transform.parent = null;
 
@@ -102,39 +105,38 @@ public class Wall_Data : MonoBehaviour
 
             SphereCollider sc = piece.AddComponent<SphereCollider>();
             sc.radius = 0.1f;
-            sc.sharedMaterial = wallPiecesPhysicsMaterial;
 
             piece.AddComponent<BillboardObject>();
         }
     }
 
-    private void FadeOutWallPieces()
+    private void FadeOutWallDecorations()
     {
-        for (int i = wallPieces.Count - 1; i >= 0; i--)
+        for (int i = wallDecorations.Count - 1; i >= 0; i--)
         {
-            SpriteRenderer sr = wallPieces[i].GetComponent<SpriteRenderer>();
+            SpriteRenderer sr = wallDecorations[i].GetComponent<SpriteRenderer>();
 
             if (sr == null)
             {
-                Destroy(wallPieces[i]);
-                wallPieces.RemoveAt(i);
+                Destroy(wallDecorations[i]);
+                wallDecorations.RemoveAt(i);
                 continue;
             }
 
             Color currentColor = sr.material.color;
-            float newAlpha = currentColor.a - Time.deltaTime * wallPiecesFadeOutSpeedMultiplier;
+            float newAlpha = currentColor.a - Time.deltaTime * wallDecorationsFadeOutSpeedMultiplier;
             sr.material.color = new Color(currentColor.r, currentColor.g, currentColor.b, newAlpha);
 
 
             if (newAlpha <= 0f)
             {
-                Destroy(wallPieces[i]);
-                wallPieces.RemoveAt(i);
+                Destroy(wallDecorations[i]);
+                wallDecorations.RemoveAt(i);
             }
             else if (newAlpha <= 80f && !fadeOutSpeedIncreased)
             {
                 fadeOutSpeedIncreased = true;
-                wallPiecesFadeOutSpeedMultiplier = speedUpWallPiecesFadeOutSpeedMultiplier;
+                wallDecorationsFadeOutSpeedMultiplier = speedUpWallDecorationsFadeOutSpeedMultiplier;
             }
         }
     }

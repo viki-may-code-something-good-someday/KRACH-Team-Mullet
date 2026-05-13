@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class BillboardObject : MonoBehaviour
 {
-    private Camera mainCamera;
-    private Rigidbody rb;
 
     [SerializeField] private bool flippedSprite;
     [SerializeField] private bool knockbackEnabled = true;
@@ -12,6 +10,8 @@ public class BillboardObject : MonoBehaviour
     [SerializeField] private float knockbackDuration = 0.3f;
     [SerializeField] private ParticleSystem punchParticles;
 
+    private Camera mainCamera;
+    private Rigidbody rb;
     private bool isKnockedBack;
 
 

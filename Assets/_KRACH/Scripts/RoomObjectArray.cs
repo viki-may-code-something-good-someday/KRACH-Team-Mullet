@@ -8,9 +8,9 @@ public enum RoomTypes
     Other
 }
 
-public class RoomObjectArray 
+public class RoomObjectArray
 {
     public RoomObj roomObject;
     public RoomTypes roomType;
-    [SerializeField] public Wall_Data[] destructableWallsNextToRoom;
+    [SerializeField] public WallData[] destructableWallsNextToRoom;
 }

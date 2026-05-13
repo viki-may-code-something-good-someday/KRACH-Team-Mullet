@@ -23,7 +23,7 @@ public class SoundBox : MonoBehaviour
 
     // private void Initialize()
     // {
-        
+
     // }
 
     // private void Start()
@@ -31,15 +31,6 @@ public class SoundBox : MonoBehaviour
     //     musicEmitter.GetComponent<StudioEventEmitter>();
     // }
 
-    private void Update()
-    {
-        Idle();
-    }
-
-    private void Idle()
-    {
-        // Dotween here
-    }
 
     public void TakeDamage(float _damage, Vector3 _hitPoint, Vector3 _hitNormal)
     {
@@ -60,7 +51,7 @@ public class SoundBox : MonoBehaviour
     {
         RuntimeManager.PlayOneShot("event:/SFX/SpeakerDestroy", transform.position);    // sound
         musicEmitter.Stop();
-         
+
         SoundBoxSpawner.Instance.DestroyingSoundBox(this);
     }
 }

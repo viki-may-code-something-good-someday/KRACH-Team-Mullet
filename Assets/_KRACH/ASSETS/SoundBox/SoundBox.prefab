@@ -617,7 +617,7 @@ GameObject:
   - component: {fileID: 8917499931987817718}
   - component: {fileID: 4676982833602372420}
   - component: {fileID: 1086694340420830532}
-  - component: {fileID: 2861686247985521660}
+  - component: {fileID: 5126255375370723303}
   m_Layer: 9
   m_Name: SoundBox
   m_TagString: SoundBox
@@ -691,9 +691,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SoundBox
   health: 3
-  musicEmitter: {fileID: 2861686247985521660}
+  musicEmitter: {fileID: 0}
   hitAnimsContainer: {fileID: 6889427616163889293}
---- !u!114 &2861686247985521660
+--- !u!114 &5126255375370723303
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -702,9 +702,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 5290804855181602813}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9a6610d2e704f1648819acc8d7460285, type: 3}
+  m_Script: {fileID: 11500000, guid: c60bff4681f50cf439e1012be0041733, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: FMODUnity::FMODUnity.StudioEventEmitter
+  m_EditorClassIdentifier: Assembly-CSharp::AudioOcclusion
   CollisionTag: 
   EventReference:
     Guid:
@@ -713,17 +713,29 @@ MonoBehaviour:
       Data3: 0
       Data4: 0
     Path: 
-  Event: 
-  EventPlayTrigger: 0
+  EventPlayTrigger: 1
   EventStopTrigger: 0
   AllowFadeout: 1
   TriggerOnce: 0
   Preload: 0
   NonRigidbodyVelocity: 0
-  Params: []
   OverrideAttenuation: 0
-  OverrideMinDistance: -1
-  OverrideMaxDistance: -1
+  OverrideMinDistance: 8
+  OverrideMaxDistance: 10
+  Params: []
+  enableOcclusion: 1
+  playerTransform: {fileID: 0}
+  obstacleLayer:
+    serializedVersion: 2
+    m_Bits: 1
+  maxDistance: 20
+  maxParameterDistance: 30
+  invertFadeRange: 0
+  stopAudioWhenOutOfRange: 0
+  nonOcclusionTag: NoOcclusion
+  selectedMaterial: 1
+  scaledValue: 0
+  isObstructed: 0
 --- !u!1 &6889427616163889293
 GameObject:
   m_ObjectHideFlags: 0

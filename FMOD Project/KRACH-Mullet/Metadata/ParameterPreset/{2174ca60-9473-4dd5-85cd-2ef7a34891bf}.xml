@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<objects serializationModel="Studio.02.03.00">
+	<object class="ParameterPreset" id="{2174ca60-9473-4dd5-85cd-2ef7a34891bf}">
+		<property name="name">
+			<value>Occlusion</value>
+		</property>
+		<relationship name="folder">
+			<destination>{85a99da1-0641-4a5f-8b40-01f0053153be}</destination>
+		</relationship>
+		<relationship name="parameter">
+			<destination>{ee321a24-bf93-47b7-aa13-2917ec071245}</destination>
+		</relationship>
+	</object>
+	<object class="GameParameter" id="{ee321a24-bf93-47b7-aa13-2917ec071245}">
+		<property name="initialValue">
+			<value>0</value>
+		</property>
+		<property name="isExposedRecursively">
+			<value>false</value>
+		</property>
+		<relationship name="modulators">
+			<destination>{a1e4b1ad-0fd7-4b80-a64e-7337b462b6df}</destination>
+		</relationship>
+	</object>
+	<object class="SeekModulator" id="{a1e4b1ad-0fd7-4b80-a64e-7337b462b6df}">
+		<property name="nameOfPropertyBeingModulated">
+			<value>cursorPosition</value>
+		</property>
+		<property name="speedAscending">
+			<value>10</value>
+		</property>
+	</object>
+</objects>

@@ -4650,6 +4650,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: a2faea5b8dd51f3489349b73f5d418fe, type: 3}
+--- !u!1 &1260876871 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7272800404273610787, guid: a2faea5b8dd51f3489349b73f5d418fe, type: 3}
+  m_PrefabInstance: {fileID: 1260876870}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1262218165
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5952,6 +5957,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7956548004404623784, guid: 71e5a7587b39d554fadd21a11f37c8ad, type: 3}
+      propertyPath: arms
+      value: 
+      objectReference: {fileID: 1260876871}
+    - target: {fileID: 7956548004404623784, guid: 71e5a7587b39d554fadd21a11f37c8ad, type: 3}
       propertyPath: playerCamera
       value: 
       objectReference: {fileID: 2057893239}
@@ -5961,7 +5970,7 @@ PrefabInstance:
       objectReference: {fileID: 72054283}
     - target: {fileID: 7956548004404623784, guid: 71e5a7587b39d554fadd21a11f37c8ad, type: 3}
       propertyPath: rooms.Array.size
-      value: 2
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7956548004404623784, guid: 71e5a7587b39d554fadd21a11f37c8ad, type: 3}
       propertyPath: 'rooms.Array.data[0]'
@@ -5970,6 +5979,10 @@ PrefabInstance:
     - target: {fileID: 7956548004404623784, guid: 71e5a7587b39d554fadd21a11f37c8ad, type: 3}
       propertyPath: 'rooms.Array.data[1]'
       value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 7956548004404623784, guid: 71e5a7587b39d554fadd21a11f37c8ad, type: 3}
+      propertyPath: maxPlaytimeInSeconds
+      value: 999999
       objectReference: {fileID: 0}
     - target: {fileID: 7956548004404623784, guid: 71e5a7587b39d554fadd21a11f37c8ad, type: 3}
       propertyPath: playerCameraController
@@ -6238,7 +6251,8 @@ MonoBehaviour:
   health: 10
   explosionForce: 1000
   explosionRadius: 1
-  piecesWallFadeOutSpeedMultiplier: 0.2
+  wallPiecesFadeOutSpeedMultiplier: 0
+  speedUpWallPiecesFadeOutSpeedMultiplier: 0
 --- !u!114 &301630746193119702
 MonoBehaviour:
   m_ObjectHideFlags: 0

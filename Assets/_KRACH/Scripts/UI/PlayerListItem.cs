@@ -34,8 +34,10 @@ public class PlayerListItem : MonoBehaviour
 
     public void SetPlayerValues(PlayerRole role)
     {
+        this.role = role; // Rolle speichern
         playerNameText.text = playerName;
         playerRole.text = role.ToString();
+        playerIcon.uvRect = new Rect(0, 1, 1, -1);
         if (!avatarReceived) { GetPlayerIcon(); }
     }
 

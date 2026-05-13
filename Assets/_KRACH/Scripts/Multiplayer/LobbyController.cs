@@ -1,4 +1,4 @@
-using Steamworks;
+﻿using Steamworks;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -131,6 +131,42 @@ public class LobbyController : MonoBehaviour
         Destroy(objToRemove);
     }
 
+    public void SwapRoleButton()
+    {
+        // Nur den lokalen Spieler switchen
+        foreach (PlayerListItem playerListItemScript in totalPlayerbaseListItems)
+        {
+            if (playerListItemScript.connectionID == localPlayerController.connectionID)
+            {
+                SwitchPlayerToOtherRole(playerListItemScript);
+                return;
+            }
+        }
+    }
+
+    public void SwitchPlayerToOtherRole(PlayerListItem playerItem)
+    {
+        // Aktuelle Rolle bestimmen und zur anderen wechseln
+        if (hunterPlayerListItems.Contains(playerItem))
+        {
+            // Hunter → Vandalist
+            hunterPlayerListItems.Remove(playerItem);
+            playerItem.transform.SetParent(vandalistPlayerListViewContent.transform);
+            vandalistPlayerListItems.Add(playerItem);
+            playerItem.SetPlayerValues(PlayerRole.Vandalist);
+        }
+        else if (vandalistPlayerListItems.Contains(playerItem))
+        {
+            // Vandalist → Hunter
+            vandalistPlayerListItems.Remove(playerItem);
+            playerItem.transform.SetParent(hunterPlayerListViewContent.transform);
+            hunterPlayerListItems.Add(playerItem);
+            playerItem.SetPlayerValues(PlayerRole.Hunter);
+        }
+
+        playerItem.transform.localScale = Vector3.one;
+    }
+
     public void CreateClientPlayerItem()
     {
         foreach (PlayerObjectController player in Manager.gamePlayers)
@@ -155,10 +191,16 @@ public class LobbyController : MonoBehaviour
         {
             foreach (PlayerListItem playerListItemScript in totalPlayerbaseListItems)
             {
-                if (playerListItemScript.connectionID == player.connectionID) //is this us?
+                if (playerListItemScript.connectionID == player.connectionID)
                 {
                     playerListItemScript.playerName = player.playerName;
-                    playerListItemScript.SetPlayerValues(PlayerRole.Default); //for testing default
+
+                    // Rolle aus aktueller Listenzugehörigkeit lesen, nicht überschreiben
+                    PlayerRole currentRole = hunterPlayerListItems.Contains(playerListItemScript)
+                        ? PlayerRole.Hunter
+                        : PlayerRole.Vandalist;
+
+                    playerListItemScript.SetPlayerValues(currentRole);
                 }
             }
         }

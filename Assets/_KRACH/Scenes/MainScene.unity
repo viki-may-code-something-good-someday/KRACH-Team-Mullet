@@ -173,9 +173,9 @@ MonoBehaviour:
   editorAutoStart: 0
   sendRate: 60
   offlineScene: 
-  onlineScene: 
+  onlineScene: Assets/_KRACH/Scenes/MainScene.unity
   offlineSceneLoadDelay: 0
-  transport: {fileID: 0}
+  transport: {fileID: 114644003}
   networkAddress: localhost
   maxConnections: 100
   disconnectInactiveConnections: 0

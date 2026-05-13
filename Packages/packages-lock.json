@@ -302,9 +302,9 @@
       "url": "https://packages.unity.com"
     },
     "com.unrealchan.foldercolorsettings": {
-      "version": "file:C:/Users/lukas/Downloads/UnityFolderColorSettings-main/UnityFolderColorSettings-main",
+      "version": "file:FolderColorSettings",
       "depth": 0,
-      "source": "local",
+      "source": "embedded",
       "dependencies": {}
     },
     "com.unity.modules.accessibility": {

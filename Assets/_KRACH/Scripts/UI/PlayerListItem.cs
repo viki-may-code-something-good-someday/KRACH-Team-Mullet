@@ -17,6 +17,12 @@ public class PlayerListItem : MonoBehaviour
     public TextMeshProUGUI playerRole;
     public RawImage playerIcon;
 
+    public TextMeshProUGUI readyStatusText;
+    public Color colorForReadyText;
+    public Color colorForGettingReadyText;
+    public Image isReadiedImage;
+    public bool isReady;
+
     protected Callback<AvatarImageLoaded_t> imageLoaded;
 
     private void Start()
@@ -36,9 +42,28 @@ public class PlayerListItem : MonoBehaviour
     {
         this.role = role; // Rolle speichern
         playerNameText.text = playerName;
-        playerRole.text = role.ToString();
+        playerRole.text = role.ToString() + " •";
         playerIcon.uvRect = new Rect(0, 1, 1, -1);
         if (!avatarReceived) { GetPlayerIcon(); }
+        UpdateReadyStatusText();
+    }
+
+    public void UpdateReadyStatusText()
+    {
+        if (isReady)
+        {
+            readyStatusText.text = "Bereit!";
+            isReadiedImage.enabled = true;
+            // pop up anim here
+            // sound for readied here
+        }
+        else
+        {
+            readyStatusText.text = "Sucht Bereit Button...";
+            isReadiedImage.enabled = false;
+            // away anim here
+            // sound for unreadied here
+        }
     }
 
     private void OnImageLoaded(AvatarImageLoaded_t callback)
@@ -70,7 +95,7 @@ public class PlayerListItem : MonoBehaviour
                 texture.Apply();
 
                 // Steam liefert Textur vertikal gespiegelt – hier flippen:
-                texture = FlipTexture(texture);
+                //texture = FlipTexture(texture);
             }
         }
 

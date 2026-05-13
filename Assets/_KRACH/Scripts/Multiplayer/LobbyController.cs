@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LobbyController : MonoBehaviour
 {
@@ -24,6 +25,26 @@ public class LobbyController : MonoBehaviour
     private List<PlayerListItem> hunterPlayerListItems = new List<PlayerListItem>();
     private List<PlayerListItem> vandalistPlayerListItems = new List<PlayerListItem>();
     public PlayerObjectController localPlayerController;
+
+    //Ready
+    public Button startGameButton;
+    public Toggle readyToggle;
+    public TextMeshProUGUI readyToggleText;
+
+    //Player lists
+    private const int hunterMaxNumber = 1;
+    private const int vandalistMaxNumber = 4;
+
+    public TextMeshProUGUI hunterCurrent;
+    public TextMeshProUGUI hunterSlash;
+    public TextMeshProUGUI hunterMax;
+
+    public TextMeshProUGUI vandalistCurrent;
+    public TextMeshProUGUI vandalistSlash;
+    public TextMeshProUGUI vandalistMax;
+
+    public Color defaultTextColor;
+    public Color overshootTextColor;
 
     //Manager
     private CustomNetworkManager manager;
@@ -91,6 +112,9 @@ public class LobbyController : MonoBehaviour
             newPlayerItemScript.playerName = player.playerName;
             newPlayerItemScript.connectionID = player.connectionID;
             newPlayerItemScript.playerSteamID = player.playerSteamID;
+            newPlayerItemScript.isReady = player.ready;
+
+
 
             AddPlayerToListAndSetValues(1, newPlayerItemScript);
 
@@ -115,6 +139,7 @@ public class LobbyController : MonoBehaviour
         }
         playerItem.transform.localScale = Vector3.one;
         totalPlayerbaseListItems.Add(playerItem);
+        UpdateRoleCountTexts();
     }
 
     public void RemovePlayerFromList(PlayerListItem playerItem, GameObject objToRemove)
@@ -129,6 +154,58 @@ public class LobbyController : MonoBehaviour
             vandalistPlayerListItems.Remove(playerItem);
         }
         Destroy(objToRemove);
+        UpdateRoleCountTexts();
+    }
+
+    public void ReadyPlayer()
+    {
+        localPlayerController.ChangeReady();
+    }
+
+    public void UpdateReadyText()
+    {
+        if (localPlayerController.ready)
+        {
+            readyToggleText.text = "Bereit!";
+        }
+        else
+        {
+            readyToggleText.text = "Bereit?";
+        }
+    }
+
+    public void CheckIfAllReady()
+    {
+        bool allReady = false;
+
+        foreach (PlayerObjectController player in Manager.gamePlayers)
+        {
+            if (player.ready)
+            {
+                allReady = true;
+            }
+            else
+            {
+                allReady = false;
+                break;
+            }
+        }
+
+        if (allReady)
+        {
+            if (localPlayerController.playerIdNumber == 1)
+            {
+                startGameButton.interactable = true;
+            }
+            else
+            {
+                startGameButton.interactable = false;
+            }
+        }
+        else
+        {
+            startGameButton.interactable = false;
+        }
     }
 
     public void SwapRoleButton()
@@ -165,6 +242,31 @@ public class LobbyController : MonoBehaviour
         }
 
         playerItem.transform.localScale = Vector3.one;
+        UpdateRoleCountTexts();
+    }
+
+    public void UpdateRoleCountTexts()
+    {
+        int hunterCount = hunterPlayerListItems.Count;
+        int vandalistCount = vandalistPlayerListItems.Count;
+
+        hunterCurrent.text = hunterCount.ToString();
+        hunterMax.text = hunterMaxNumber.ToString();
+
+        vandalistCurrent.text = vandalistCount.ToString();
+        vandalistMax.text = vandalistMaxNumber.ToString();
+
+        bool hunterOvershoot = hunterCount > hunterMaxNumber;
+        bool vandalistOvershoot = vandalistCount > vandalistMaxNumber;
+
+        Color hunterColor = hunterOvershoot ? overshootTextColor : defaultTextColor;
+        Color vandalistColor = vandalistOvershoot ? overshootTextColor : defaultTextColor;
+
+        hunterCurrent.color = hunterColor;
+        hunterMax.color = hunterColor;
+
+        vandalistCurrent.color = vandalistColor;
+        vandalistMax.color = vandalistColor;
     }
 
     public void CreateClientPlayerItem()
@@ -179,6 +281,7 @@ public class LobbyController : MonoBehaviour
                 newPlayerItemScript.playerName = player.playerName;
                 newPlayerItemScript.connectionID = player.connectionID;
                 newPlayerItemScript.playerSteamID = player.playerSteamID;
+                newPlayerItemScript.isReady = player.ready;
 
                 AddPlayerToListAndSetValues(1, newPlayerItemScript);
             }
@@ -195,15 +298,22 @@ public class LobbyController : MonoBehaviour
                 {
                     playerListItemScript.playerName = player.playerName;
 
-                    // Rolle aus aktueller Listenzugehörigkeit lesen, nicht überschreiben
                     PlayerRole currentRole = hunterPlayerListItems.Contains(playerListItemScript)
                         ? PlayerRole.Hunter
                         : PlayerRole.Vandalist;
 
+                    playerListItemScript.isReady = player.ready; // echten Wert übernehmen
                     playerListItemScript.SetPlayerValues(currentRole);
+                    playerListItemScript.UpdateReadyStatusText(); // NEU: Status aktualisieren
+
+                    if (player == localPlayerController)
+                    {
+                        UpdateReadyText();
+                    }
                 }
             }
         }
+        CheckIfAllReady();
     }
 
     public void RemovePlayerItem()

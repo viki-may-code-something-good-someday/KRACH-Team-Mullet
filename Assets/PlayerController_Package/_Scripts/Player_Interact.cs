@@ -1,9 +1,10 @@
-using System.Collections.Generic;
 using DG.Tweening;
-using UnityEngine;
 using FMODUnity;
+using Mirror;
+using System.Collections.Generic;
+using UnityEngine;
 
-public class Player_Interact : MonoBehaviour
+public class Player_Interact : NetworkBehaviour
 {
     [Header("References")]
     [SerializeField] private List<GameObject> armsVisuals = new List<GameObject>();
@@ -17,84 +18,93 @@ public class Player_Interact : MonoBehaviour
 
     void Start()
     {
-        cameraMain = Camera.main;
-
+        if (isLocalPlayer)
+        {
+            cameraMain = Camera.main;
+        }
     }
 
     void Update()
     {
+        if (!isLocalPlayer) return;
+
         if (Input.GetMouseButtonDown(0))
         {
-            PunchAnimation();
-            TryInteract();
+            LocalPunch();
         }
     }
 
-    private void TryInteract()
+    private void LocalPunch()
     {
-        bool punchedAir = false;
+        Debug.Log("Local punch!");
+        PunchAnimation();
 
-        //Interactable 
-        if (Physics.Raycast(cameraMain.transform.position, cameraMain.transform.forward, out RaycastHit hitinfo, hitRange, LayerMask.GetMask("Interactable"), QueryTriggerInteraction.Ignore))
+        bool hitSomething = Physics.Raycast(cameraMain.transform.position, cameraMain.transform.forward, hitRange, LayerMask.GetMask("Interactable", "Destructable", "Default"), QueryTriggerInteraction.Ignore);
+
+        if (hitSomething)
+            RuntimeManager.PlayOneShot("event:/SFX/Punch");
+        else
+            RuntimeManager.PlayOneShot("event:/SFX/PunchAir");
+
+        CmdTryInteract(cameraMain.transform.position, cameraMain.transform.forward);
+    }
+
+    [Command]
+    private void CmdTryInteract(Vector3 origin, Vector3 direction)
+    {
+        bool hitSomething = false;
+
+        if (Physics.Raycast(origin, direction, out RaycastHit hitinfo, hitRange, LayerMask.GetMask("Interactable"), QueryTriggerInteraction.Ignore))
         {
-            Debug.Log("1" + hitinfo.transform.name);
-            hitinfo.collider.TryGetComponent<Interactable>(out Interactable interactableObj);
-            if (interactableObj != null)
+            if (hitinfo.collider.TryGetComponent<Interactable>(out Interactable interactableObj))
             {
                 interactableObj.Interact();
-                RuntimeManager.PlayOneShot("event:/SFX/Punch");
+                hitSomething = true;
             }
         }
-        else punchedAir = true; 
-
-        //Destructable (hitinfo needed)
-        if(Physics.Raycast(cameraMain.transform.position, cameraMain.transform.forward, out RaycastHit hitinfoDestructable, hitRange, LayerMask.GetMask("Destructable"), QueryTriggerInteraction.Ignore))
+        else if (Physics.Raycast(origin, direction, out RaycastHit hitinfoDestructable, hitRange, LayerMask.GetMask("Destructable"), QueryTriggerInteraction.Ignore))
         {
-            Debug.Log("2" + hitinfoDestructable.transform.name);
-            hitinfoDestructable.collider.TryGetComponent<Destructable>(out Destructable destructableObject);
-            if (destructableObject != null)
+            if (hitinfoDestructable.collider.TryGetComponent<Destructable>(out Destructable destructableObject))
             {
-                destructableObject.Destruct(hitDamage,hitinfoDestructable.point, hitinfoDestructable.normal);
-                RuntimeManager.PlayOneShot("event:/SFX/Punch");
+                destructableObject.Destruct(hitDamage, hitinfoDestructable.point, hitinfoDestructable.normal);
+                hitSomething = true;
             }
         }
-        else punchedAir = true;
-
-        //Billboard Objects
-        if(Physics.Raycast(cameraMain.transform.position, cameraMain.transform.forward, out RaycastHit hitinfoBillboard, hitRange, LayerMask.GetMask("Default"), QueryTriggerInteraction.Ignore))
+        else if (Physics.Raycast(origin, direction, out RaycastHit hitinfoBillboard, hitRange, LayerMask.GetMask("Default"), QueryTriggerInteraction.Ignore))
         {
-            hitinfoBillboard.collider.TryGetComponent<BillboardObject>(out BillboardObject billboardObject);
-            if (billboardObject != null)
+            if (hitinfoBillboard.collider.TryGetComponent<BillboardObject>(out BillboardObject billboardObject))
             {
-                billboardObject.TakePunch(cameraMain.transform.position);
-                RuntimeManager.PlayOneShot("event:/SFX/Punch");
+                billboardObject.TakePunch(origin);
+                hitSomething = true;
             }
         }
-        
-        if (punchedAir) RuntimeManager.PlayOneShot("event:/SFX/PunchAir");    // sound
+
+        RpcPlayPunchEffects(hitSomething);
+    }
+
+    // [ClientRpc] wird vom Server aufgerufen, aber auf ALLEN CLIENTS ausgeführt.
+    // includeOwner = false verhindert, dass der lokale Spieler den Sound/Animation doppelt abspielt.
+    [ClientRpc(includeOwner = false)]
+    private void RpcPlayPunchEffects(bool hitSomething)
+    {
+        PunchAnimation();
+
+        if (hitSomething)
+            RuntimeManager.PlayOneShot("event:/SFX/Punch");
+        else
+            RuntimeManager.PlayOneShot("event:/SFX/PunchAir");
     }
 
     private void PunchAnimation()
     {
-        if(armsVisuals.Count != 2)
+        if (armsVisuals.Count != 2)
         {
             Debug.LogWarning("PunchAnimation: Expected 2 arms, got " + armsVisuals.Count);
             return;
         }
 
-        int selectedArm;
-
-        if(rightArmPunching)
-        {
-            selectedArm = 0;
-        }
-        else
-        {
-            selectedArm = 1;
-        }
-
+        int selectedArm = rightArmPunching ? 0 : 1;
         rightArmPunching = !rightArmPunching;
-
 
         List<DOTweenAnimation> dotweenAnims = new List<DOTweenAnimation>(armsVisuals[selectedArm].GetComponents<DOTweenAnimation>());
         if (dotweenAnims.Count > 0)

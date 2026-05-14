@@ -1,19 +1,19 @@
+using FMODUnity;
+using Mirror; // WICHTIG: Mirror hinzufügen!
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using FMODUnity;
 
-public class WallData : MonoBehaviour
+public class WallData : NetworkBehaviour
 {
     [Header("References")]
     [SerializeField] private GameObject wallNormal;
     [SerializeField] private GameObject wallBroken;
     [SerializeField] private List<GameObject> wallDecorations = new List<GameObject>();
-    [SerializeField] private List<Rigidbody> wallChunks;
-
 
     [Header("Settings")]
     [SerializeField] private bool indestructable;
+    // Leben muss nur der Server kennen, das müssen wir nicht zwingend synchronisieren
     [SerializeField] private float health;
     [SerializeField] private float explosionForce;
     [SerializeField] private float explosionRadius;
@@ -22,85 +22,92 @@ public class WallData : MonoBehaviour
     [SerializeField] private float wallDecorationsFadeOutSpeedMultiplier = 0.2f;
     [SerializeField] private float speedUpWallDecorationsFadeOutSpeedMultiplier = 0.5f;
 
-
     public float Health { get { return health; } }
 
     private bool fadeOutSpeedIncreased;
-    private bool isDestroyed = false;
     private bool fadeOutPieces;
 
-
-
+    // SyncVar: Wenn der Server das auf true setzt, wissen ALLE Spieler (auch die, die später ins Spiel joinen), 
+    // dass diese Wand kaputt ist. Das löst automatisch "OnWallDestroyed" auf allen PCs aus.
+    [SyncVar(hook = nameof(OnWallDestroyed))]
+    private bool isDestroyed = false;
 
     private void Update()
     {
-        CheckWallDestruction();
-    }
-
-    private void CheckWallDestruction()
-    {
-        if (health <= 0f && !isDestroyed)
-        {
-            TakeDamage(0f, transform.position, transform.forward);
-
-            health = 100f;
-        }
-
+        // Die visuelle Fade-Out-Logik läuft einfach lokal auf jedem Rechner
         if (fadeOutPieces)
         {
             FadeOutWallDecorations();
         }
     }
 
+    // WICHTIG: Diese Methode wird vom Destructable-Script auf dem SERVER aufgerufen.
+    // Nur der Server verwaltet die Lebenspunkte.
+    [Server]
     public void TakeDamage(float _damage, Vector3 _hitPoint, Vector3 _hitNormal)
     {
         if (indestructable || isDestroyed) return;
 
         health -= _damage;
 
-        RuntimeManager.PlayOneShot("event:/SFX/WallHit", _hitPoint);    // sound
-
+        // Sound auf allen Clients abspielen
+        RpcPlayHitSound(_hitPoint);
 
         if (health <= 0f)
         {
-            GetDestroyed(_hitPoint, _hitNormal);
+            // 1. Status auf zerstört setzen (Triggert den Hook für das Mesh-Swapping)
+            isDestroyed = true;
+
+            // 2. Den RPC für die physikalische Explosion an alle aktiven Spieler senden
+            RpcTriggerExplosion(_hitPoint);
         }
     }
 
-    private void GetDestroyed(Vector3 _hitPoint, Vector3 _hitNormal)
+    [ClientRpc]
+    private void RpcPlayHitSound(Vector3 point)
     {
-        isDestroyed = true;
+        RuntimeManager.PlayOneShot("event:/SFX/WallHit", point);
+    }
 
-        RuntimeManager.PlayOneShot("event:/SFX/WallBreakdown", _hitPoint);    // sound
+    // Dieser Hook wird auf ALLEN Rechnern ausgeführt, sobald isDestroyed = true wird.
+    // Auch wenn ein Spieler 5 Minuten später ins Spiel joint, sieht er dadurch die Wand im kaputten Zustand.
+    private void OnWallDestroyed(bool oldState, bool newState)
+    {
+        if (newState == true && oldState == false)
+        {
+            wallNormal.SetActive(false);
+            wallBroken.SetActive(true);
 
-        //handle Wall Decorations
-        WallDecorationsSetup();
+            WallDecorationsSetup();
+        }
+    }
 
-        //wall fractures
-        wallNormal.SetActive(false);  //needs rework
-        wallBroken.SetActive(true);   //needs rework
+    // ClientRpc: Die eigentliche physikalische Explosion.
+    // Läuft lokal auf allen Rechnern, spart massiv Netzwerk-Bandbreite.
+    [ClientRpc]
+    private void RpcTriggerExplosion(Vector3 _hitPoint)
+    {
+        RuntimeManager.PlayOneShot("event:/SFX/WallBreakdown", _hitPoint);
 
-        List<Rigidbody> rigidbodies = wallBroken.transform.GetComponentsInChildren<Rigidbody>().ToList(); //needs rework
+        List<Rigidbody> rigidbodies = wallBroken.transform.GetComponentsInChildren<Rigidbody>().ToList();
 
-        foreach (Rigidbody rb in rigidbodies) //needs rework
+        foreach (Rigidbody rb in rigidbodies)
         {
             rb.isKinematic = false;
             rb.useGravity = true;
 
+            // Die Explosion wird auf jedem Rechner lokal berechnet
             rb.AddExplosionForce(explosionForce, _hitPoint, explosionRadius, 1f, ForceMode.Impulse);
-
         }
-
     }
 
-    private void WallDecorationsSetup() //needs rework
+    private void WallDecorationsSetup()
     {
         fadeOutPieces = true;
 
         foreach (GameObject piece in wallDecorations)
         {
             piece.transform.parent = null;
-
             piece.AddComponent<Rigidbody>();
 
             SphereCollider sc = piece.AddComponent<SphereCollider>();
@@ -126,7 +133,6 @@ public class WallData : MonoBehaviour
             Color currentColor = sr.material.color;
             float newAlpha = currentColor.a - Time.deltaTime * wallDecorationsFadeOutSpeedMultiplier;
             sr.material.color = new Color(currentColor.r, currentColor.g, currentColor.b, newAlpha);
-
 
             if (newAlpha <= 0f)
             {

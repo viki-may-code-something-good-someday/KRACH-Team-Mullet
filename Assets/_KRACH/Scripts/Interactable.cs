@@ -1,12 +1,18 @@
-using UnityEngine;
+using Mirror;
 using UnityEngine.Events;
-using FMODUnity;
 
-public class Interactable : MonoBehaviour
+public class Interactable : NetworkBehaviour
 {
     public UnityEvent onInteracted;
 
+    [Server]
     public void Interact()
+    {
+        RpcTriggerInteraction();
+    }
+
+    [ClientRpc]
+    private void RpcTriggerInteraction()
     {
         onInteracted?.Invoke();
     }

@@ -143,7 +143,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69fba77c64654ba43afef7f3e9fb51c1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerBody: {fileID: 4691285949938190304}
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
+  playerBody: {fileID: 7115139135493471771}
   cameraPivot: {fileID: 4809818173979025313}
   mouseSensitivity: 0.1
 --- !u!114 &7366977398291245437
@@ -185,7 +188,7 @@ Transform:
   m_GameObject: {fileID: 2092353053250223471}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.6, z: 0}
+  m_LocalPosition: {x: 0, y: -0.891, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -466,7 +469,7 @@ GameObject:
   - component: {fileID: 8166971595331418044}
   - component: {fileID: 5128184422578144709}
   - component: {fileID: 3612966290959217811}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: PlayerObject
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -530,7 +533,7 @@ MonoBehaviour:
   interpolatePosition: 1
   interpolateRotation: 1
   interpolateScale: 1
-  coordinateSpace: 0
+  coordinateSpace: 1
   timelineOffset: 1
   showGizmos: 0
   showOverlay: 0
@@ -619,7 +622,7 @@ MonoBehaviour:
   baseFallGravity: 10
   maxFallGravity: 50
   fallGravityScaling: 1.5
-  groundCheck: {fileID: 1825494035574137379, guid: a2faea5b8dd51f3489349b73f5d418fe, type: 3}
+  groundCheck: {fileID: 6826781417353443385}
   groundMask:
     serializedVersion: 2
     m_Bits: 1
@@ -639,9 +642,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d576b423a226aa24b8245bd1c021a17f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Player_Interact
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
   armsVisuals:
-  - {fileID: 1606076847740660885, guid: a2faea5b8dd51f3489349b73f5d418fe, type: 3}
-  - {fileID: 2798362159584349920, guid: a2faea5b8dd51f3489349b73f5d418fe, type: 3}
+  - {fileID: 2526413897759942239}
+  - {fileID: 1410622708008567850}
   hitRange: 2
   hitDamage: 1
 --- !u!1 &5363979060368924945
@@ -1027,6 +1033,16 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 36a3a2f8804316b45b867a020c11ca08, type: 3}
+--- !u!1 &1410622708008567850 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4349965124178435934, guid: 36a3a2f8804316b45b867a020c11ca08, type: 3}
+  m_PrefabInstance: {fileID: 3444593847790541684}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &2526413897759942239 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 919305895120895275, guid: 36a3a2f8804316b45b867a020c11ca08, type: 3}
+  m_PrefabInstance: {fileID: 3444593847790541684}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &7669985030270898423 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5025143509897792387, guid: 36a3a2f8804316b45b867a020c11ca08, type: 3}

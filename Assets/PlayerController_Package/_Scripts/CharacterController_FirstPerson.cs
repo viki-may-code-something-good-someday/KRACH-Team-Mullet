@@ -47,7 +47,7 @@ public class CharacterController_FirstPerson : NetworkBehaviour
     [Header("References")]
     public Transform groundCheck;
     public LayerMask groundMask;
-    public float groundDistance = 0.4f;
+    public float groundDistance = 0.4f; //make sure this works hukvgjhtfnhjftgfjz
 
     private CharacterController controller;
     public Vector3 velocity;
@@ -125,8 +125,18 @@ public class CharacterController_FirstPerson : NetworkBehaviour
 
     public void SpawnPlayerAtPosition(PlayerRole role)
     {
+        Debug.Log("Spawning player");
         LevelManager levelManager = GameObject.Find("GameManager").GetComponent<LevelManager>();
-        transform.position = levelManager.vandalistSpawnPositions[Random.Range(0, 3)].position;
+
+        Vector3 position = levelManager.vandalistSpawnPositions[Random.Range(0, 3)].position;
+
+        controller.enabled = false;
+
+        transform.position = position;
+
+        controller.enabled = true;
+
+        velocity = Vector3.zero;
     }
 
     public void SetCursor(bool active)

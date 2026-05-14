@@ -1,8 +1,8 @@
+using Mirror; // Mirror hinzugefügt
 using UnityEngine;
 
-public class BillboardObject : MonoBehaviour
+public class BillboardObject : NetworkBehaviour
 {
-
     [SerializeField] private bool flippedSprite;
     [SerializeField] private bool knockbackEnabled = true;
     [SerializeField] private float knockbackForce = 5f;
@@ -14,8 +14,6 @@ public class BillboardObject : MonoBehaviour
     private Rigidbody rb;
     private bool isKnockedBack;
 
-
-
     private void Start()
     {
         mainCamera = Camera.main;
@@ -24,53 +22,52 @@ public class BillboardObject : MonoBehaviour
 
     private void Update()
     {
-        if (isKnockedBack) return;
+        if (isKnockedBack || mainCamera == null) return;
 
-        Vector3 directionToCamera =
-            mainCamera.transform.position - transform.position;
+        // Lokale Drehung für jeden Spieler bleibt erhalten
+        Vector3 directionToCamera = mainCamera.transform.position - transform.position;
         directionToCamera.y = 0f;
 
         if (flippedSprite)
         {
-            transform.rotation =
-                Quaternion.LookRotation(directionToCamera);
+            transform.rotation = Quaternion.LookRotation(directionToCamera);
         }
         else
         {
-            transform.rotation =
-                Quaternion.LookRotation(directionToCamera) *
-                Quaternion.Euler(0, 180, 0);
+            transform.rotation = Quaternion.LookRotation(directionToCamera) * Quaternion.Euler(0, 180, 0);
         }
     }
 
+    [ServerCallback] // Sorgt dafür, dass die Kollision nur 1x vom Server registriert wird
     private void OnCollisionEnter(Collision collision)
     {
         if (knockbackEnabled && collision.gameObject.CompareTag("Player"))
         {
-            ApplyKnockback(collision.transform.position, knockbackForce);
+            RpcApplyKnockback(collision.transform.position, knockbackForce);
         }
     }
 
+    // Wird von Player_Interact (Server) ausgelöst
+    [Server]
     public void TakePunch(Vector3 puncherPosition)
     {
         if (knockbackEnabled)
         {
-            ApplyKnockback(puncherPosition, knockbackForce * punchKnockbackMultiplier);
+            RpcApplyKnockback(puncherPosition, knockbackForce * punchKnockbackMultiplier);
         }
+    }
 
-        // Spawn punch particles
+    // Client Physik und VFX
+    [ClientRpc]
+    private void RpcApplyKnockback(Vector3 sourcePosition, float force)
+    {
         if (punchParticles != null)
         {
             ParticleSystem particles = Instantiate(punchParticles, transform.position + new Vector3(0f, 0.6f, 0f), Quaternion.identity);
             particles.Play();
         }
-    }
 
-    private void ApplyKnockback(Vector3 sourcePosition, float force)
-    {
-        Vector3 knockbackDirection =
-            (transform.position - sourcePosition).normalized;
-
+        Vector3 knockbackDirection = (transform.position - sourcePosition).normalized;
         float randomMultiplier = Mathf.Max(Random.value, 0.5f) * 3f;
 
         Vector3 velocity = new Vector3(

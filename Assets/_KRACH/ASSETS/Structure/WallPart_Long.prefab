@@ -154,6 +154,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &138407428219803398
 GameObject:
   m_ObjectHideFlags: 0
@@ -308,6 +312,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &181463880614788571
 GameObject:
   m_ObjectHideFlags: 0
@@ -462,6 +470,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &234289109721228949
 GameObject:
   m_ObjectHideFlags: 0
@@ -616,6 +628,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &490552306979719955
 GameObject:
   m_ObjectHideFlags: 0
@@ -770,6 +786,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &533417290403053439
 GameObject:
   m_ObjectHideFlags: 0
@@ -924,6 +944,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &552832222277079963
 GameObject:
   m_ObjectHideFlags: 0
@@ -1078,6 +1102,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &609181379640527680
 GameObject:
   m_ObjectHideFlags: 0
@@ -1232,6 +1260,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &820333784842364135
 GameObject:
   m_ObjectHideFlags: 0
@@ -1386,6 +1418,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &838247867170788085
 GameObject:
   m_ObjectHideFlags: 0
@@ -1540,6 +1576,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &923298214311998083
 GameObject:
   m_ObjectHideFlags: 0
@@ -1694,6 +1734,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &948424491237470982
 GameObject:
   m_ObjectHideFlags: 0
@@ -1848,6 +1892,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &992992977029636463
 GameObject:
   m_ObjectHideFlags: 0
@@ -2002,6 +2050,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &1004675287344801234
 GameObject:
   m_ObjectHideFlags: 0
@@ -2156,6 +2208,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &1009116552768076722
 GameObject:
   m_ObjectHideFlags: 0
@@ -2310,6 +2366,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &1179358388048762567
 GameObject:
   m_ObjectHideFlags: 0
@@ -2464,6 +2524,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &1180975436114712119
 GameObject:
   m_ObjectHideFlags: 0
@@ -2618,6 +2682,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &1216368918215207856
 GameObject:
   m_ObjectHideFlags: 0
@@ -2772,6 +2840,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &1344147330575246346
 GameObject:
   m_ObjectHideFlags: 0
@@ -2926,6 +2998,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &1347837355862146326
 GameObject:
   m_ObjectHideFlags: 0
@@ -3080,6 +3156,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &1365848648824618824
 GameObject:
   m_ObjectHideFlags: 0
@@ -3234,6 +3314,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &1394930060974558376
 GameObject:
   m_ObjectHideFlags: 0
@@ -3388,6 +3472,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &1408259876074341812
 GameObject:
   m_ObjectHideFlags: 0
@@ -3542,6 +3630,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &1409280260878098044
 GameObject:
   m_ObjectHideFlags: 0
@@ -3696,6 +3788,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &1423563766967647861
 GameObject:
   m_ObjectHideFlags: 0
@@ -3850,6 +3946,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &1436054713972190896
 GameObject:
   m_ObjectHideFlags: 0
@@ -4004,6 +4104,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &1447374761376064444
 GameObject:
   m_ObjectHideFlags: 0
@@ -4158,6 +4262,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &1530076486650517579
 GameObject:
   m_ObjectHideFlags: 0
@@ -4312,6 +4420,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &1530624805290141359
 GameObject:
   m_ObjectHideFlags: 0
@@ -4466,6 +4578,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &1581902955699593837
 GameObject:
   m_ObjectHideFlags: 0
@@ -4620,6 +4736,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &1586138318018423532
 GameObject:
   m_ObjectHideFlags: 0
@@ -4774,6 +4894,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &1679457423854182527
 GameObject:
   m_ObjectHideFlags: 0
@@ -4928,6 +5052,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &1703943518629797609
 GameObject:
   m_ObjectHideFlags: 0
@@ -5082,6 +5210,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &1728648851576006545
 GameObject:
   m_ObjectHideFlags: 0
@@ -5236,6 +5368,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &1741421158049618751
 GameObject:
   m_ObjectHideFlags: 0
@@ -5390,6 +5526,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &1756078159673354813
 GameObject:
   m_ObjectHideFlags: 0
@@ -5544,6 +5684,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &1768044974255958188
 GameObject:
   m_ObjectHideFlags: 0
@@ -5698,6 +5842,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &1803339442079488002
 GameObject:
   m_ObjectHideFlags: 0
@@ -5852,6 +6000,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &1947689335537702546
 GameObject:
   m_ObjectHideFlags: 0
@@ -6006,6 +6158,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &2008137559117660203
 GameObject:
   m_ObjectHideFlags: 0
@@ -6160,6 +6316,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &2180676250553587801
 GameObject:
   m_ObjectHideFlags: 0
@@ -6314,6 +6474,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &2181673429232925770
 GameObject:
   m_ObjectHideFlags: 0
@@ -6468,6 +6632,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &2219673788379088034
 GameObject:
   m_ObjectHideFlags: 0
@@ -6622,6 +6790,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &2275579427283656541
 GameObject:
   m_ObjectHideFlags: 0
@@ -6776,6 +6948,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &2289736658778821250
 GameObject:
   m_ObjectHideFlags: 0
@@ -6930,6 +7106,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &2340065295370710764
 GameObject:
   m_ObjectHideFlags: 0
@@ -7084,6 +7264,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &2344338516536275146
 GameObject:
   m_ObjectHideFlags: 0
@@ -7238,6 +7422,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &2463608783282317097
 GameObject:
   m_ObjectHideFlags: 0
@@ -7392,6 +7580,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &2479969878649109844
 GameObject:
   m_ObjectHideFlags: 0
@@ -7546,6 +7738,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &2482862331447169560
 GameObject:
   m_ObjectHideFlags: 0
@@ -7700,6 +7896,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &2488055391049595463
 GameObject:
   m_ObjectHideFlags: 0
@@ -7854,6 +8054,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &2510151633524177689
 GameObject:
   m_ObjectHideFlags: 0
@@ -8008,6 +8212,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &2529050379658079323
 GameObject:
   m_ObjectHideFlags: 0
@@ -8162,6 +8370,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &2551187170601754529
 GameObject:
   m_ObjectHideFlags: 0
@@ -8316,6 +8528,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &2605750012179474055
 GameObject:
   m_ObjectHideFlags: 0
@@ -8470,6 +8686,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &2647054362096111017
 GameObject:
   m_ObjectHideFlags: 0
@@ -8624,6 +8844,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &2672992293153294428
 GameObject:
   m_ObjectHideFlags: 0
@@ -8778,6 +9002,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &2726158569489487043
 GameObject:
   m_ObjectHideFlags: 0
@@ -8932,6 +9160,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &2767028163700827453
 GameObject:
   m_ObjectHideFlags: 0
@@ -9086,6 +9318,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &2792993759557383338
 GameObject:
   m_ObjectHideFlags: 0
@@ -9240,6 +9476,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &2855967243410501105
 GameObject:
   m_ObjectHideFlags: 0
@@ -9394,6 +9634,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &2875623343961117945
 GameObject:
   m_ObjectHideFlags: 0
@@ -9548,6 +9792,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &2893340244051995554
 GameObject:
   m_ObjectHideFlags: 0
@@ -9702,6 +9950,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &2930713930247571225
 GameObject:
   m_ObjectHideFlags: 0
@@ -9856,6 +10108,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &2994507184713413752
 GameObject:
   m_ObjectHideFlags: 0
@@ -10010,6 +10266,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &3008874023488242952
 GameObject:
   m_ObjectHideFlags: 0
@@ -10164,6 +10424,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &3058079322305552787
 GameObject:
   m_ObjectHideFlags: 0
@@ -10318,6 +10582,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &3074884921092294957
 GameObject:
   m_ObjectHideFlags: 0
@@ -10472,6 +10740,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &3120570737539684294
 GameObject:
   m_ObjectHideFlags: 0
@@ -10626,6 +10898,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &3128309209686865194
 GameObject:
   m_ObjectHideFlags: 0
@@ -10780,6 +11056,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &3142911317627479654
 GameObject:
   m_ObjectHideFlags: 0
@@ -10934,6 +11214,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &3159694325889660990
 GameObject:
   m_ObjectHideFlags: 0
@@ -11088,6 +11372,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &3169414900274186718
 GameObject:
   m_ObjectHideFlags: 0
@@ -11242,6 +11530,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &3302916662868375355
 GameObject:
   m_ObjectHideFlags: 0
@@ -11396,6 +11688,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &3364292099162557767
 GameObject:
   m_ObjectHideFlags: 0
@@ -11550,6 +11846,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &3394350294507204343
 GameObject:
   m_ObjectHideFlags: 0
@@ -11704,6 +12004,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &3424906385790675959
 GameObject:
   m_ObjectHideFlags: 0
@@ -11858,6 +12162,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &3450114735385776660
 GameObject:
   m_ObjectHideFlags: 0
@@ -12012,6 +12320,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &3451382815757143631
 GameObject:
   m_ObjectHideFlags: 0
@@ -12166,6 +12478,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &3480852136950867827
 GameObject:
   m_ObjectHideFlags: 0
@@ -12320,6 +12636,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &3532325451535958052
 GameObject:
   m_ObjectHideFlags: 0
@@ -12474,6 +12794,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &3575535271840928582
 GameObject:
   m_ObjectHideFlags: 0
@@ -12628,6 +12952,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &3624644952177262034
 GameObject:
   m_ObjectHideFlags: 0
@@ -12782,6 +13110,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &3681752244878465993
 GameObject:
   m_ObjectHideFlags: 0
@@ -12936,6 +13268,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &3718391609269215713
 GameObject:
   m_ObjectHideFlags: 0
@@ -13090,6 +13426,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &3763698301146760231
 GameObject:
   m_ObjectHideFlags: 0
@@ -13244,6 +13584,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &3779475546424801514
 GameObject:
   m_ObjectHideFlags: 0
@@ -13398,6 +13742,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &3882058688286515923
 GameObject:
   m_ObjectHideFlags: 0
@@ -13552,6 +13900,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &3913183502720080071
 GameObject:
   m_ObjectHideFlags: 0
@@ -13706,6 +14058,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &4036393416865036271
 GameObject:
   m_ObjectHideFlags: 0
@@ -13860,6 +14216,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &4040116314855031498
 GameObject:
   m_ObjectHideFlags: 0
@@ -14014,6 +14374,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &4124211260981168311
 GameObject:
   m_ObjectHideFlags: 0
@@ -14168,6 +14532,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &4167030651391188723
 GameObject:
   m_ObjectHideFlags: 0
@@ -14322,6 +14690,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &4215199407688366306
 GameObject:
   m_ObjectHideFlags: 0
@@ -14476,6 +14848,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &4221714887203353224
 GameObject:
   m_ObjectHideFlags: 0
@@ -14630,6 +15006,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &4222029570646685656
 GameObject:
   m_ObjectHideFlags: 0
@@ -14784,6 +15164,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &4324315401727422651
 GameObject:
   m_ObjectHideFlags: 0
@@ -14938,6 +15322,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &4377157871827378716
 GameObject:
   m_ObjectHideFlags: 0
@@ -15092,6 +15480,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &4383464331858904084
 GameObject:
   m_ObjectHideFlags: 0
@@ -15246,6 +15638,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &4439833518051151866
 GameObject:
   m_ObjectHideFlags: 0
@@ -15400,6 +15796,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &4458981076121422847
 GameObject:
   m_ObjectHideFlags: 0
@@ -15554,6 +15954,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &4460216433049558003
 GameObject:
   m_ObjectHideFlags: 0
@@ -15708,6 +16112,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &4543162805244313070
 GameObject:
   m_ObjectHideFlags: 0
@@ -15862,6 +16270,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &4565144617510771282
 GameObject:
   m_ObjectHideFlags: 0
@@ -16016,6 +16428,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &4674562708715475962
 GameObject:
   m_ObjectHideFlags: 0
@@ -16170,6 +16586,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &4674918211197209508
 GameObject:
   m_ObjectHideFlags: 0
@@ -16536,6 +16956,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &4749851446842833699
 GameObject:
   m_ObjectHideFlags: 0
@@ -16690,6 +17114,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &4787700680352289152
 GameObject:
   m_ObjectHideFlags: 0
@@ -16844,6 +17272,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &4854981354095750570
 GameObject:
   m_ObjectHideFlags: 0
@@ -16998,6 +17430,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &4884216433962895624
 GameObject:
   m_ObjectHideFlags: 0
@@ -17152,6 +17588,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &4923373864766254071
 GameObject:
   m_ObjectHideFlags: 0
@@ -17306,6 +17746,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &4945562686098710690
 GameObject:
   m_ObjectHideFlags: 0
@@ -17460,6 +17904,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &4958526808485020449
 GameObject:
   m_ObjectHideFlags: 0
@@ -17614,6 +18062,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &5078073564517984751
 GameObject:
   m_ObjectHideFlags: 0
@@ -17768,6 +18220,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &5114178401657290494
 GameObject:
   m_ObjectHideFlags: 0
@@ -17922,6 +18378,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &5184940974296952500
 GameObject:
   m_ObjectHideFlags: 0
@@ -18076,6 +18536,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &5188826070472158098
 GameObject:
   m_ObjectHideFlags: 0
@@ -18230,6 +18694,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &5245828902994000603
 GameObject:
   m_ObjectHideFlags: 0
@@ -18384,6 +18852,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &5299050497773603365
 GameObject:
   m_ObjectHideFlags: 0
@@ -18538,6 +19010,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &5356696561523843793
 GameObject:
   m_ObjectHideFlags: 0
@@ -18692,6 +19168,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &5385464932238309914
 GameObject:
   m_ObjectHideFlags: 0
@@ -18846,6 +19326,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &5427367402610824297
 GameObject:
   m_ObjectHideFlags: 0
@@ -19000,6 +19484,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &5498754140557307862
 GameObject:
   m_ObjectHideFlags: 0
@@ -19125,8 +19613,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae91f288ebeb3d648839b114f4e82e85, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Destructable
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
   wallData: {fileID: 4193694191051500277}
   soundBox: {fileID: 0}
+  dustParticles: {fileID: 0}
+  soundboxDamageParticles: {fileID: 0}
 --- !u!1 &5563654363322850721
 GameObject:
   m_ObjectHideFlags: 0
@@ -19281,6 +19774,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &5584544704862386277
 GameObject:
   m_ObjectHideFlags: 0
@@ -19435,6 +19932,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &5623996584780192472
 GameObject:
   m_ObjectHideFlags: 0
@@ -19589,6 +20090,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &5660393379080881918
 GameObject:
   m_ObjectHideFlags: 0
@@ -19743,6 +20248,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &5737243969524838488
 GameObject:
   m_ObjectHideFlags: 0
@@ -19897,6 +20406,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &5739596220447228095
 GameObject:
   m_ObjectHideFlags: 0
@@ -20051,6 +20564,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &5748740860190146473
 GameObject:
   m_ObjectHideFlags: 0
@@ -20205,6 +20722,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &5889600461171814982
 GameObject:
   m_ObjectHideFlags: 0
@@ -20359,6 +20880,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &5920347757611241859
 GameObject:
   m_ObjectHideFlags: 0
@@ -20513,6 +21038,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &5943863288911315264
 GameObject:
   m_ObjectHideFlags: 0
@@ -20667,6 +21196,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &6035516935035647385
 GameObject:
   m_ObjectHideFlags: 0
@@ -20821,6 +21354,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &6141571220422987156
 GameObject:
   m_ObjectHideFlags: 0
@@ -20975,6 +21512,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &6211407032671303612
 GameObject:
   m_ObjectHideFlags: 0
@@ -21129,6 +21670,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &6256075307809499550
 GameObject:
   m_ObjectHideFlags: 0
@@ -21283,6 +21828,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &6327978573084828168
 GameObject:
   m_ObjectHideFlags: 0
@@ -21437,6 +21986,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &6460114615799352693
 GameObject:
   m_ObjectHideFlags: 0
@@ -21591,6 +22144,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &6478099851922088820
 GameObject:
   m_ObjectHideFlags: 0
@@ -21745,6 +22302,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &6498843316255638445
 GameObject:
   m_ObjectHideFlags: 0
@@ -21899,6 +22460,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &6529532478124086608
 GameObject:
   m_ObjectHideFlags: 0
@@ -22053,6 +22618,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &6578226801914532597
 GameObject:
   m_ObjectHideFlags: 0
@@ -22207,6 +22776,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &6589408065441858996
 GameObject:
   m_ObjectHideFlags: 0
@@ -22361,6 +22934,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &6633337761254075984
 GameObject:
   m_ObjectHideFlags: 0
@@ -22515,6 +23092,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &6895663115093958382
 GameObject:
   m_ObjectHideFlags: 0
@@ -22669,6 +23250,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &6900419405243469921
 GameObject:
   m_ObjectHideFlags: 0
@@ -22823,6 +23408,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &7020539252847522100
 GameObject:
   m_ObjectHideFlags: 0
@@ -22977,6 +23566,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &7021982993378617248
 GameObject:
   m_ObjectHideFlags: 0
@@ -23131,6 +23724,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &7277011471828699257
 GameObject:
   m_ObjectHideFlags: 0
@@ -23285,6 +23882,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &7377949870866099993
 GameObject:
   m_ObjectHideFlags: 0
@@ -23439,6 +24040,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &7540548563225811685
 GameObject:
   m_ObjectHideFlags: 0
@@ -23593,6 +24198,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &7584995172259728835
 GameObject:
   m_ObjectHideFlags: 0
@@ -23747,6 +24356,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &7598168961011139176
 GameObject:
   m_ObjectHideFlags: 0
@@ -23901,6 +24514,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &7606804969213289380
 GameObject:
   m_ObjectHideFlags: 0
@@ -24055,6 +24672,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &7613333995815566535
 GameObject:
   m_ObjectHideFlags: 0
@@ -24209,6 +24830,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &7634669577040716470
 GameObject:
   m_ObjectHideFlags: 0
@@ -24363,6 +24988,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &7678946252931544454
 GameObject:
   m_ObjectHideFlags: 0
@@ -24517,6 +25146,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &7701003496928375355
 GameObject:
   m_ObjectHideFlags: 0
@@ -24671,6 +25304,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &7723502394017230156
 GameObject:
   m_ObjectHideFlags: 0
@@ -24825,6 +25462,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &7769135685154119073
 GameObject:
   m_ObjectHideFlags: 0
@@ -24979,6 +25620,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &7791403782922614990
 GameObject:
   m_ObjectHideFlags: 0
@@ -25133,6 +25778,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &7807522583616155040
 GameObject:
   m_ObjectHideFlags: 0
@@ -25287,6 +25936,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &7817325862200489497
 GameObject:
   m_ObjectHideFlags: 0
@@ -25441,6 +26094,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &7866374412050208565
 GameObject:
   m_ObjectHideFlags: 0
@@ -25595,6 +26252,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &7923882504178993898
 GameObject:
   m_ObjectHideFlags: 0
@@ -25749,6 +26410,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &8030929840745372516
 GameObject:
   m_ObjectHideFlags: 0
@@ -25903,6 +26568,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &8156761799412227467
 GameObject:
   m_ObjectHideFlags: 0
@@ -26057,6 +26726,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &8413505696425596618
 GameObject:
   m_ObjectHideFlags: 0
@@ -26211,6 +26884,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &8466666295610804126
 GameObject:
   m_ObjectHideFlags: 0
@@ -26365,6 +27042,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &8490904800110935667
 GameObject:
   m_ObjectHideFlags: 0
@@ -26519,6 +27200,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &8520498124336002453
 GameObject:
   m_ObjectHideFlags: 0
@@ -26673,6 +27358,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &8632561190464344650
 GameObject:
   m_ObjectHideFlags: 0
@@ -26827,6 +27516,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &8670644506863963074
 GameObject:
   m_ObjectHideFlags: 0
@@ -26981,6 +27674,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &8691877804252064693
 GameObject:
   m_ObjectHideFlags: 0
@@ -27135,6 +27832,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &8763889899206459462
 GameObject:
   m_ObjectHideFlags: 0
@@ -27289,6 +27990,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &8775578551507262669
 GameObject:
   m_ObjectHideFlags: 0
@@ -27443,6 +28148,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &8878916052297493247
 GameObject:
   m_ObjectHideFlags: 0
@@ -27597,6 +28306,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &8895257146139392747
 GameObject:
   m_ObjectHideFlags: 0
@@ -27751,6 +28464,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &9002028348716263195
 GameObject:
   m_ObjectHideFlags: 0
@@ -27905,6 +28622,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &9004059521135912825
 GameObject:
   m_ObjectHideFlags: 0
@@ -27915,6 +28636,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6569550675856815475}
   - component: {fileID: 4193694191051500277}
+  - component: {fileID: 4223755018577207837}
   m_Layer: 8
   m_Name: WallPart_Long
   m_TagString: Untagged
@@ -27951,15 +28673,35 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c60ff3cb9a1d0d94da1ab996d3a67644, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Wall_Data
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
   wallNormal: {fileID: 5498754140557307862}
   wallBroken: {fileID: 4674918211197209508}
-  wallPieces: []
-  wallPiecesPhysicsMaterial: {fileID: 13400000, guid: ea4d112fbe51e1e4db050ec6485eb6ac, type: 2}
-  wallBreakVFX: {fileID: 0}
+  wallDecorations: []
+  indestructable: 0
   health: 3
   explosionForce: 1000
   explosionRadius: 1
-  piecesWallFadeOutSpeedMultiplier: 0.2
+  wallDecorationsFadeOutSpeedMultiplier: 0.2
+  speedUpWallDecorationsFadeOutSpeedMultiplier: 0.5
+--- !u!114 &4223755018577207837
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9004059521135912825}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Mirror::Mirror.NetworkIdentity
+  sceneId: 0
+  _assetId: 3369508117
+  serverOnly: 0
+  visibility: 0
+  hasSpawned: 0
 --- !u!1 &9096864791919790774
 GameObject:
   m_ObjectHideFlags: 0
@@ -28114,6 +28856,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1
 --- !u!1 &9186373610147247399
 GameObject:
   m_ObjectHideFlags: 0
@@ -28268,3 +29014,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 45c0d355ee303654e985f4d8d03984f7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::WallFracture
+  rb: {fileID: 0}
+  upwardsExplosionStrength: 0.5
+  explosionForce: 8
+  explosionRadius: 0.1

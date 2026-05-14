@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 4376172046630305978}
   - component: {fileID: 3159534273627049395}
   - component: {fileID: 8448123267095305124}
+  - component: {fileID: -1951849665373551477}
   m_Layer: 6
   m_Name: Player
   m_TagString: Player
@@ -99,6 +100,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 90fc1d88028b1e14b9c0107d5be9fefb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
   walkSpeed: 6
   ToggleToSprint: 0
   canSprint: 0
@@ -124,6 +128,8 @@ MonoBehaviour:
     m_Bits: 1
   groundDistance: 0.4
   velocity: {x: 0, y: 0, z: 0}
+  playerModel: {fileID: 0}
+  levelManager: {fileID: 0}
 --- !u!114 &8448123267095305124
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -141,6 +147,23 @@ MonoBehaviour:
   - {fileID: 2798362159584349920}
   hitRange: 2
   hitDamage: 1
+--- !u!114 &-1951849665373551477
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1608425576210504766}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Mirror::Mirror.NetworkIdentity
+  sceneId: 0
+  _assetId: 810387442
+  serverOnly: 0
+  visibility: 0
+  hasSpawned: 0
 --- !u!1 &2462909931220215103
 GameObject:
   m_ObjectHideFlags: 0

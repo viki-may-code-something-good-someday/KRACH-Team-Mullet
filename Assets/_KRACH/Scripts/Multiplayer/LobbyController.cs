@@ -67,6 +67,11 @@ public class LobbyController : MonoBehaviour
         if (instance == null) { instance = this; }
     }
 
+    public void StartGame(string sceneName)
+    {
+        localPlayerController.CanStartGame(sceneName);
+    }
+
     public void UpdateLobbyName()
     {
         currentLobbyID = Manager.GetComponent<SteamLobby>().currentLobbyID;

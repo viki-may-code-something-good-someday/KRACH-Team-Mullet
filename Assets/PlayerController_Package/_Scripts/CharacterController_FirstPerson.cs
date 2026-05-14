@@ -1,8 +1,10 @@
-using UnityEngine;
 using FMODUnity;
+using Mirror;
+using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(CharacterController))]
-public class CharacterController_FirstPerson : MonoBehaviour
+public class CharacterController_FirstPerson : NetworkBehaviour
 {
     [Header("Movement Settings")]
     public float walkSpeed = 6f;
@@ -60,6 +62,10 @@ public class CharacterController_FirstPerson : MonoBehaviour
     private float currentFallGravity;
     private float airTime;
 
+    //Multiplayer
+    public GameObject playerModel;
+    public LevelManager levelManager;
+
     void Start()
     {
         controller = GetComponent<CharacterController>();
@@ -70,14 +76,57 @@ public class CharacterController_FirstPerson : MonoBehaviour
         {
             playerCamera.fieldOfView = normalFOV;
         }
+
+        playerModel.SetActive(false);
     }
 
     void Update()
     {
-        HandleSprintInput();
-        HandleMovement();
-        HandleJump();
-        HandleFOV();
+        if (SceneManager.GetActiveScene().name == "Multiplayer_Test")
+        {
+            Debug.Log("Gets update");
+            if (playerModel.activeSelf == false)
+            {
+                playerModel.SetActive(true);
+                SpawnPlayerAtPosition(PlayerRole.Vandalist);
+            }
+
+            if (isOwned)
+            {
+                Debug.Log("Gets owned");
+                HandleSprintInput();
+                HandleMovement();
+                HandleJump();
+                HandleFOV();
+            }
+        }
+    }
+
+    public bool IsInLevel()
+    {
+        if (levelManager == null)
+        {
+            if (GameObject.Find("GameManager").GetComponent<LevelManager>() != null)
+            {
+                levelManager = GameObject.Find("GameManager").GetComponent<LevelManager>();
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+        else
+        {
+            return true;
+        }
+
+    }
+
+    public void SpawnPlayerAtPosition(PlayerRole role)
+    {
+        LevelManager levelManager = GameObject.Find("GameManager").GetComponent<LevelManager>();
+        transform.position = levelManager.vandalistSpawnPositions[Random.Range(0, 3)].position;
     }
 
     public void SetCursor(bool active)
@@ -181,6 +230,7 @@ public class CharacterController_FirstPerson : MonoBehaviour
         controller.Move(velocity * Time.deltaTime);
     }
 
+
     public void SetCanSprint(bool canSprint)
     {
         // set the backing field so sprint availability is updated
@@ -231,10 +281,10 @@ public class CharacterController_FirstPerson : MonoBehaviour
 
         // Cancel jump if falling
         if (velocity.y <= 0)
-        if (velocity.y <= 0)
-        {
-            isJumping = false;
-        }
+            if (velocity.y <= 0)
+            {
+                isJumping = false;
+            }
     }
 
 

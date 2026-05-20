@@ -14,7 +14,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_KRACH/Scenes/Lobby.unity
     guid: d674192960cbb1747a7e6d86c44a2652
-  - enabled: 1
+  - enabled: 0
     path: Assets/_KRACH/Scenes/MainScene.unity
     guid: e58e3556ecf856941adcf76e2418adac
   - enabled: 1

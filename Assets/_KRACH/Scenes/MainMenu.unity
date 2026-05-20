@@ -339,19 +339,39 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4838965611117972004, guid: 010f9f2d3e7e94e4d8fb45f44020db0b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 801796185}
   m_SourcePrefab: {fileID: 100100000, guid: 010f9f2d3e7e94e4d8fb45f44020db0b, type: 3}
 --- !u!114 &801796182 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5758287367900486385, guid: 010f9f2d3e7e94e4d8fb45f44020db0b, type: 3}
   m_PrefabInstance: {fileID: 801796181}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
+  m_GameObject: {fileID: 801796183}
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5029e636f55b7094abe8091ab0e4eff4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SteamLobby
+--- !u!1 &801796183 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4838965611117972004, guid: 010f9f2d3e7e94e4d8fb45f44020db0b, type: 3}
+  m_PrefabInstance: {fileID: 801796181}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &801796185
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 801796183}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ce68beccfd5b8341a7e3c2d727aad36, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ConsoleToGUI
 --- !u!1 &1044288123
 GameObject:
   m_ObjectHideFlags: 0

@@ -61,7 +61,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 100, y: 100, z: 100}
+  m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 7938476880390925287}
@@ -149,7 +149,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3671108214043795730}
-  m_Mesh: {fileID: -5495902117074765545, guid: 1fefb42810d6d7243b9218d51e26597c, type: 3}
+  m_Mesh: {fileID: -5495902117074765545, guid: ef53d2f20296ebb43ba0276eecac16cc, type: 3}
 --- !u!23 &1137834722575431887
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -317,8 +317,32 @@ PrefabInstance:
     m_TransformParent: {fileID: 8963024136740322803}
     m_Modifications:
     - target: {fileID: 250400566737430450, guid: d0d83f04d983415438a32007295483cb, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -0.871782
+      objectReference: {fileID: 0}
+    - target: {fileID: 250400566737430450, guid: d0d83f04d983415438a32007295483cb, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1.1795192
+      objectReference: {fileID: 0}
+    - target: {fileID: 250400566737430450, guid: d0d83f04d983415438a32007295483cb, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.8489393
+      objectReference: {fileID: 0}
+    - target: {fileID: 250400566737430450, guid: d0d83f04d983415438a32007295483cb, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.5284904
+      objectReference: {fileID: 0}
+    - target: {fileID: 250400566737430450, guid: d0d83f04d983415438a32007295483cb, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 250400566737430450, guid: d0d83f04d983415438a32007295483cb, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 250400566737430450, guid: d0d83f04d983415438a32007295483cb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: -63.807
       objectReference: {fileID: 0}
     - target: {fileID: 250400566737430450, guid: d0d83f04d983415438a32007295483cb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -331,7 +355,7 @@ PrefabInstance:
     - target: {fileID: 3184567011917687924, guid: d0d83f04d983415438a32007295483cb, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: -9016137455353816282, guid: 1feaf4e0255fa6a43a7180ba7c6ccccf, type: 3}
+      objectReference: {fileID: -5246554499369150555, guid: 7f46f95fc3332324aa1f30892ce39754, type: 3}
     - target: {fileID: 8834189341351012539, guid: d0d83f04d983415438a32007295483cb, type: 3}
       propertyPath: m_Name
       value: WallFracture4
@@ -355,8 +379,36 @@ PrefabInstance:
     m_TransformParent: {fileID: 8963024136740322803}
     m_Modifications:
     - target: {fileID: 250400566737430450, guid: d0d83f04d983415438a32007295483cb, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.009
+      objectReference: {fileID: 0}
+    - target: {fileID: 250400566737430450, guid: d0d83f04d983415438a32007295483cb, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: -1.195
+      objectReference: {fileID: 0}
+    - target: {fileID: 250400566737430450, guid: d0d83f04d983415438a32007295483cb, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.143
+      objectReference: {fileID: 0}
+    - target: {fileID: 250400566737430450, guid: d0d83f04d983415438a32007295483cb, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.99737763
+      objectReference: {fileID: 0}
+    - target: {fileID: 250400566737430450, guid: d0d83f04d983415438a32007295483cb, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0.072372995
+      objectReference: {fileID: 0}
+    - target: {fileID: 250400566737430450, guid: d0d83f04d983415438a32007295483cb, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 250400566737430450, guid: d0d83f04d983415438a32007295483cb, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 250400566737430450, guid: d0d83f04d983415438a32007295483cb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: 8.301
       objectReference: {fileID: 0}
     - target: {fileID: 250400566737430450, guid: d0d83f04d983415438a32007295483cb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -369,7 +421,7 @@ PrefabInstance:
     - target: {fileID: 3184567011917687924, guid: d0d83f04d983415438a32007295483cb, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: -6308889222234608633, guid: 1feaf4e0255fa6a43a7180ba7c6ccccf, type: 3}
+      objectReference: {fileID: 2478963816738504531, guid: 7f46f95fc3332324aa1f30892ce39754, type: 3}
     - target: {fileID: 8834189341351012539, guid: d0d83f04d983415438a32007295483cb, type: 3}
       propertyPath: m_Name
       value: WallFracture3
@@ -393,8 +445,32 @@ PrefabInstance:
     m_TransformParent: {fileID: 8963024136740322803}
     m_Modifications:
     - target: {fileID: 250400566737430450, guid: d0d83f04d983415438a32007295483cb, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.053
+      objectReference: {fileID: 0}
+    - target: {fileID: 250400566737430450, guid: d0d83f04d983415438a32007295483cb, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 1.233
+      objectReference: {fileID: 0}
+    - target: {fileID: 250400566737430450, guid: d0d83f04d983415438a32007295483cb, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.81196344
+      objectReference: {fileID: 0}
+    - target: {fileID: 250400566737430450, guid: d0d83f04d983415438a32007295483cb, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.58370835
+      objectReference: {fileID: 0}
+    - target: {fileID: 250400566737430450, guid: d0d83f04d983415438a32007295483cb, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 250400566737430450, guid: d0d83f04d983415438a32007295483cb, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 250400566737430450, guid: d0d83f04d983415438a32007295483cb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: -71.424
       objectReference: {fileID: 0}
     - target: {fileID: 250400566737430450, guid: d0d83f04d983415438a32007295483cb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -407,7 +483,7 @@ PrefabInstance:
     - target: {fileID: 3184567011917687924, guid: d0d83f04d983415438a32007295483cb, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: -3774503329852910075, guid: 1feaf4e0255fa6a43a7180ba7c6ccccf, type: 3}
+      objectReference: {fileID: -5246554499369150555, guid: 7f46f95fc3332324aa1f30892ce39754, type: 3}
     - target: {fileID: 8834189341351012539, guid: d0d83f04d983415438a32007295483cb, type: 3}
       propertyPath: m_Name
       value: WallFracture2
@@ -431,8 +507,32 @@ PrefabInstance:
     m_TransformParent: {fileID: 8963024136740322803}
     m_Modifications:
     - target: {fileID: 250400566737430450, guid: d0d83f04d983415438a32007295483cb, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
+      propertyPath: m_LocalPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 250400566737430450, guid: d0d83f04d983415438a32007295483cb, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -1.567
+      objectReference: {fileID: 0}
+    - target: {fileID: 250400566737430450, guid: d0d83f04d983415438a32007295483cb, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.72166985
+      objectReference: {fileID: 0}
+    - target: {fileID: 250400566737430450, guid: d0d83f04d983415438a32007295483cb, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.69223744
+      objectReference: {fileID: 0}
+    - target: {fileID: 250400566737430450, guid: d0d83f04d983415438a32007295483cb, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 250400566737430450, guid: d0d83f04d983415438a32007295483cb, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 250400566737430450, guid: d0d83f04d983415438a32007295483cb, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: -87.615
       objectReference: {fileID: 0}
     - target: {fileID: 250400566737430450, guid: d0d83f04d983415438a32007295483cb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -442,6 +542,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3184567011917687924, guid: d0d83f04d983415438a32007295483cb, type: 3}
+      propertyPath: m_Mesh
+      value: 
+      objectReference: {fileID: 3604864485499483011, guid: 7f46f95fc3332324aa1f30892ce39754, type: 3}
     - target: {fileID: 8834189341351012539, guid: d0d83f04d983415438a32007295483cb, type: 3}
       propertyPath: m_Name
       value: WallFracture1
@@ -465,8 +569,36 @@ PrefabInstance:
     m_TransformParent: {fileID: 8963024136740322803}
     m_Modifications:
     - target: {fileID: 250400566737430450, guid: d0d83f04d983415438a32007295483cb, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.013
+      objectReference: {fileID: 0}
+    - target: {fileID: 250400566737430450, guid: d0d83f04d983415438a32007295483cb, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.28917444
+      objectReference: {fileID: 0}
+    - target: {fileID: 250400566737430450, guid: d0d83f04d983415438a32007295483cb, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.07113241
+      objectReference: {fileID: 0}
+    - target: {fileID: 250400566737430450, guid: d0d83f04d983415438a32007295483cb, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.8016728
+      objectReference: {fileID: 0}
+    - target: {fileID: 250400566737430450, guid: d0d83f04d983415438a32007295483cb, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0.59776306
+      objectReference: {fileID: 0}
+    - target: {fileID: 250400566737430450, guid: d0d83f04d983415438a32007295483cb, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 250400566737430450, guid: d0d83f04d983415438a32007295483cb, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 250400566737430450, guid: d0d83f04d983415438a32007295483cb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
+      value: -73.42
       objectReference: {fileID: 0}
     - target: {fileID: 250400566737430450, guid: d0d83f04d983415438a32007295483cb, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -479,7 +611,7 @@ PrefabInstance:
     - target: {fileID: 3184567011917687924, guid: d0d83f04d983415438a32007295483cb, type: 3}
       propertyPath: m_Mesh
       value: 
-      objectReference: {fileID: -4124383128149228285, guid: 1feaf4e0255fa6a43a7180ba7c6ccccf, type: 3}
+      objectReference: {fileID: 2478963816738504531, guid: 7f46f95fc3332324aa1f30892ce39754, type: 3}
     - target: {fileID: 8834189341351012539, guid: d0d83f04d983415438a32007295483cb, type: 3}
       propertyPath: m_Name
       value: WallFracture5

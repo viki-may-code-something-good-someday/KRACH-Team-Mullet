@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using DG.Tweening;
 using UnityEngine;
 using Mirror;
 
@@ -26,15 +27,15 @@ public class BillboardObject : NetworkBehaviour
     [SerializeField] private LayerMask playerMask;
 
     [Header("Shove Speed Scaling")]
-    [Tooltip("Wie stark die Lauf-Geschwindigkeit des Spielers die Flugweite beeinflusst. " +
-             "0 = keine Auswirkung (immer shoveForce/shoveUpForce), 1 = volle Skalierung mit der Geschwindigkeit.")]
+    [Tooltip("How strongly the player's running speed affects the throw distance. " +
+             "0 = no effect (always shoveForce/shoveUpForce), 1 = full scaling with the speed.")]
     [Range(0f, 1f)]
     [SerializeField] private float shoveSpeedInfluence = 0.5f;
-    [Tooltip("Anlaufgeschwindigkeit, bei der der Spieler exakt die konfigurierte shoveForce/shoveUpForce " +
-             "auslöst (1x Multiplikator). Schnelleres Anlaufen skaliert proportional darüber hinaus.")]
+    [Tooltip("Run-up speed at which the player triggers exactly the configured shoveForce/shoveUpForce " +
+             "(1x multiplier). A faster run-up scales proportionally beyond that.")]
     [SerializeField] private float shoveReferenceSpeed = 4f;
-    [Tooltip("Obergrenze für den geschwindigkeitsbasierten Multiplikator, damit extrem schnelles " +
-             "Anlaufen das Objekt nicht ins Unendliche schleudert.")]
+    [Tooltip("Upper limit for the speed-based multiplier, so an extremely fast run-up doesn't " +
+             "fling the object into infinity.")]
     [SerializeField] private float maxShoveSpeedMultiplier = 2f;
 
     [Header("Physics")]
@@ -187,7 +188,7 @@ public class BillboardObject : NetworkBehaviour
         float speedRatio = shoveReferenceSpeed > Epsilon ? approachSpeed / shoveReferenceSpeed : 1f;
         float speedMultiplier = Mathf.Lerp(1f, Mathf.Clamp(speedRatio, 0f, maxShoveSpeedMultiplier), shoveSpeedInfluence);
 
-        // WICHTIG: Nur der Vorwärtsanteil wird mit der Geschwindigkeit skaliert.
+        // IMPORTANT: only the forward part is scaled with the speed.
         Vector3 forwardComponent = forwardDir * ((1f - sideAmount) * shoveForce * speedMultiplier);
         Vector3 sideComponent = sideDir * (sideAmount * shoveForce);
 
@@ -300,6 +301,21 @@ public class BillboardObject : NetworkBehaviour
             Destroy(ps.gameObject, ps.main.duration + ps.main.startLifetime.constantMax);
         }
         if (soundEmitter != null) soundEmitter.PlayOneShot();
+
+        PlaySquash();
+    }
+
+    /// <summary>Cartoon squash on hit: briefly wide and flat, then it springs back.</summary>
+    private void PlaySquash()
+    {
+        if (!GameFeelSettings.Instance.squashOnHit || spriteTransform == null) return;
+
+        // Complete the running punch first, otherwise the new one starts from a distorted scale
+        // and the sprite stays permanently deformed after fast punches.
+        spriteTransform.DOKill(true);
+        Vector3 scale = spriteTransform.localScale;
+        spriteTransform.DOPunchScale(new Vector3(scale.x * 0.35f, -scale.y * 0.3f, 0f), 0.35f, 7, 0.6f)
+            .SetLink(spriteTransform.gameObject);
     }
 
     private void LateUpdate()

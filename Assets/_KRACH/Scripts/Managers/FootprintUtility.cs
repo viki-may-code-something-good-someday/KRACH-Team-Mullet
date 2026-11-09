@@ -28,15 +28,33 @@ public static class FootprintUtility
     /// </summary>
     public static bool TryComputeWorldOBB(GameObject go, out OBB2D obb)
     {
+        // Disabled colliders report empty bounds at the WORLD ORIGIN – including them would
+        // stretch the footprint all the way to (0,0,0). Same for disabled renderers.
         Collider[] colliders = go.GetComponentsInChildren<Collider>(false)
-            .Where(c => c.GetComponent<InteractionTrigger>() == null)
+            .Where(c => c.enabled && c.GetComponent<InteractionTrigger>() == null)
             .ToArray();
 
         IEnumerable<Bounds> sourceBounds = colliders.Length > 0
             ? colliders.Select(c => c.bounds)
-            : go.GetComponentsInChildren<Renderer>(false).Select(r => r.bounds);
+            : go.GetComponentsInChildren<Renderer>(false).Where(r => r.enabled).Select(r => r.bounds);
 
         return TryBuildOBB(go.transform, sourceBounds, out obb);
+    }
+
+    /// <summary>
+    /// Footprint of a single collider, expressed in the frame of <paramref name="root"/>.
+    /// Used e.g. for billboards, whose placement footprint is only their small
+    /// InteractionTrigger collider.
+    /// </summary>
+    public static bool TryComputeColliderOBB(Transform root, Collider collider, out OBB2D obb)
+    {
+        if (collider == null)
+        {
+            obb = default;
+            return false;
+        }
+
+        return TryBuildOBB(root, new[] { collider.bounds }, out obb);
     }
     /// <summary>
     /// Computes a Wall's footprint for furniture-clearance checks, explicitly excluding any

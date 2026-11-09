@@ -5,8 +5,8 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 /// <summary>
-/// Orchestriert die Rollen-Initialisierung beim Betreten der Gameplay-Scene sowie das
-/// Fangen/Respawnen von Vandalisten (reagiert auf HunterAccuse.OnVandalistCaught).
+/// Orchestrates the role initialization when entering the gameplay scene as well as
+/// catching/respawning vandalists (reacts to HunterAccuse.OnVandalistCaught).
 /// </summary>
 public class PlayerRoleSetup : NetworkBehaviour
 {
@@ -19,10 +19,10 @@ public class PlayerRoleSetup : NetworkBehaviour
     [SerializeField] private PlayerInteract interact;
     [SerializeField] private HunterAccuse accuse;
 
-    [Tooltip("Parent aller sichtbaren Spielerelemente. Wird in der Lobby UND im Caught-Zustand deaktiviert.")]
+    [Tooltip("Parent of all visible player elements. Deactivated in the lobby AND in the caught state.")]
     [SerializeField] private GameObject playerVisuals;
 
-    [Header("Rollen-Modelle")]
+    [Header("Role Models")]
     [SerializeField] private GameObject hunterModel;
     [SerializeField] private GameObject vandalistModel;
     [SerializeField] private GameObject hunterModelLocalOnlyShadow;
@@ -30,18 +30,18 @@ public class PlayerRoleSetup : NetworkBehaviour
 
 
     [Header("Respawn Settings")]
-    [Tooltip("Ob gefangene Vandalisten respawnen. Wenn false, bleiben sie dauerhaft gefangen.")]
+    [Tooltip("Whether caught vandalists respawn. If false, they stay caught permanently.")]
     [SerializeField] private bool allowRespawn = true;
     [SerializeField] private float respawnDelay = 5f;
-    [Tooltip("Kurze Unverwundbarkeit nach dem Respawn, damit der Hunter nicht sofort wieder fängt.")]
+    [Tooltip("Short invulnerability after respawning so the hunter can't catch again immediately.")]
     [SerializeField] private float respawnInvulnerability = 2f;
-    [Tooltip("Catches bis zur endgültigen Elimination, auch bei allowRespawn. -1 = unbegrenzt.")]
+    [Tooltip("Catches until final elimination, even with allowRespawn. -1 = unlimited.")]
     [SerializeField] private int maxCatches = -1;
-    [Tooltip("Optionale UI (z.B. Respawn-Countdown), nur für den betroffenen Owner im Caught-Zustand.")]
+    [Tooltip("Optional visual (e.g. death indicator), only for the affected owner in the caught state.")]
     [SerializeField] private GameObject caughtStateVisual;
 
-    [Tooltip("Nur für ownerlose Objekte (Test-Dummies): Layer die beim Respawn als Boden gelten." +
-             " Echte Spieler brauchen das nicht, ihr CharacterController fällt von selbst.")]
+    [Tooltip("Only for ownerless objects (test dummies): layers that count as ground on respawn." +
+             " Real players don't need this, their CharacterController falls by itself.")]
     [SerializeField] private LayerMask ownerlessGroundMask = 8;
 
 
@@ -50,12 +50,17 @@ public class PlayerRoleSetup : NetworkBehaviour
 
     // ── State ────────────────────────────────────────────────────────────────
 
+    // Must be declared BEFORE isCaught: Mirror deserializes SyncVars in declaration order,
+    // so the value is already set when the isCaught hook shows the feedback.
+    [SyncVar]
+    private bool isEliminated;
+
     [SyncVar(hook = nameof(OnCaughtStateChanged))]
     private bool isCaught;
     public bool IsCaught => isCaught;
 
-    // Als SyncVar statt als lokaler Zeitstempel: Time.time läuft auf Server und Clients
-    // unterschiedlich, und der Hunter-Client muss den Zustand für sein Fadenkreuz kennen.
+    // A SyncVar instead of a local timestamp: Time.time differs between server and clients,
+    // and the hunter client needs to know the state for its crosshair.
     [SyncVar]
     private bool isInvulnerable;
     public bool IsInvulnerable => isInvulnerable;
@@ -79,9 +84,9 @@ public class PlayerRoleSetup : NetworkBehaviour
     {
         poc = GetComponent<PlayerObjectController>();
 
-        // Nur die Collider erfassen die im Prefab aktiv sind – bewusst deaktivierte bleiben
-        // deaktiviert. Der CharacterController ist ausgenommen: den verwaltet PlayerMovement
-        // über Freeze/Unfreeze, sonst hätte dieser Zustand zwei Besitzer.
+        // Only collect colliders that are active in the prefab – deliberately disabled ones stay
+        // disabled. The CharacterController is excluded: PlayerMovement manages it via
+        // Freeze/Unfreeze, otherwise this state would have two owners.
         bodyColliders = System.Array.FindAll(
             GetComponentsInChildren<Collider>(true),
             col => col.enabled && !(col is CharacterController));
@@ -89,8 +94,8 @@ public class PlayerRoleSetup : NetworkBehaviour
 
     private void Start()
     {
-        // Alles ausblenden bis die Gameplay-Scene geladen ist.
-        // Der Root bleibt aktiv – Mirror braucht das für den Netzwerk-Sync.
+        // Hide everything until the gameplay scene is loaded.
+        // The root stays active – Mirror needs it for network sync.
         SetLobbyState();
         EvaluateScene();
     }
@@ -118,24 +123,24 @@ public class PlayerRoleSetup : NetworkBehaviour
     }
 
     /// <summary>
-    /// Die Rolle kommt als SyncVar an und kann den Szenenwechsel überholen oder ihm hinterherlaufen
-    /// (Lag, Late Join). Trifft sie später ein als die Initialisierung, wird hier nachgezogen –
-    /// sonst bliebe der Spieler dauerhaft auf dem Default-Wert des Prefabs hängen.
+    /// The role arrives as a SyncVar and can overtake the scene change or lag behind it
+    /// (lag, late join). If it arrives later than the initialization, it is caught up here –
+    /// otherwise the player would stay stuck on the prefab's default value.
     /// </summary>
     private void OnRoleSyncedFromServer(PlayerRole newRole)
     {
         if (!initialized || newRole == assignedRole) return;
         if (!InGameplayScene) return;
 
-        Debug.Log($"[PlayerRoleSetup] Rolle nachträglich geändert: {assignedRole} → {newRole}, Setup wird erneuert.");
+        Debug.Log($"[PlayerRoleSetup] Role changed afterwards: {assignedRole} → {newRole}, re-running setup.");
         InitializeRole();
     }
 
-    // ── Zustände ─────────────────────────────────────────────────────────────
+    // ── States ───────────────────────────────────────────────────────────────
 
     /// <summary>
-    /// Startet die Initialisierung sobald der LevelManager der Gameplay-Scene bereit ist.
-    /// Der LevelManager wird beim Szenenwechsel neu erzeugt, kann also noch fehlen.
+    /// Starts the initialization as soon as the gameplay scene's LevelManager is ready.
+    /// The LevelManager is recreated on scene change, so it may not exist yet.
     /// </summary>
     private void BeginInitialization()
     {
@@ -178,19 +183,19 @@ public class PlayerRoleSetup : NetworkBehaviour
 
         if (poc == null)
         {
-            Debug.LogError("[PlayerRoleSetup] Kein PlayerObjectController gefunden!");
+            Debug.LogError("[PlayerRoleSetup] No PlayerObjectController found!");
             return;
         }
 
         assignedRole = poc.playerRole;
 
-        // Visuals und Aktionen auf allen Clients
+        // Visuals and actions on all clients
         if (playerVisuals != null) playerVisuals.SetActive(true);
         ActivateRoleModel(assignedRole);
         ActivateRoleAction(assignedRole);
 
-        // Config und Spawn nur für den lokalen Spieler (client-autoritatives Movement).
-        // Für ownerlose Objekte (Test-Dummies) übernimmt TestDummySpawner die Startposition.
+        // Config and spawn only for the local player (client-authoritative movement).
+        // For ownerless objects (test dummies) TestDummySpawner takes care of the start position.
         if (!isOwned) return;
 
         // Hide own body mesh for the local camera, but keep the shadow.
@@ -200,7 +205,7 @@ public class PlayerRoleSetup : NetworkBehaviour
         RoleMovementConfig config = assignedRole == PlayerRole.Hunter ? hunterConfig : vandalistConfig;
         if (config == null || movement == null)
         {
-            Debug.LogError($"[PlayerRoleSetup] Config oder PlayerMovement fehlt für Rolle {assignedRole}!");
+            Debug.LogError($"[PlayerRoleSetup] Config or PlayerMovement missing for role {assignedRole}!");
             return;
         }
 
@@ -221,24 +226,21 @@ public class PlayerRoleSetup : NetworkBehaviour
     /// </summary>
     private void ApplyLocalPlayerVisibility()
     {
-        Renderer[] renderers;
+        GameObject shadowRoot = assignedRole switch
+        {
+            PlayerRole.Vandalist => vandalistModelLocalOnlyShadow,
+            PlayerRole.Hunter => hunterModelLocalOnlyShadow,
+            _ => null
+        };
 
-        if (assignedRole == PlayerRole.Vandalist)
+        if (shadowRoot == null)
         {
-            renderers = vandalistModelLocalOnlyShadow.GetComponentsInChildren<Renderer>(true);
-
-        }
-        else if (assignedRole == PlayerRole.Hunter)
-        {
-            renderers = hunterModelLocalOnlyShadow.GetComponentsInChildren<Renderer>(true);
-        }
-        else
-        {
-            Debug.LogWarning($"[PlayerRoleSetup] Unbekannte Rolle {assignedRole}, keine Modelle wurden local ausgeblendet.");
+            Debug.LogWarning($"[PlayerRoleSetup] No LocalOnlyShadow object for role {assignedRole} – " +
+                             "the own model stays visible to the local camera.");
             return;
         }
 
-        foreach (Renderer r in renderers)
+        foreach (Renderer r in shadowRoot.GetComponentsInChildren<Renderer>(true))
         {
             r.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.ShadowsOnly;
         }
@@ -273,7 +275,7 @@ public class PlayerRoleSetup : NetworkBehaviour
 
         if (spawnPoints == null || spawnPoints.Length == 0)
         {
-            Debug.LogWarning($"[PlayerRoleSetup] Keine Spawn-Positionen für {role}!");
+            Debug.LogWarning($"[PlayerRoleSetup] No spawn positions for {role}!");
             return transform.position;
         }
 
@@ -281,8 +283,8 @@ public class PlayerRoleSetup : NetworkBehaviour
     }
 
     /// <summary>
-    /// Server-autoritativer Respawn. Echte Spieler bekommen einen TargetRpc (Movement ist
-    /// client-authoritative), ownerlose Objekte wie Test-Dummies setzt der Server direkt.
+    /// Server-authoritative respawn. Real players get a TargetRpc (movement is
+    /// client-authoritative); the server positions ownerless objects like test dummies directly.
     /// </summary>
     [Server]
     private void ServerRespawn(PlayerRole role)
@@ -295,8 +297,8 @@ public class PlayerRoleSetup : NetworkBehaviour
             return;
         }
 
-        // Ownerlos (Test-Dummy): kein CharacterController der den Spawnpunkt-Offset ausgleicht,
-        // also selbst auf dem Boden absetzen. Sonst schwebt der Dummy nach dem Respawn.
+        // Ownerless (test dummy): no CharacterController to compensate the spawn point offset,
+        // so put it on the ground ourselves. Otherwise the dummy floats after respawning.
         transform.position = SpawnPlacement.DropToGround(
             spawnPos, GetComponent<CapsuleCollider>(), ownerlessGroundMask);
     }
@@ -307,13 +309,13 @@ public class PlayerRoleSetup : NetworkBehaviour
         if (movement != null) movement.TeleportTo(position);
     }
 
-    // ── Catch / Respawn-Logik ────────────────────────────────────────────────
+    // ── Catch / Respawn Logic ────────────────────────────────────────────────
 
     private void HandleVandalistCaught(NetworkIdentity caught)
     {
         if (caught != netIdentity) return;
-        if (!isServer) return;  // nur der Server entscheidet über Catch/Respawn
-        if (isCaught) return;   // bereits im Caught/Respawn-Prozess
+        if (!isServer) return;  // only the server decides about catch/respawn
+        if (isCaught) return;   // already in the caught/respawn process
 
         HandleCaughtServer();
     }
@@ -323,14 +325,15 @@ public class PlayerRoleSetup : NetworkBehaviour
     {
         catchCount++;
         isInvulnerable = false;
+        isEliminated = !allowRespawn || (maxCatches >= 0 && catchCount > maxCatches);
         isCaught = true;
         ApplyCaughtState(true);
 
         OnCaughtStateChangedServer?.Invoke(this, true);
 
-        if (!allowRespawn || (maxCatches >= 0 && catchCount > maxCatches))
+        if (isEliminated)
         {
-            Debug.Log($"[PlayerRoleSetup] {name} wurde endgültig eliminiert (Catch #{catchCount}).");
+            Debug.Log($"[PlayerRoleSetup] {name} was eliminated for good (catch #{catchCount}).");
             return;
         }
 
@@ -347,27 +350,66 @@ public class PlayerRoleSetup : NetworkBehaviour
         isCaught = false;
         ApplyCaughtState(false);
 
+        if (connectionToClient != null) TargetRespawnFeedback(connectionToClient);
+
         OnCaughtStateChangedServer?.Invoke(this, false);
 
         yield return new WaitForSeconds(respawnInvulnerability);
         isInvulnerable = false;
     }
 
-    /// <summary>Läuft auf allen Clients (inkl. Host), sobald sich isCaught ändert.</summary>
-    private void OnCaughtStateChanged(bool oldValue, bool newValue) => ApplyCaughtState(newValue);
+    /// <summary>Runs on all clients (including the host) as soon as isCaught changes.</summary>
+    private void OnCaughtStateChanged(bool oldValue, bool newValue)
+    {
+        ApplyCaughtState(newValue);
+
+        // Feedback deliberately only here (not in ApplyCaughtState): the hook fires exactly once
+        // per state change per client, while ApplyCaughtState runs twice on the host.
+        // The "back in the game" feedback comes via TargetRpc from RespawnAfterDelay, so it
+        // doesn't show up wrongly when resetting for the lobby (ResetForLobby).
+        if (!isOwned || oldValue == newValue) return;
+
+        if (newValue) PlayCaughtFeedback();
+        else GameFeelHUD.HideCountdown();
+    }
+
+    [TargetRpc]
+    private void TargetRespawnFeedback(NetworkConnectionToClient target)
+    {
+        GameFeelHUD.HideCountdown();
+        GameFeelHUD.CenterPop("BACK IN THE GAME!", GameFeelSettings.Instance.vandalistColor, 0.8f);
+    }
+
+    private void PlayCaughtFeedback()
+    {
+        GameFeelSettings settings = GameFeelSettings.Instance;
+
+        CameraEffects.Shake(settings.caughtTrauma);
+        GameFeelHUD.Flash(settings.caughtFlashColor, 0.8f);
+
+        if (isEliminated)
+        {
+            GameFeelHUD.Banner("ELIMINATED!", settings.caughtFlashColor, 2.5f);
+        }
+        else
+        {
+            GameFeelHUD.Banner("CAUGHT!", settings.hunterColor, 1.2f);
+            GameFeelHUD.Countdown("Respawn in", respawnDelay);
+        }
+    }
 
     /// <summary>
-    /// Gleicht Sichtbarkeit, Collider und Steuerung an den Caught-Zustand an.
-    /// Bewusst idempotent: der SyncVar-Hook deckt Clients und Host ab, der Server-Aufruf
-    /// den Dedicated-Server-Fall, in dem Mirror den Hook nicht feuert.
+    /// Matches visibility, colliders and controls to the caught state.
+    /// Deliberately idempotent: the SyncVar hook covers clients and host, the server call covers
+    /// the dedicated server case, where Mirror doesn't fire the hook.
     /// </summary>
     private void ApplyCaughtState(bool caught)
     {
         if (playerVisuals != null) playerVisuals.SetActive(!caught);
 
-        // Ein gefangener Spieler darf kein unsichtbares Hindernis sein: keine Kollision,
-        // kein Raycast-Ziel, keine Trigger. Läuft auf allen Clients UND dem Server, damit
-        // auch die serverseitige Trefferprüfung ihn nicht mehr findet.
+        // A caught player must not be an invisible obstacle: no collision, no raycast target,
+        // no triggers. Runs on all clients AND the server, so the server-side hit check doesn't
+        // find them anymore either.
         SetBodyCollidersEnabled(!caught);
 
         if (isOwned && caughtStateVisual != null)
@@ -395,7 +437,7 @@ public class PlayerRoleSetup : NetworkBehaviour
         }
     }
 
-    // ── Lobby-Rückkehr ───────────────────────────────────────────────────────
+    // ── Returning to the Lobby ───────────────────────────────────────────────
 
     [Server]
     public void ResetForLobby()
@@ -406,18 +448,19 @@ public class PlayerRoleSetup : NetworkBehaviour
             initRoutine = null;
         }
 
-        // Eventuell laufende RespawnAfterDelay-Coroutine abbrechen – sonst würde sie nach dem
-        // Szenenwechsel noch feuern und versuchen, einen Spieler zu teleportieren/respawnen,
-        // der gerade erst in der Lobby ankommt.
+        // Cancel a possibly running RespawnAfterDelay coroutine – otherwise it would still fire
+        // after the scene change and try to teleport/respawn a player who is just arriving
+        // in the lobby.
         StopAllCoroutines();
 
         catchCount = 0;
         isInvulnerable = false;
+        isEliminated = false;
 
         if (isCaught)
         {
-            isCaught = false;   // SyncVar-Hook räumt Visuals/Collider auf allen Clients auf
-            ApplyCaughtState(false); // Dedicated Server: Hook feuert dort nicht selbst
+            isCaught = false;   // the SyncVar hook cleans up visuals/colliders on all clients
+            ApplyCaughtState(false); // dedicated server: the hook doesn't fire there by itself
         }
     }
 
@@ -431,22 +474,22 @@ public class PlayerRoleSetup : NetworkBehaviour
 
         CustomNetworkManager mgr = NetworkManager.singleton as CustomNetworkManager;
         if (mgr == null)
-            Debug.LogWarning("[PlayerRoleSetup] NetworkManager nicht gefunden (nur im Play Mode prüfbar).");
+            Debug.LogWarning("[PlayerRoleSetup] NetworkManager not found (can only be checked in Play Mode).");
         else if (string.IsNullOrEmpty(mgr.GameplayScene))
-        { Debug.LogError("[PlayerRoleSetup] GameplayScene im NetworkManager nicht gesetzt!"); ok = false; }
+        { Debug.LogError("[PlayerRoleSetup] GameplayScene is not set in the NetworkManager!"); ok = false; }
 
-        if (hunterConfig == null) { Debug.LogError("[PlayerRoleSetup] hunterConfig fehlt!"); ok = false; }
-        if (vandalistConfig == null) { Debug.LogError("[PlayerRoleSetup] vandalistConfig fehlt!"); ok = false; }
-        if (movement == null) { Debug.LogError("[PlayerRoleSetup] PlayerMovement fehlt!"); ok = false; }
-        if (playerVisuals == null) Debug.LogWarning("[PlayerRoleSetup] playerVisuals nicht gesetzt – Lobby-Hiding funktioniert nicht.");
-        if (hunterModel == null) Debug.LogWarning("[PlayerRoleSetup] hunterModel nicht gesetzt.");
-        if (vandalistModel == null) Debug.LogWarning("[PlayerRoleSetup] vandalistModel nicht gesetzt.");
-        if (interact == null) Debug.LogWarning("[PlayerRoleSetup] PlayerInteract fehlt.");
-        if (accuse == null) Debug.LogWarning("[PlayerRoleSetup] HunterAccuse fehlt.");
+        if (hunterConfig == null) { Debug.LogError("[PlayerRoleSetup] hunterConfig is missing!"); ok = false; }
+        if (vandalistConfig == null) { Debug.LogError("[PlayerRoleSetup] vandalistConfig is missing!"); ok = false; }
+        if (movement == null) { Debug.LogError("[PlayerRoleSetup] PlayerMovement is missing!"); ok = false; }
+        if (playerVisuals == null) Debug.LogWarning("[PlayerRoleSetup] playerVisuals not set – lobby hiding won't work.");
+        if (hunterModel == null) Debug.LogWarning("[PlayerRoleSetup] hunterModel not set.");
+        if (vandalistModel == null) Debug.LogWarning("[PlayerRoleSetup] vandalistModel not set.");
+        if (interact == null) Debug.LogWarning("[PlayerRoleSetup] PlayerInteract is missing.");
+        if (accuse == null) Debug.LogWarning("[PlayerRoleSetup] HunterAccuse is missing.");
         if (allowRespawn && respawnDelay <= 0f)
-            Debug.LogWarning("[PlayerRoleSetup] respawnDelay ist 0 oder negativ – Spieler respawnt sofort.");
+            Debug.LogWarning("[PlayerRoleSetup] respawnDelay is 0 or negative – the player respawns instantly.");
 
-        if (ok) Debug.Log("[PlayerRoleSetup] Setup vollständig.");
+        if (ok) Debug.Log("[PlayerRoleSetup] Setup complete.");
     }
 
     [Button("Debug: Force Catch")]
@@ -454,12 +497,12 @@ public class PlayerRoleSetup : NetworkBehaviour
     {
         if (!Application.isPlaying || !isServer)
         {
-            Debug.LogWarning("[PlayerRoleSetup] Nur im Play Mode als Server nutzbar.");
+            Debug.LogWarning("[PlayerRoleSetup] Only usable in Play Mode as the server.");
             return;
         }
         if (isCaught)
         {
-            Debug.LogWarning("[PlayerRoleSetup] Spieler ist bereits gefangen.");
+            Debug.LogWarning("[PlayerRoleSetup] Player is already caught.");
             return;
         }
 

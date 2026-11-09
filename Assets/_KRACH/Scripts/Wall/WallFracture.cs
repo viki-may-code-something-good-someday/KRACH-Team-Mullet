@@ -1,31 +1,33 @@
+using DG.Tweening;
 using UnityEngine;
 
+/// <summary>
+/// A single debris piece of a destroyed wall. Becomes "live" when wallBroken is activated
+/// and cleans itself up again after <see cref="lifetime"/> seconds.
+///
+/// Players pushing the debris around happens in PlayerMovement.OnControllerColliderHit –
+/// CharacterControllers don't trigger OnCollisionEnter on rigidbodies, which is why the
+/// previous approach here never fired.
+/// </summary>
 public class WallFracture : MonoBehaviour
 {
-    [Header("References")]
-    [SerializeField] private Rigidbody rb;
-
-    [Header("Settings")]
-    [SerializeField] private float upwardsExplosionStrength = 0.5f;
-    [SerializeField] private float explosionForce = 8f;
-    [SerializeField] private float explosionRadius = 0.1f;
+    [Header("Lifetime")]
+    [Tooltip("Seconds until the piece disappears.")]
+    [SerializeField] private float lifetime = 5f;
+    [Tooltip("How long the piece shrinks at the end (only if debrisShrinkOut is enabled in the GameFeelSettings).")]
+    [SerializeField] private float shrinkDuration = 0.6f;
 
     private void OnEnable()
     {
-        // add pool
-        Destroy(gameObject, 5f);
-    }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        // this is so that the player can easily walk through the wall pieces after the wall destruction
-        if (collision.gameObject.CompareTag("Player"))
+        // TODO: pooling, in case many walls break at the same time.
+        if (GameFeelSettings.Instance.debrisShrinkOut && shrinkDuration > 0f)
         {
-            // add pool
-            Vector3 explosionDirection = (transform.position - collision.transform.position).normalized;
-            Vector3 adjustedDirection = new Vector3(explosionDirection.x, upwardsExplosionStrength, explosionDirection.z);
-
-            rb.AddExplosionForce(explosionForce, transform.position, explosionRadius);
+            transform.DOScale(Vector3.zero, shrinkDuration)
+                .SetDelay(Mathf.Max(0f, lifetime - shrinkDuration))
+                .SetEase(Ease.InBack)
+                .SetLink(gameObject);
         }
+
+        Destroy(gameObject, lifetime);
     }
 }

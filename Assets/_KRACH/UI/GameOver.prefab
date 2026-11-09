@@ -540,7 +540,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'DieErsten berichten:'
+  m_text: 'First reports:'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -677,7 +677,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Deine Punkte
+  m_text: Your Score
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -814,7 +814,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Ich fange gerade erst an! \n(Spiel neustarten)
+  m_text: I'm just getting started! \n(Restart game)
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
@@ -941,23 +941,22 @@ MonoBehaviour:
   resultText: {fileID: 2590016657639870161}
   highestScore: {fileID: 0}
   reasonForGameOverString:
-  - "\"Nein, das war meine Lieblingswand...\" Achtung im Rundfunkhaus! W\xFCtender
-    ehemaliger Radiomoderator von einem eingestellten Klassik-Radiosender zerst\xF6rrt
-    das B\xFCro und wurde von einem der neuen Jugendsender Mitarbeitenden erentdeckt!
-    (Spiel verloren, -500 Punkte) "
-  - "Achtung im Rundfunkhaus! Ein ehemaliger Radiomoderator rei\xDFt W\xE4nde ein!
-    Hat es wohl gemacht, als es gerade so still im Haus war, dass jeder es h\xF6ren
-    konnte (Spiel verloren, -500 Punkte)"
-  - "Diese Etage wurde komplett verw\xFCstet und niemand hat etwas gesehen! Ob es
-    etwas mit der heutigen Ank\xFCndigung zutun hat, dass der Klassikradiosender
-    durch einen Sender f\xFCr ein j\xFCngeres Publikum ersetzt werden soll? (Spiel
-    gewonnen, +100 Punkte)"
-  - '"Hallo... ist da noch wer?" (Spiel verloren weil Zeit abgelaufen, -500 Punkte)'
+  - "\"No, that was my favorite wall...\" Alert at the broadcasting house! A furious
+    former radio host of a cancelled classical radio station is wrecking the office
+    and was spotted by a staffer of one of the new youth stations! (Game lost, -500
+    points) "
+  - "Alert at the broadcasting house! A former radio host is tearing down walls! Must
+    have done it right when the building was so quiet that everyone could hear it
+    (Game lost, -500 points)"
+  - "This whole floor was completely trashed and nobody saw a thing! Could it have
+    something to do with today's announcement that the classical station is being
+    replaced by one for a younger audience? (Game won, +100 points)"
+  - '"Hello... is anyone still there?" (Game lost because time ran out, -500 points)'
   buttonText: {fileID: 715973438228724028}
   buttonTextRestart:
-  - Ich fange gerade erst an! \n(Spiel neustarten)
-  - Das bringt das Blut in Wallung! \n(Spiel neustarten)
-  - Ist mein Punkt schon angekommen??  \n(Spiel neustarten)
+  - I'm just getting started! \n(Restart game)
+  - That gets the blood pumping! \n(Restart game)
+  - Did my point get across yet??  \n(Restart game)
 --- !u!1 &6860738361839818397
 GameObject:
   m_ObjectHideFlags: 0
@@ -1023,8 +1022,8 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "w\xFCtender Klassik-Radiosender Moderator verw\xFCstet nach Aufl\xF6sung
-    seines Senders das B\xFCro. \n\n"
+  m_text: "Furious classical radio host trashes the office after his station gets shut
+    down. \n\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}

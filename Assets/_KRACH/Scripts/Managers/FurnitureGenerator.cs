@@ -182,12 +182,13 @@ public class FurnitureGenerator : MonoBehaviour
 
     /// <summary>
     /// Computes the placement footprint for an instance. For billboards, only the small
-    /// collider on the InteractionTrigger child is used — every other collider on the
-    /// instance (e.g. the large interaction/visual collider) is temporarily disabled so
-    /// TryComputeWorldOBB measures against the small collider only, then all colliders are
-    /// restored to their original enabled state so runtime behavior is unaffected. This
-    /// keeps billboards from being rejected far more often than furniture just because of
-    /// their larger physical collider.
+    /// collider on the InteractionTrigger child is used — this keeps billboards from being
+    /// rejected far more often than furniture just because of their larger physical collider.
+    ///
+    /// Previously all other colliders were disabled temporarily and TryComputeWorldOBB was
+    /// called – but TryComputeWorldOBB deliberately skips InteractionTrigger colliders and
+    /// disabled colliders report empty bounds at the world origin, so the billboard footprint
+    /// was either the renderer bounds or stretched all the way to (0,0,0).
     /// </summary>
     private bool TryComputeFootprintForPlacement(GameObject instance, bool useBillboard, out OBB2D obb)
     {
@@ -197,25 +198,7 @@ public class FurnitureGenerator : MonoBehaviour
             Collider triggerCollider = trigger != null ? trigger.GetComponent<Collider>() : null;
 
             if (triggerCollider != null)
-            {
-                Collider[] allColliders = instance.GetComponentsInChildren<Collider>(true);
-                var previousStates = new Dictionary<Collider, bool>();
-
-                foreach (Collider col in allColliders)
-                {
-                    previousStates[col] = col.enabled;
-                    col.enabled = (col == triggerCollider);
-                }
-
-                Physics.SyncTransforms();
-                bool success = TryComputeWorldOBB(instance, out obb);
-
-                foreach (var kvp in previousStates)
-                    kvp.Key.enabled = kvp.Value;
-
-                Physics.SyncTransforms();
-                return success;
-            }
+                return TryComputeColliderOBB(instance.transform, triggerCollider, out obb);
         }
 
         return TryComputeWorldOBB(instance, out obb);

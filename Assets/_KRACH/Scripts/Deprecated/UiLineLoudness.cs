@@ -12,16 +12,16 @@ public class UiLineLoudness : MonoBehaviour
     private float currentY;
     private float targetY;
 
-    // Lerp Parameter
-    [SerializeField] private float slowLerpSpeed = 0.3f;  // Geschwindigkeit für Value 0 (langsam)
-    [SerializeField] private float fastLerpSpeed = 1f;  // Geschwindigkeit für Value 1 (schneller)
+    // Lerp parameters
+    [SerializeField] private float slowLerpSpeed = 0.3f;  // speed for value 0 (slow)
+    [SerializeField] private float fastLerpSpeed = 1f;  // speed for value 1 (faster)
 
-    // Sinus Schwankung Parameter
-    [SerializeField] private float swingAmplitude = 0.2f;  // Amplitude der Schwankung
-    [SerializeField] private float swingFrequency = 2f;    // Aktuelle Frequenz
+    // Sine sway parameters
+    [SerializeField] private float swingAmplitude = 0.2f;  // amplitude of the sway
+    [SerializeField] private float swingFrequency = 2f;    // current frequency
     private float swingTimer = 0f;
     private float frequencyChangeTimer = 0f;
-    [SerializeField] private float frequencyChangeInterval = 3f;  // Frequenz alle 3 Sekunden ändern
+    [SerializeField] private float frequencyChangeInterval = 3f;  // change the frequency every 3 seconds
 
     // Color Lerp
     [SerializeField] private Color startColor = new Color(0.8431373f, 0.38039216f, 1f); // #D761FF
@@ -67,7 +67,7 @@ public class UiLineLoudness : MonoBehaviour
         if (line == null)
             return;
 
-        // Zielposition basierend auf currentValue setzen
+        // Set the target position based on currentValue
         targetY = Mathf.Lerp(
             downPoint.localPosition.y,
             upPoint.localPosition.y,
@@ -75,25 +75,25 @@ public class UiLineLoudness : MonoBehaviour
         );
 
 
-        // Lerpen basierend auf Wert
+        // Lerp based on the value
         float lerpSpeed = Mathf.Lerp(slowLerpSpeed, fastLerpSpeed, currentValue);
         currentY = Mathf.Lerp(currentY, targetY, lerpSpeed * Time.deltaTime);
 
-        // Sinus-Schwankung hinzufügen
+        // Add the sine sway
         float swing = Mathf.Sin(swingTimer * swingFrequency) * swingAmplitude;
         float finalY = currentY + swing;
 
-        // Position aktualisieren (nur Y-Achse)
+        // Update the position (Y axis only)
         Vector3 newPos = line.localPosition;
         newPos.y = finalY;
         line.localPosition = newPos;
 
-        // Color lerp: Ziel basierend auf currentValue
+        // Color lerp: target based on currentValue
         Color targetColor = Color.Lerp(startColor, endColor, currentValue);
         currentColor = Color.Lerp(currentColor, targetColor, colorLerpSpeed * Time.deltaTime);
         ApplyColor(currentColor);
 
-        // Timer für Sinus-Schwankung erhöhen
+        // Advance the timer for the sine sway
         swingTimer += Time.deltaTime;
 
         // Rotation wiggle
@@ -102,7 +102,7 @@ public class UiLineLoudness : MonoBehaviour
         currentRotationAngle = Mathf.LerpAngle(currentRotationAngle, targetAngle, rotationLerpSpeed * Time.deltaTime);
         line.localRotation = Quaternion.Euler(0f, 0f, currentRotationAngle);
 
-        // Frequenz zufällig ändern
+        // Randomly change the frequency
         frequencyChangeTimer += Time.deltaTime;
         if (frequencyChangeTimer >= frequencyChangeInterval)
         {
@@ -112,7 +112,7 @@ public class UiLineLoudness : MonoBehaviour
     }
 
     /// <summary>
-    /// Setzt das Value auf 0 - Linie lerpt langsam zum downPoint
+    /// Sets the value to 0 – the line lerps slowly to the downPoint
     /// </summary>
     public void SetValueToZero()
     {
@@ -120,7 +120,7 @@ public class UiLineLoudness : MonoBehaviour
     }
 
     /// <summary>
-    /// Setzt das Value auf 1 - Linie lerpt schneller zum upPoint
+    /// Sets the value to 1 – the line lerps faster to the upPoint
     /// </summary>
     public void SetValueToOne()
     {
@@ -128,11 +128,11 @@ public class UiLineLoudness : MonoBehaviour
     }
 
     /// <summary>
-    /// Zufällige Frequenz für die Sinus-Schwankung setzen
+    /// Sets a random frequency for the sine sway
     /// </summary>
     private void RandomizeSwingFrequency()
     {
-        swingFrequency = Random.Range(1f, 4f);  // Frequenz zwischen 1 und 4 Hz
+        swingFrequency = Random.Range(1f, 4f);  // frequency between 1 and 4 Hz
     }
 
     private void ApplyColor(Color color)

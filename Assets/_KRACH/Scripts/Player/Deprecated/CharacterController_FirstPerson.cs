@@ -59,7 +59,7 @@ public class CharacterController_FirstPerson : NetworkBehaviour
     [Header("Audio")]
     [SerializeField] private float baseStepInterval = 0.3f;
     [SerializeField] private float footstepTimer = 0f;
-    [Tooltip("LuaSoundEmitter am Fußpunkt, Script-Mode. Enable Multiplayer = false — die Verteilung (lokal + RpcPlayFootstepOnOthers) macht dieses Script.")]
+    [Tooltip("LuaSoundEmitter at the feet, script mode. Enable Multiplayer = false — this script handles the distribution (local + RpcPlayFootstepOnOthers).")]
     [SerializeField] private LuaSoundEmitter footstepSoundEmitter;
 
     [Header("References")]

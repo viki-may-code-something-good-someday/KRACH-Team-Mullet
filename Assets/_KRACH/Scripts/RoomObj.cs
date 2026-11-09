@@ -36,9 +36,9 @@ public class RoomObj : MonoBehaviour
         {
             if (wallsInThisRoom[i] == wallToRemove)
             {
-                // Element auf null setzen ...
+                // Set the element to null ...
                 wallsInThisRoom[i] = null;
-                // ... und sofort ein neues Array ohne null-Elemente erstellen
+                // ... and immediately create a new array without null elements
                 wallsInThisRoom = System.Array.FindAll(wallsInThisRoom, w => w != null);
                 break;
             }
@@ -54,8 +54,7 @@ public class RoomObj : MonoBehaviour
     public void SetEnemeyIsInThisRoom(bool isEnemyInThisRoom)
     {
         this.isEnemyInThisRoom = isEnemyInThisRoom;
-        MeshRenderer renderer = GetComponent<MeshRenderer>();
-        renderer.enabled = isEnemyInThisRoom;
+        if (TryGetComponent(out MeshRenderer meshRenderer)) meshRenderer.enabled = isEnemyInThisRoom;
     }
     public void SetPlayerHasOpenedThisRoom(bool hasPlayerOpenedThisRoom)
     {

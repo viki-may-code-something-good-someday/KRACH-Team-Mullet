@@ -9,7 +9,7 @@ public class UI_GameOver : MonoBehaviour
     public TextMeshProUGUI resultText;
     public TextMeshProUGUI buttonText;
 
-    // [0] = verloren, [1] = gewonnen
+    // [0] = lost, [1] = won
     public string[] reasonForGameOverString;
     public string[] buttonTextRestart;
 
@@ -28,14 +28,20 @@ public class UI_GameOver : MonoBehaviour
         gameObject.SetActive(false);
     }
 
-    // reasonForGameOver: 0 = verloren, 1 = gewonnen
+    /// <param name="_won">Whether the LOCAL player's side won.</param>
     public void SetGameOverScreen(bool _won)
     {
         gameObject.SetActive(true);
 
-        buttonText.text = buttonTextRestart[Random.Range(0, buttonTextRestart.Length)];
-        reasonText.text = reasonForGameOverString[_won ? 1 : 0];
-        resultText.text = _won ? "Gewonnen!" : "Verloren!";
+        if (buttonText != null && buttonTextRestart != null && buttonTextRestart.Length > 0)
+            buttonText.text = buttonTextRestart[Random.Range(0, buttonTextRestart.Length)];
+
+        int reasonIndex = _won ? 1 : 0;
+        if (reasonText != null && reasonForGameOverString != null && reasonIndex < reasonForGameOverString.Length)
+            reasonText.text = reasonForGameOverString[reasonIndex];
+
+        if (resultText != null)
+            resultText.text = _won ? "You won!" : "You lost!";
 
         if (!_won)
         {
@@ -49,6 +55,8 @@ public class UI_GameOver : MonoBehaviour
 
     private void OnDestroy()
     {
+        if (Instance == this) Instance = null;
+
         if (gameOverSound.isValid())
         {
             gameOverSound.stop(FMOD.Studio.STOP_MODE.IMMEDIATE);

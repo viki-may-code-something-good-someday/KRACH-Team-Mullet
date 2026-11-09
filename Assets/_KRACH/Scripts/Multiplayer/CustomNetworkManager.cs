@@ -18,15 +18,15 @@ public class CustomNetworkManager : NetworkManager
     private string gameplayScene;
 
     /// <summary>
-    /// Gibt den Pfad der Gameplay-Scene zurück.
-    /// Wird von CameraController und PlayerRoleSetup verwendet.
+    /// Path of the gameplay scene.
+    /// Used by CameraController and PlayerRoleSetup.
     /// </summary>
     public string GameplayScene => gameplayScene;
 
     /// <summary>
-    /// Gibt den Pfad der Lobby-Scene zurück. Wird für ReturnToLobby() benötigt,
-    /// da OnServerAddPlayer nur in der onlineScene neue Spieler zulässt und wir
-    /// beim Zurückwechseln keine neuen Player-Objekte erzeugen wollen.
+    /// Path of the lobby scene. Needed for ReturnToLobby(), because OnServerAddPlayer only
+    /// allows new players in the onlineScene and we don't want to create new player objects
+    /// when switching back.
     /// </summary>
     public string LobbyScene => lobbyScene;
 
@@ -34,11 +34,11 @@ public class CustomNetworkManager : NetworkManager
     public List<PlayerObjectController> gamePlayers { get; } = new List<PlayerObjectController>();
 
     /// <summary>
-    /// Server-autoritativer Spiegel von LobbyController.IsTestMode zum Startzeitpunkt.
-    /// Wird über StartGame() gesetzt (LobbyController existiert nur client-seitig in der
-    /// Lobby-Scene und kann daher nicht direkt vom Server ausgelesen werden – der Wert muss
-    /// über die bestehende Command-Kette durchgereicht werden).
-    /// Von TestDummySpawner genutzt um zu entscheiden ob Dummies gespawnt werden.
+    /// Server-authoritative mirror of LobbyController.IsTestMode at start time.
+    /// Set via StartGame() (LobbyController only exists client-side in the lobby scene and
+    /// therefore can't be read by the server directly – the value has to be passed through
+    /// the existing command chain).
+    /// Used by TestDummySpawner to decide whether dummies get spawned.
     /// </summary>
     public bool IsTestMode { get; private set; }
 
@@ -49,52 +49,88 @@ public class CustomNetworkManager : NetworkManager
 
     public override void OnServerAddPlayer(NetworkConnectionToClient conn)
     {
-        if (SceneManager.GetActiveScene().path == onlineScene)
-        {
-            PlayerObjectController gamePlayerInstance = Instantiate(gamePlayerPrefab);
+        if (SceneManager.GetActiveScene().path != onlineScene) return;
 
-            gamePlayerInstance.connectionID = conn.connectionId;
-            gamePlayerInstance.playerIdNumber = gamePlayers.Count + 1;
-            gamePlayerInstance.playerSteamID = (ulong)SteamMatchmaking.GetLobbyMemberByIndex((CSteamID)SteamLobby.instance.currentLobbyID, gamePlayers.Count);
+        PlayerObjectController gamePlayerInstance = Instantiate(gamePlayerPrefab);
 
-            NetworkServer.AddPlayerForConnection(conn, gamePlayerInstance.gameObject);
+        bool isHost = conn is LocalConnectionToClient;
 
-            // Sinnvoller Erst-Default: erster Spieler (Host) → Hunter, alle weiteren → Vandalist.
-            gamePlayerInstance.SetPlayerRole(gamePlayerInstance.playerIdNumber == 1 ? PlayerRole.Hunter : PlayerRole.Vandalist);
-        }
+        gamePlayerInstance.connectionID = conn.connectionId;
+        gamePlayerInstance.playerIdNumber = isHost ? 1 : NextFreePlayerIdNumber();
+        gamePlayerInstance.playerSteamID = ResolveSteamID(conn, isHost);
+
+        NetworkServer.AddPlayerForConnection(conn, gamePlayerInstance.gameObject);
+
+        // Sensible initial default: first player (host) → Hunter, everyone else → Vandalist.
+        gamePlayerInstance.SetPlayerRole(isHost ? PlayerRole.Hunter : PlayerRole.Vandalist);
+    }
+
+    /// <summary>
+    /// Smallest free number starting at 2 (1 is reserved for the host). Previously
+    /// gamePlayers.Count + 1 was used – after a leave/rejoin that produced duplicate numbers.
+    /// </summary>
+    private int NextFreePlayerIdNumber()
+    {
+        int candidate = 2;
+        while (gamePlayers.Exists(p => p != null && p.playerIdNumber == candidate))
+            candidate++;
+        return candidate;
+    }
+
+    /// <summary>
+    /// Steam ID of the player. The Fizzy Steamworks transport address IS the client's Steam ID.
+    /// Previously the lobby member at index gamePlayers.Count was used – that no longer matches
+    /// as soon as someone leaves the lobby (wrong avatar/name in the list).
+    /// </summary>
+    private static ulong ResolveSteamID(NetworkConnectionToClient conn, bool isHost)
+    {
+        if (!SteamManager.Initialized) return 0;
+
+        if (isHost) return SteamUser.GetSteamID().m_SteamID;
+
+        if (ulong.TryParse(conn.address, out ulong steamId)) return steamId;
+
+        Debug.LogWarning($"[CustomNetworkManager] Could not read a Steam ID from address '{conn.address}'.");
+        return 0;
     }
 
     /// <param name="testMode">
-    /// Spiegelt LobbyController.IsTestMode zum Startzeitpunkt. Muss über die Command-Kette
-    /// (PlayerObjectController.CanStartGame → hier) durchgereicht werden.
+    /// Mirrors LobbyController.IsTestMode at start time. Has to be passed through the command
+    /// chain (PlayerObjectController.CanStartGame → here).
     /// </param>
-    public void StartGame(string sceneName, bool useCustomNetworkGameplazScene, bool testMode)
+    public void StartGame(string sceneName, bool useCustomNetworkGameplayScene, bool testMode)
     {
-        if (useCustomNetworkGameplazScene)
+        if (useCustomNetworkGameplayScene)
         {
             sceneName = gameplayScene;
+        }
+
+        if (string.IsNullOrEmpty(sceneName))
+        {
+            Debug.LogError("[CustomNetworkManager] No gameplay scene set – game start aborted.");
+            return;
         }
 
         IsTestMode = testMode;
         ServerChangeScene(sceneName);
     }
 
-    // ── Rückkehr zur Lobby ───────────────────────────────────────────────────
+    // ── Return to Lobby ──────────────────────────────────────────────────────
 
     /// <summary>
-    /// Wechselt alle verbundenen Spieler zurück in die Lobby-Scene.
-    /// Die vorhandenen PlayerObjectController-Instanzen (gamePlayers) bleiben erhalten –
-    /// ServerChangeScene zerstört nur szenenspezifische Objekte, keine NetworkIdentities
-    /// mit DontDestroyOnLoad-Flag bzw. Player-Objekte laufen über die Connection weiter.
-    /// Ready-Status und Caught-Zustand werden zurückgesetzt, damit die Lobby-UI und
-    /// PlayerRoleSetup sauber neu starten.
+    /// Switches all connected players back to the lobby scene.
+    /// The existing PlayerObjectController instances (gamePlayers) are kept –
+    /// ServerChangeScene only destroys scene-specific objects; player objects
+    /// (DontDestroyOnLoad) live on through their connection.
+    /// Ready state and caught state are reset so the lobby UI and PlayerRoleSetup
+    /// start cleanly again.
     /// </summary>
     [Server]
     public void ReturnToLobby()
     {
         if (string.IsNullOrEmpty(lobbyScene))
         {
-            Debug.LogError("[CustomNetworkManager] lobbyScene ist nicht gesetzt!");
+            Debug.LogError("[CustomNetworkManager] lobbyScene is not set!");
             return;
         }
 
@@ -105,16 +141,16 @@ public class CustomNetworkManager : NetworkManager
             player.ResetForLobby();
 
             PlayerRoleSetup roleSetup = player.GetComponent<PlayerRoleSetup>();
-            roleSetup?.ResetForLobby();
+            if (roleSetup != null) roleSetup.ResetForLobby();
         }
 
         ServerChangeScene(lobbyScene);
     }
 
     /// <summary>
-    /// Läuft auf dem Server, sobald die neue Scene vollständig geladen ist.
-    /// Wichtig für Late-Join-artige Situationen: hier könnten z.B. gamePlayers
-    /// neu validiert werden, falls sich während des Wechsels Connections trennen.
+    /// Runs on the server once the new scene has fully loaded.
+    /// Important for late-join-like situations: gamePlayers can be revalidated here
+    /// in case connections drop during the switch.
     /// </summary>
     public override void OnServerSceneChanged(string sceneName)
     {
@@ -123,6 +159,24 @@ public class CustomNetworkManager : NetworkManager
         if (sceneName == lobbyScene)
         {
             gamePlayers.RemoveAll(p => p == null);
+            IsTestMode = false;
         }
+    }
+
+    // ── Session End ──────────────────────────────────────────────────────────
+
+    /// <summary>
+    /// Runs when leaving a session (client and host). Without LeaveLobby you stayed a member
+    /// of the old Steam lobby – hosting/joining again then ran into state errors.
+    /// </summary>
+    public override void OnStopClient()
+    {
+        base.OnStopClient();
+
+        gamePlayers.Clear();
+        IsTestMode = false;
+        LastWinner = WinningSide.None;
+
+        if (SteamLobby.instance != null) SteamLobby.instance.LeaveCurrentLobby();
     }
 }

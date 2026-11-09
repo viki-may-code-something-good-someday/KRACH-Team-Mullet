@@ -1,4 +1,5 @@
-﻿using Steamworks;
+﻿using DG.Tweening;
+using Steamworks;
 using System.Collections.Generic;
 using System.Linq;
 using TMPro;
@@ -37,15 +38,15 @@ public class LobbyController : MonoBehaviour
     public Toggle readyToggle;
     public TextMeshProUGUI readyToggleText;
 
-    // ── Test-Modus ────────────────────────────────────────────────────────────
+    // ── Test Mode ─────────────────────────────────────────────────────────────
 
     [Header("Test Mode")]
-    [Tooltip("Überspringt Rollenvalidierung und Ready-Check. Erlaubt Solo-Start mit COM-Dummies.")]
+    [Tooltip("Skips role validation and the ready check. Allows a solo start with COM dummies.")]
     [SerializeField] private bool isTestMode = false;
-    [Tooltip("Wird aktiviert wenn Test-Modus an ist (z.B. ein Text oder Panel).")]
+    [Tooltip("Activated when test mode is on (e.g. a text or panel).")]
     [SerializeField] private GameObject testModeIndicator;
 
-    // ── Rollenlimits ─────────────────────────────────────────────────────────
+    // ── Role Limits ──────────────────────────────────────────────────────────
 
     private const int hunterMaxNumber = 1;
     private const int vandalistMaxNumber = 4;
@@ -75,7 +76,9 @@ public class LobbyController : MonoBehaviour
 
     private void Awake()
     {
-        if (instance == null) instance = this;
+        // Exactly one LobbyController per lobby scene – the new instance after returning from
+        // the game replaces the destroyed old one.
+        instance = this;
 
         if (startGameButton != null)
             startGameButton.interactable = false;
@@ -87,10 +90,10 @@ public class LobbyController : MonoBehaviour
 
     private void Start()
     {
-        // Bei Rückkehr aus der Gameplay-Scene existieren die PlayerObjectController-Instanzen
-        // bereits (DontDestroyOnLoad) – ihr OnStartClient()/OnStartAuthority() feuert also nicht
-        // erneut. Diese neue LobbyController-Instanz muss sich daher selbst initialisieren,
-        // statt sich auf einen externen Trigger zu verlassen.
+        // When returning from the gameplay scene, the PlayerObjectController instances already
+        // exist (DontDestroyOnLoad) – their OnStartClient()/OnStartAuthority() therefore doesn't
+        // fire again. This new LobbyController instance has to initialize itself instead of
+        // relying on an external trigger.
         FindLocalPlayer();
         UpdateLobbyName();
         UpdatePlayerList();
@@ -101,11 +104,16 @@ public class LobbyController : MonoBehaviour
         Cursor.visible = true;
     }
 
-    // ── Spielstart ────────────────────────────────────────────────────────────
+    private void OnDestroy()
+    {
+        if (instance == this) instance = null;
+    }
+
+    // ── Game Start ────────────────────────────────────────────────────────────
 
     /// <summary>
-    /// Wird vom Start-Game-Button aufgerufen.
-    /// Nutzt die Gameplay-Scene aus dem CustomNetworkManager.
+    /// Called by the Start Game button.
+    /// Uses the gameplay scene from the CustomNetworkManager.
     /// </summary>
     public void StartGame()
     {
@@ -113,7 +121,7 @@ public class LobbyController : MonoBehaviour
     }
 
     /// <summary>
-    /// Startet das Spiel mit einer expliziten Scene (z.B. für Tests mit anderer Scene).
+    /// Starts the game with an explicit scene (e.g. for tests with a different scene).
     /// </summary>
     public void StartGame(string sceneName)
     {
@@ -122,11 +130,18 @@ public class LobbyController : MonoBehaviour
 
     private void StartGameInternal(bool useManagerScene, string sceneName)
     {
-        if (!ValidateRoleLimits()) return;
+        if (localPlayerController == null) FindLocalPlayer();
+        if (localPlayerController == null) return;
+
+        if (!ValidateRoleLimits())
+        {
+            PunchRoleCounters();
+            return;
+        }
         AssignRolesToAllPlayers();
 
-        // isTestMode wird hier explizit durchgereicht, da CustomNetworkManager (Server) diesen
-        // Wert nicht direkt von LobbyController (nur client-seitig, nur Lobby-Scene) lesen kann.
+        // isTestMode is passed through explicitly here, because the CustomNetworkManager (server)
+        // can't read this value directly from the LobbyController (client-side only, lobby scene only).
         localPlayerController.CanStartGame(useManagerScene ? "" : sceneName, useManagerScene, isTestMode);
     }
 
@@ -134,28 +149,28 @@ public class LobbyController : MonoBehaviour
     {
         if (isTestMode)
         {
-            Debug.Log("[Lobby] Test-Modus – Rollenvalidierung übersprungen.");
+            Debug.Log("[Lobby] Test mode – role validation skipped.");
             return true;
         }
 
         if (hunterPlayerListItems.Count == 0)
         {
-            Debug.LogWarning("[Lobby] Kein Hunter zugewiesen.");
+            Debug.LogWarning("[Lobby] No hunter assigned.");
             return false;
         }
         if (vandalistPlayerListItems.Count == 0)
         {
-            Debug.LogWarning("[Lobby] Kein Vandalist zugewiesen.");
+            Debug.LogWarning("[Lobby] No vandalist assigned.");
             return false;
         }
         if (hunterPlayerListItems.Count > hunterMaxNumber)
         {
-            Debug.LogWarning($"[Lobby] Zu viele Hunter ({hunterPlayerListItems.Count}/{hunterMaxNumber}).");
+            Debug.LogWarning($"[Lobby] Too many hunters ({hunterPlayerListItems.Count}/{hunterMaxNumber}).");
             return false;
         }
         if (vandalistPlayerListItems.Count > vandalistMaxNumber)
         {
-            Debug.LogWarning($"[Lobby] Zu viele Vandalists ({vandalistPlayerListItems.Count}/{vandalistMaxNumber}).");
+            Debug.LogWarning($"[Lobby] Too many vandalists ({vandalistPlayerListItems.Count}/{vandalistMaxNumber}).");
             return false;
         }
 
@@ -176,7 +191,7 @@ public class LobbyController : MonoBehaviour
             poc?.SetPlayerRole(PlayerRole.Vandalist);
         }
 
-        // Test-Modus: Spieler die in keiner Liste sind bekommen Standardrolle Vandalist
+        // Test mode: players that aren't in any list get the default role Vandalist
         if (isTestMode)
         {
             foreach (PlayerObjectController poc in Manager.gamePlayers)
@@ -194,31 +209,38 @@ public class LobbyController : MonoBehaviour
         return Manager.gamePlayers.FirstOrDefault(p => p.connectionID == connectionID);
     }
 
-    // ── Lobby-Name ────────────────────────────────────────────────────────────
+    // ── Lobby Name ────────────────────────────────────────────────────────────
 
     public void UpdateLobbyName()
     {
-        currentLobbyID = Manager.GetComponent<SteamLobby>().currentLobbyID;
+        if (Manager == null || lobbyNameText == null) return;
+
+        SteamLobby steamLobby = Manager.GetComponent<SteamLobby>();
+        if (steamLobby == null || !SteamManager.Initialized) return;
+
+        currentLobbyID = steamLobby.currentLobbyID;
         lobbyNameText.text = SteamMatchmaking.GetLobbyData(new CSteamID(currentLobbyID), "name");
     }
 
-    // ── Lokalen Spieler finden ────────────────────────────────────────────────
+    // ── Find the Local Player ─────────────────────────────────────────────────
 
     public void FindLocalPlayer()
     {
         GameObject localPlayerObject = GameObject.Find("LocalGamePlayer");
         if (localPlayerObject == null)
         {
-            Debug.LogError("[Lobby] LocalGamePlayer nicht gefunden!");
+            Debug.LogError("[Lobby] LocalGamePlayer not found!");
             return;
         }
         localPlayerController = localPlayerObject.GetComponent<PlayerObjectController>();
     }
 
-    // ── Spielerliste ──────────────────────────────────────────────────────────
+    // ── Player List ───────────────────────────────────────────────────────────
 
     public void UpdatePlayerList()
     {
+        if (Manager == null) return;
+
         if (!playerItemCreated)
             CreateHostPlayerItem();
         else if (totalPlayerbaseListItems.Count < Manager.gamePlayers.Count)
@@ -249,9 +271,14 @@ public class LobbyController : MonoBehaviour
             if (totalPlayerbaseListItems.Any(i => i.connectionID == player.connectionID))
                 continue;
 
+            // Use the real role from the SyncVar instead of always Vandalist – otherwise the
+            // entry only jumps into the right column on the next update.
             PlayerListItem item = CreatePlayerListItem(player);
-            AddPlayerToList(1, item); // neue Spieler → Vandalist
+            AddPlayerToList(player.playerRole == PlayerRole.Hunter ? 0 : 1, item);
         }
+
+        // Re-evaluate the ready state/start button when someone joins, too.
+        CheckIfAllReady();
     }
 
     private PlayerListItem CreatePlayerListItem(PlayerObjectController player)
@@ -310,12 +337,12 @@ public class LobbyController : MonoBehaviour
             item.playerName = player.playerName;
             item.isReady = player.ready;
 
-            // WICHTIG: Wir lesen die echte Rolle direkt aus dem Netzwerk (SyncVar)!
+            // IMPORTANT: we read the real role directly from the network (SyncVar)!
             PlayerRole networkedRole = player.playerRole;
             item.SetPlayerValues(networkedRole);
             item.UpdateReadyStatusText();
 
-            // UI-Element in die richtige Scroll-Liste (Parent) verschieben
+            // Move the UI element into the right scroll list (parent)
             if (networkedRole == PlayerRole.Hunter && !hunterPlayerListItems.Contains(item))
             {
                 if (vandalistPlayerListItems.Contains(item)) vandalistPlayerListItems.Remove(item);
@@ -337,6 +364,17 @@ public class LobbyController : MonoBehaviour
 
         CheckIfAllReady();
         UpdateRoleCountTexts();
+    }
+
+    /// <summary>Short shake of the role counters when the start fails because of the role limits.</summary>
+    private void PunchRoleCounters()
+    {
+        foreach (TextMeshProUGUI text in new[] { hunterCurrent, vandalistCurrent })
+        {
+            if (text == null) continue;
+            text.rectTransform.DOKill(true);
+            text.rectTransform.DOShakeAnchorPos(0.35f, 12f, 30).SetLink(text.gameObject);
+        }
     }
 
     public void RemovePlayerItem()
@@ -365,7 +403,7 @@ public class LobbyController : MonoBehaviour
     // ── Ready ─────────────────────────────────────────────────────────────────
 
     /// <summary>
-    /// Wird vom Ready-Toggle im UI aufgerufen.
+    /// Called by the ready toggle in the UI.
     /// </summary>
     public void ToggleReady()
     {
@@ -376,7 +414,7 @@ public class LobbyController : MonoBehaviour
     public void UpdateReadyText()
     {
         if (localPlayerController == null || readyToggleText == null) return;
-        readyToggleText.text = localPlayerController.ready ? "Bereit!" : "Bereit?";
+        readyToggleText.text = localPlayerController.ready ? "Ready!" : "Ready?";
     }
 
     public void CheckIfAllReady()
@@ -392,22 +430,22 @@ public class LobbyController : MonoBehaviour
         }
 
         bool allReady = Manager.gamePlayers.Count > 0
-                     && Manager.gamePlayers.All(p => p.ready);
+                     && Manager.gamePlayers.All(p => p != null && p.ready);
 
         startGameButton.interactable = allReady && isHost;
     }
 
-    // ── Test-Modus ────────────────────────────────────────────────────────────
+    // ── Test Mode ─────────────────────────────────────────────────────────────
 
     /// <summary>
-    /// Wird vom Test-Mode-Button im UI aufgerufen.
+    /// Called by the test mode button in the UI.
     /// </summary>
     public void ToggleTestMode()
     {
         isTestMode = !isTestMode;
         UpdateTestModeIndicator();
         CheckIfAllReady();
-        Debug.Log($"[Lobby] Test-Modus: {(isTestMode ? "AN" : "AUS")}");
+        Debug.Log($"[Lobby] Test mode: {(isTestMode ? "ON" : "OFF")}");
     }
 
     private void UpdateTestModeIndicator()
@@ -418,12 +456,12 @@ public class LobbyController : MonoBehaviour
 
     public bool IsTestMode => isTestMode;
 
-    // ── Rollenwechsel ─────────────────────────────────────────────────────────
+    // ── Role Switching ────────────────────────────────────────────────────────
 
     /// <summary>
-    /// Wechselt die Rolle des lokalen Spielers zwischen Hunter und Vandalist.
-    /// Wird von einem UI-Button aufgerufen.
-    /// Button wird durch UpdateSwitchSidesButton() ausgegraut wenn die Zielseite voll ist.
+    /// Switches the local player's role between Hunter and Vandalist.
+    /// Called by a UI button.
+    /// The button is greyed out by UpdateSwitchSidesButton() when the target side is full.
     /// </summary>
     public void ToggleLocalPlayerRole()
     {
@@ -442,8 +480,8 @@ public class LobbyController : MonoBehaviour
     }
 
     /// <summary>
-    /// Gibt an ob der lokale Spieler die Seite wechseln kann.
-    /// Nicht möglich wenn die Zielseite bereits voll ist.
+    /// Whether the local player can switch sides.
+    /// Not possible if the target side is already full.
     /// </summary>
     private bool CanLocalPlayerSwitch()
     {
@@ -464,8 +502,8 @@ public class LobbyController : MonoBehaviour
     }
 
     /// <summary>
-    /// Aktualisiert den interactable-State des Switch-Sides-Buttons.
-    /// Wird immer aufgerufen wenn sich die Spielerlisten ändern.
+    /// Updates the interactable state of the Switch Sides button.
+    /// Called whenever the player lists change.
     /// </summary>
     private void UpdateSwitchSidesButton()
     {
@@ -494,27 +532,29 @@ public class LobbyController : MonoBehaviour
         UpdateRoleCountTexts();
     }
 
-    // ── Rollenanzeige ─────────────────────────────────────────────────────────
+    // ── Role Display ──────────────────────────────────────────────────────────
 
     public void UpdateRoleCountTexts()
     {
         int hCount = hunterPlayerListItems.Count;
         int vCount = vandalistPlayerListItems.Count;
 
-        hunterCurrent.text = hCount.ToString();
-        hunterMax.text = hunterMaxNumber.ToString();
-        vandalistCurrent.text = vCount.ToString();
-        vandalistMax.text = vandalistMaxNumber.ToString();
-
         Color hColor = hCount > hunterMaxNumber ? overshootTextColor : defaultTextColor;
         Color vColor = vCount > vandalistMaxNumber ? overshootTextColor : defaultTextColor;
 
-        hunterCurrent.color = hColor;
-        hunterMax.color = hColor;
-        vandalistCurrent.color = vColor;
-        vandalistMax.color = vColor;
+        SetCounter(hunterCurrent, hCount.ToString(), hColor);
+        SetCounter(hunterMax, hunterMaxNumber.ToString(), hColor);
+        SetCounter(vandalistCurrent, vCount.ToString(), vColor);
+        SetCounter(vandalistMax, vandalistMaxNumber.ToString(), vColor);
 
-        // Switch-Sides-Button nach jeder Listenänderung neu bewerten
+        // Re-evaluate the Switch Sides button after every list change
         UpdateSwitchSidesButton();
+    }
+
+    private static void SetCounter(TextMeshProUGUI text, string value, Color color)
+    {
+        if (text == null) return;
+        text.text = value;
+        text.color = color;
     }
 }

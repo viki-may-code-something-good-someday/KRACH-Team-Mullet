@@ -2,8 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using FMODUnity;
+using Mirror;
 using Sirenix.OdinInspector;
 
+/// <summary>
+/// Spawns SoundBoxes in waves. Runs exclusively on the server: SoundBox is a NetworkBehaviour
+/// and must be created via NetworkServer.Spawn – previously every client instantiated its own,
+/// non-networked boxes that hit Rpcs never reached.
+///
+/// Note: MainLevel_Level1 currently uses hand-placed boxes + GameManager.trackedSoundBoxes,
+/// not a spawner.
+/// </summary>
 public class SoundBoxSpawner : MonoBehaviour
 {
     public static SoundBoxSpawner Instance { get; private set; }
@@ -16,12 +25,12 @@ public class SoundBoxSpawner : MonoBehaviour
     [Header("Settings")]
     [SerializeField] private float waveTransitionDelay;
 
-    [SerializeField, ReadOnly] private int currentWaveIndex = 0;
+    [SerializeField, Sirenix.OdinInspector.ReadOnly] private int currentWaveIndex = 0;
 
-    private List<SoundBox> activeInstances = new List<SoundBox>();
+    private readonly List<SoundBox> activeInstances = new List<SoundBox>();
     private bool gameWon = false;
     private bool isTransitioningWave = false;
-
+    private bool running;
 
     private void Awake()
     {
@@ -36,7 +45,10 @@ public class SoundBoxSpawner : MonoBehaviour
 
     private void Start()
     {
+        if (!NetworkServer.active) return; // clients receive the boxes through Mirror
+
         ResetWaveData();
+        running = true;
         SpawnCurrentWave();
     }
 
@@ -47,7 +59,7 @@ public class SoundBoxSpawner : MonoBehaviour
 
     private void Update()
     {
-        if (isTransitioningWave || gameWon) return;
+        if (!running || isTransitioningWave || gameWon) return;
 
         if (activeInstances.Count == 0)
         {
@@ -55,7 +67,6 @@ public class SoundBoxSpawner : MonoBehaviour
             StartCoroutine(TransitionToNextWave());
         }
     }
-
 
     private void ResetWaveData()
     {
@@ -75,15 +86,15 @@ public class SoundBoxSpawner : MonoBehaviour
 
         SoundBoxWave wave = soundBoxWaves[currentWaveIndex];
 
-        if (wave.Boxes == null || wave.Boxes.Count == 0)
+        if (wave == null || wave.Boxes == null || wave.Boxes.Count == 0)
         {
-            Debug.LogWarning($"SoundBoxSpawner: Wave {currentWaveIndex} has no boxes.");
+            Debug.LogWarning($"[SoundBoxSpawner] Wave {currentWaveIndex} has no boxes.");
             return;
         }
 
         if (spawnPoints == null || spawnPoints.Count == 0)
         {
-            Debug.LogWarning("SoundBoxSpawner: No spawn points assigned.");
+            Debug.LogWarning("[SoundBoxSpawner] No spawn points assigned.");
             return;
         }
 
@@ -94,28 +105,31 @@ public class SoundBoxSpawner : MonoBehaviour
             SoundBox box = wave.Boxes[i];
             if (box == null) continue;
 
-            SoundBoxSpawnPoint spawnPoint = spawnPoints[wave.SpawnPosNumbers[i]];
-            SoundBox spawned = Instantiate(box, spawnPoint.transform.position, Quaternion.identity, spawnParent);
+            int spawnIndex = i < wave.SpawnPosNumbers.Count ? wave.SpawnPosNumbers[i] : i;
+            if (spawnIndex < 0 || spawnIndex >= spawnPoints.Count || spawnPoints[spawnIndex] == null)
+            {
+                Debug.LogWarning($"[SoundBoxSpawner] Wave {currentWaveIndex}: invalid spawn point index {spawnIndex} – box skipped.");
+                continue;
+            }
+
+            SoundBox spawned = Instantiate(box, spawnPoints[spawnIndex].transform.position, Quaternion.identity, spawnParent);
+            NetworkServer.Spawn(spawned.gameObject);
             activeInstances.Add(spawned);
         }
 
-        SoundManager.Instance.InitializeSoundboxEmitters();
+        if (SoundManager.Instance != null) SoundManager.Instance.InitializeSoundboxEmitters();
 
-        Debug.Log($"Wave {currentWaveIndex} spawned with {wave.Boxes.Count} boxes.");
+        Debug.Log($"[SoundBoxSpawner] Wave {currentWaveIndex} spawned with {activeInstances.Count} boxes.");
     }
 
-    // Wird von SoundBox aufgerufen wenn sie zerstört wird
+    /// <summary>Called by SoundBox when it was destroyed. The box removes itself.</summary>
     public void NotifySoundBoxDestroyed(SoundBox _soundBox)
     {
         if (_soundBox == null) return;
 
-        if (activeInstances.Remove(_soundBox))
-        {
-            Destroy(_soundBox.gameObject);
-            return; // Wellen-Abschluss wird in Update() erkannt
-        }
-
-        Debug.LogWarning($"NotifySoundBoxDestroyed: '{_soundBox.name}' not found in active wave.");
+        if (!activeInstances.Remove(_soundBox))
+            Debug.LogWarning($"[SoundBoxSpawner] '{_soundBox.name}' not found in active wave.");
+        // Wave completion is detected in Update()
     }
 
     private IEnumerator TransitionToNextWave()
@@ -133,10 +147,9 @@ public class SoundBoxSpawner : MonoBehaviour
     private void WinGame()
     {
         if (gameWon) return;
-
-        Debug.Log("All box-waves destroyed! -> WinGame is not implemented here right now.");
-
         gameWon = true;
-        //GameManager.Instance.WinGame();
+
+        Debug.Log("[SoundBoxSpawner] All waves destroyed – vandalists win.");
+        if (GameManager.Instance != null) GameManager.Instance.EndGame(WinningSide.Vandalist);
     }
 }

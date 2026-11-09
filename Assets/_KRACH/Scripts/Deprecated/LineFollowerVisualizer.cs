@@ -17,16 +17,16 @@ public class LineFollowerVisualizer : MonoBehaviour
     public GameObject rmfIndicator;
 
     [Header("Animation")]
-    [SerializeField] private float followSpeed = 100f; // Wie schnell die Punkte folgen
+    [SerializeField] private float followSpeed = 100f; // how fast the points follow
     [SerializeField] private bool useUnscaledTime = false;
 
     private LineRenderer line;
     private float[] yValues;
     private float xSpacing;
 
-    public float targetValue01; // Extern gesetzter Wert (0�1)
+    public float targetValue01; // value set from outside (0–1)
 
-    // interne Sine-Variablen
+    // internal sine variables
     private float sinePhase;
     private float sineCenter;
     private float sineAmplitude;
@@ -34,19 +34,19 @@ public class LineFollowerVisualizer : MonoBehaviour
     private Coroutine sineCoroutine;
 
 
-    // Sine / DOTween Steuerung
+    // Sine / DOTween control
     [Header("Sine DOTween Settings")]
     [SerializeField] private float lowMin = 0f;
     [SerializeField] private float lowMax = 0.4f;
     [SerializeField] private float highMin = 0.6f;
     [SerializeField] private float highMax = 1f;
     [SerializeField] private float minAmplitude = 0.02f;
-    [SerializeField] private float maxAmplitude = 0.1f;// minimale Sinusamplitude
-    [SerializeField] private float minPeriodLow = 0.5f;     // minimale Periode (s)
-    [SerializeField] private float maxPeriodLow = 1f;     // maximale Periode (s)
+    [SerializeField] private float maxAmplitude = 0.1f;   // maximum sine amplitude
+    [SerializeField] private float minPeriodLow = 0.5f;   // minimum period (s)
+    [SerializeField] private float maxPeriodLow = 1f;     // maximum period (s)
     [SerializeField] private float minPeriodHigh = 0.05f;
     [SerializeField] private float maxPeriodHigh = 0.5f;
-    [SerializeField] private float changeIntervalMin = 2f; // wie oft neue Zufallswerte
+    [SerializeField] private float changeIntervalMin = 2f; // how often new random values are picked
     [SerializeField] private float changeIntervalMax = 5f;
 
     public SpriteRenderer upperHalf;
@@ -67,20 +67,20 @@ public class LineFollowerVisualizer : MonoBehaviour
         if (phaseTween != null && phaseTween.IsActive())
         {
             float sineValue = Mathf.Clamp01(sineCenter + sineAmplitude * Mathf.Sin(sinePhase));
-            SetValue(sineValue); // <-- hier wird das Ergebnis in die vorhandene Methode �bertragen
-            SetTransparencyOfHalf(rmfState, sineValue); 
+            SetValue(sineValue); // <-- the result is passed into the existing method here
+            SetTransparencyOfHalf(rmfState, sineValue);
         }
 
         float targetHeight = targetValue01 * heightMultiplier;
 
-        // Punkt 0 bewegt sich zum Zielwert
+        // Point 0 moves towards the target value
         yValues[0] = Mathf.Lerp(
             yValues[0],
             targetHeight,
             delta * followSpeed
         );
 
-        // Rest folgt jeweils dem Vorg�nger
+        // Every other point follows its predecessor
         for (int i = 1; i < pointCount; i++)
         {
             float lerpFactor = 1f - Mathf.Exp(-followSpeed * delta);
@@ -112,7 +112,7 @@ public class LineFollowerVisualizer : MonoBehaviour
         Debug.Log("Setting RMF High Value to: " + value);
         rmfHighValue = value;
 
-        //vorher: 1 * value * heightMultiplikator
+        // previously: 1 * value * heightMultiplier
         Vector3 indicatorPos = new Vector3(rmfIndicator.transform.localPosition.x, 1, rmfIndicator.transform.localPosition.z);
         rmfIndicator.gameObject.transform.SetLocalPositionAndRotation(indicatorPos, Quaternion.identity);
     }
@@ -133,17 +133,15 @@ public class LineFollowerVisualizer : MonoBehaviour
 
     public void StartSine(RMF_State forState)
     {
-        // stoppe bestehende Sine-Animation falls vorhanden
+        // stop an existing sine animation if there is one
         if (forState != rmfState)
         {
             Debug.Log("Starting sine for state: " + forState);
             StopSine();
             rmfState = forState;
+            // start a new coroutine that picks new random values in intervals
             sineCoroutine = StartCoroutine(SineControllerCoroutine(forState));
         }
-
-        // starte neue Coroutine, die in Intervallen neue Zufallswerte w�hlt
-        
     }
 
     public void StopSine()
@@ -197,7 +195,7 @@ public class LineFollowerVisualizer : MonoBehaviour
 
         while (true)
         {
-            // Erzeuge einen periodischen Tween, der sinePhase kontinuierlich erh�ht
+            // Create a periodic tween that continuously increases sinePhase
             if (phaseTween != null && phaseTween.IsActive())
             {
                 phaseTween.Kill();
@@ -205,7 +203,7 @@ public class LineFollowerVisualizer : MonoBehaviour
             }
 
 
-            // periodische Drehung: increase phase by 2PI over 'period' seconds, loopet unendlich inkrementell
+            // periodic rotation: increase phase by 2PI over 'period' seconds, loops forever incrementally
             float period = 0f;
             if(forState == RMF_State.High)
             {
@@ -215,18 +213,18 @@ public class LineFollowerVisualizer : MonoBehaviour
             {
                 period = Random.Range(minPeriodLow, maxPeriodLow);
             }
-            
+
             phaseTween = DOTween.To(() => sinePhase, x => sinePhase = x, sinePhase + Mathf.PI * 2f, period)
                                 .SetEase(Ease.Linear)
                                 .SetLoops(-1, LoopType.Incremental);
 
-            // Warte ein zuf�lliges Intervall bevor neue Parameter gew�hlt werden (stilistische Variation)
+            // Wait a random interval before new parameters are picked (stylistic variation)
             float wait = Random.Range(changeIntervalMin, changeIntervalMax);
             yield return new WaitForSeconds(wait);
 
-            // W�hle neue Parameter (Center/Amplitude/evtl. schneller/langsamer)
+            // Pick new parameters (center/amplitude/maybe faster/slower)
             ChooseNewSineParameters(forState);
-            // PhaseTween wird im n�chsten Loop neu erstellt mit neuem Periodenwert
+            // The phase tween is recreated in the next loop with the new period value
         }
     }
 
@@ -244,16 +242,16 @@ public class LineFollowerVisualizer : MonoBehaviour
             max = highMax;
         }
 
-        // maximale m�gliche halbe Bandbreite
+        // maximum possible half range
         float maxHalfRange = (max - min) * 0.5f;
         float ampMax = Mathf.Max(minAmplitude, maxHalfRange);
 
-        // amplitude zuf�llig, aber nicht gr��er als die halbe Bandbreite
+        // random amplitude, but not larger than half the range
         float amp = Random.Range(minAmplitude, maxAmplitude);
-        // center so w�hlen, dass center +/- amp innerhalb [min,max] bleibt
+        // pick the center so that center +/- amp stays within [min,max]
         float centerMin = min + amp;
         float centerMax = max - amp;
-        if (centerMax < centerMin) centerMax = centerMin; // Fallback
+        if (centerMax < centerMin) centerMax = centerMin; // fallback
         float center = Random.Range(centerMin, centerMax);
 
         sineAmplitude = amp;
@@ -262,7 +260,7 @@ public class LineFollowerVisualizer : MonoBehaviour
         // Debug.Log($"Sine new params: center={sineCenter:F2}, amp={sineAmplitude:F2}");
     }
 
-   
+
 
     void UpdateLine()
     {

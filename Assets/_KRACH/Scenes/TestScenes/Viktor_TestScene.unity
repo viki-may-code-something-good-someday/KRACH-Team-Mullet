@@ -3174,10 +3174,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20049b314bd8a6f49ad94656288b0ad7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LevelManager
-  hunterSpawnPositions:
-  - {fileID: 534063131}
   vandalistSpawnPositions:
   - {fileID: 1638952408}
+  hunterSpawnPositions:
+  - {fileID: 534063131}
 --- !u!1001 &809066068
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -5412,6 +5412,38 @@ PrefabInstance:
     - target: {fileID: 196658619314563345, guid: 0488e44e7b0945548a3a851df5e1cfbc, type: 3}
       propertyPath: m_BlockingMask.m_Bits
       value: 4095
+      objectReference: {fileID: 0}
+    - target: {fileID: 2246217598542744029, guid: 0488e44e7b0945548a3a851df5e1cfbc, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2246217598542744029, guid: 0488e44e7b0945548a3a851df5e1cfbc, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2246217598542744029, guid: 0488e44e7b0945548a3a851df5e1cfbc, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2246217598542744029, guid: 0488e44e7b0945548a3a851df5e1cfbc, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4472585109557026129, guid: 0488e44e7b0945548a3a851df5e1cfbc, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4472585109557026129, guid: 0488e44e7b0945548a3a851df5e1cfbc, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4472585109557026129, guid: 0488e44e7b0945548a3a851df5e1cfbc, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4472585109557026129, guid: 0488e44e7b0945548a3a851df5e1cfbc, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5305518370949867584, guid: 0488e44e7b0945548a3a851df5e1cfbc, type: 3}
       propertyPath: m_LocalPosition.x

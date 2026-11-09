@@ -49,16 +49,15 @@ public class Door : MonoBehaviour
         PlayerMovement character = other.GetComponent<PlayerMovement>();
         if (character == null) return;
 
-        // Only Hunters may use these doors.
-        // TODO: confirm PlayerObjectController.playerRole is the correct public accessor.
+        // Only hunters may use these doors. (No log here – this fired for every vandalist
+        // walking past a door and flooded the console.)
         PlayerObjectController poc = other.GetComponent<PlayerObjectController>();
-        if (poc == null || poc.playerRole != PlayerRole.Hunter)
-        {
-            Debug.Log($"{other.name} entered the door trigger but is not a Hunter — ignoring.");
-            return;
-        }
+        if (poc == null || poc.playerRole != PlayerRole.Hunter) return;
 
-        Debug.Log("Hunter entered the door trigger: " + other.name);
+        // Caught/frozen players must not teleport.
+        PlayerRoleSetup roleSetup = other.GetComponent<PlayerRoleSetup>();
+        if (roleSetup != null && roleSetup.IsCaught) return;
+
         MovePlayerToOtherDoor(character);
     }
 
@@ -66,7 +65,7 @@ public class Door : MonoBehaviour
     {
         if (pairedDoor == null)
         {
-            Debug.LogWarning("No paired door found for " + name);
+            Debug.LogWarning("[Door] No paired door found for " + name);
             return;
         }
 
@@ -79,7 +78,9 @@ public class Door : MonoBehaviour
 
         character.TeleportTo(exitPosition);
 
-        Debug.Log("Player moved to paired door: " + pairedDoor.name);
+        // "Rushing through" feel: short FOV kick + a light flash.
+        CameraEffects.KickFovLocal(GameFeelSettings.Instance.doorTeleportFovKick);
+        GameFeelHUD.Flash(new Color(1f, 1f, 1f, 0.25f), 0.25f);
     }
 
     /// <summary>Called by the parent Wall when it is destroyed — a broken wall has a hole, not a doorway.</summary>

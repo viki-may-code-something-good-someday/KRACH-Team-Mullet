@@ -19,13 +19,13 @@ using UnityEngine;
 public class PropImpactSound : MonoBehaviour
 {
     [Header("Impact")]
-    [Tooltip("Aufprallgeschwindigkeit (m/s), ab der überhaupt ein Sound kommt (darunter = stumm). " +
-             "Die Lautstärke-Kurve über der Geschwindigkeit liegt in FMOD (Built-in 'Speed (Absolute)').")]
+    [Tooltip("Impact speed (m/s) from which a sound plays at all (below = silent). " +
+             "The volume curve over the speed lives in FMOD (built-in 'Speed (Absolute)').")]
     [SerializeField] private float minImpactSpeed = 1.5f;
 
     [Header("Speed Source")]
-    [Tooltip("An: nutzt die eigene Geschwindigkeit des Props im Frame VOR dem Aufprall (braucht Rigidbody). " +
-             "Aus: nutzt collision.relativeVelocity — die Relativgeschwindigkeit beider Körper beim Aufprall.")]
+    [Tooltip("On: uses the prop's own speed in the frame BEFORE the impact (needs a Rigidbody). " +
+             "Off: uses collision.relativeVelocity — the relative speed of both bodies at impact.")]
     [SerializeField] private bool usePreCollisionSpeed = false;
 
     private LuaSoundEmitter emitter;

@@ -1,3 +1,4 @@
+using DG.Tweening;
 using Mirror;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,12 +19,12 @@ public class Wall : NetworkBehaviour, IDestructable
     [SerializeField] private ParticleSystem hitParticle;
     [SerializeField] private LuaSoundEmitter wallHitSoundEmitter;
     [SerializeField] private LuaSoundEmitter wallBreakdownSoundEmitter;
-    [Tooltip("Klang für unzerstörbare ('Metall'-)Wände — gespielt statt Schaden, wenn 'indestructable' an ist.")]
+    [Tooltip("Sound for indestructible ('metal') walls — played instead of taking damage when 'indestructable' is on.")]
     [SerializeField] private LuaSoundEmitter wallMetalSoundEmitter;
 
     [Header("Settings")]
     [SerializeField] private bool indestructable;
-    // Leben muss nur der Server kennen, das m�ssen wir nicht zwingend synchronisieren
+    // Only the server needs to know the health, it doesn't have to be synchronized
     [SerializeField] private float health;
     [SerializeField] private float explosionForce;
     [SerializeField] private float explosionRadius;
@@ -31,14 +32,15 @@ public class Wall : NetworkBehaviour, IDestructable
     [Header("Wall Decorations")]
     [SerializeField] private float wallDecorationsFadeOutSpeedMultiplier = 0.2f;
     [SerializeField] private float speedUpWallDecorationsFadeOutSpeedMultiplier = 0.5f;
+    [Tooltip("Below this alpha value (0–1) the faster fade-out speed is used.")]
+    [Range(0f, 1f)]
+    [SerializeField] private float speedUpBelowAlpha = 0.5f;
 
     [Header("Doors")]
     [SerializeField] private Door doorPrefab;
     [SerializeField] private List<Door> spawnedDoors = new List<Door>();
 
-
-
-    public float Health { get { return health; } }
+    public float Health => health;
 
     public ParticleSystem HitParticles => hitParticle;
 
@@ -50,15 +52,28 @@ public class Wall : NetworkBehaviour, IDestructable
 
     private bool fadeOutSpeedIncreased;
     private bool fadeOutPieces;
+    private bool brokenVisualsApplied;
 
-    // SyncVar: Wenn der Server das auf true setzt, wissen ALLE Spieler (auch die, die sp�ter ins Spiel joinen), 
-    // dass diese Wand kaputt ist. Das l�st automatisch "OnWallDestroyed" auf allen PCs aus.
+    private float maxHealth;
+    private Renderer[] normalRenderers;
+    private MaterialPropertyBlock propertyBlock;
+
+    private static readonly int BaseColorId = Shader.PropertyToID("_BaseColor");
+    private static readonly int ColorId = Shader.PropertyToID("_Color");
+
+    // SyncVar: when the server sets this to true, ALL players (including those who join later)
+    // know this wall is broken. This automatically triggers "OnWallDestroyed" on every machine.
     [SyncVar(hook = nameof(OnWallDestroyed))]
     private bool isDestroyed = false;
 
+    private void Awake()
+    {
+        maxHealth = Mathf.Max(health, 0.0001f);
+    }
+
     private void Update()
     {
-        // Die visuelle Fade-Out-Logik l�uft einfach lokal auf jedem Rechner
+        // The visual fade-out logic simply runs locally on every machine
         if (fadeOutPieces)
         {
             FadeOutWallDecorations();
@@ -70,48 +85,48 @@ public class Wall : NetworkBehaviour, IDestructable
     {
         if (indestructable)
         {
-            // Unzerstörbare ("Metall"-)Wand: nur Feedback-Klang, kein Schaden.
+            // Indestructible ("metal") wall: feedback sound only, no damage.
             RpcPlayMetalSound();
             return;
         }
 
-        if (isDestroyed)
-        {
-            Debug.LogWarning($"trying to damage a wall that is already destroyed: {gameObject.name}");
-            return;
-        }
-
-        // Sound/Effects auf allen Clients abspielen
-        RpcShowEffects(_hitPoint, _hitNormal);
-        RpcPlayHitSound(_hitPoint);
+        if (isDestroyed) return; // can happen with fast punches in the same frame – not an error
 
         health -= _damage;
 
+        // Play sound/effects on all clients
+        RpcShowEffects(_hitPoint, _hitNormal, Mathf.Clamp01(health / maxHealth));
+        RpcPlayHitSound(_hitPoint);
+
         if (health <= 0f)
         {
-            // 1. Status auf zerstoert setzen (Triggert den Hook fuer das Mesh-Swapping)
+            // 1. Mark as destroyed (late joiners get the state via the SyncVar)
             isDestroyed = true;
 
-            // 2. Den RPC fuer die physikalische Explosion an alle aktiven Spieler senden
+            // 2. Send the RPC for the physical explosion to all active players
             RpcTriggerExplosion(_hitPoint);
         }
     }
 
     [ClientRpc]
-    private void RpcShowEffects(Vector3 _hitPoint, Vector3 _hitNormal)
+    private void RpcShowEffects(Vector3 _hitPoint, Vector3 _hitNormal, float healthRatio)
     {
         if (HitParticles == null)
         {
-            Debug.LogWarning($"is unassigned on {name} and has to be assigned in the inspector");
+            Debug.LogWarning($"[Wall] hitParticle is not assigned on '{name}'.");
+        }
+        else
+        {
+            SpawnOneShotParticles(HitParticles, _hitPoint, _hitNormal);
         }
 
-        Instantiate(HitParticles, _hitPoint, Quaternion.LookRotation(_hitNormal));
+        PlayHitFeedback(healthRatio);
     }
 
     [ClientRpc]
     private void RpcPlayHitSound(Vector3 point)
     {
-        wallHitSoundEmitter.PlayOneShot();
+        if (wallHitSoundEmitter != null) wallHitSoundEmitter.PlayOneShot();
     }
 
     [ClientRpc]
@@ -119,59 +134,144 @@ public class Wall : NetworkBehaviour, IDestructable
     {
         if (wallMetalSoundEmitter != null)
             wallMetalSoundEmitter.PlayOneShot();
+
+        PlayHitFeedback(1f, 0.4f);
     }
 
     private void OnWallDestroyed(bool oldState, bool newState)
     {
-        if (newState == true && oldState == false)
-        {
-            wallNormal.SetActive(false);
-            wallBroken.SetActive(true);
-
-            WallDecorationsSetup();
-
-            // Doors are children of this Wall, not of wallNormal, so they are NOT
-            // deactivated by the line above. A destroyed wall has a hole, not a doorway,
-            // so we explicitly disable them here — runs on every client via the SyncVar hook.
-            foreach (Door door in spawnedDoors)
-            {
-                if (door != null) door.DeactivateDoor();
-            }
-        }
+        if (newState && !oldState) ApplyBrokenVisuals();
     }
 
-    // ClientRpc: Die eigentliche physikalische Explosion.
-    // Laeuft lokal auf allen Rechnern, spart massiv Netzwerk-Bandbreite.
+    // ClientRpc: the actual physical explosion.
+    // Runs locally on every machine, saves a lot of network bandwidth.
     [ClientRpc]
     private void RpcTriggerExplosion(Vector3 _hitPoint)
     {
-        wallBreakdownSoundEmitter.PlayOneShot();
+        // On clients this Rpc arrives BEFORE the isDestroyed SyncVar (Rpcs are sent immediately,
+        // SyncVars only on the next sync). Without this call wallBroken would still be inactive
+        // here, GetComponentsInChildren would find no rigidbodies, and the wall would simply
+        // vanish without an explosion on every client except the host.
+        ApplyBrokenVisuals();
 
-        List<Rigidbody> rigidbodies = wallBroken.transform.GetComponentsInChildren<Rigidbody>().ToList();
+        if (wallBreakdownSoundEmitter != null) wallBreakdownSoundEmitter.PlayOneShot();
 
-        foreach (Rigidbody rb in rigidbodies)
+        if (wallBroken != null)
         {
-            rb.isKinematic = false;
-            rb.useGravity = true;
+            foreach (Rigidbody rb in wallBroken.GetComponentsInChildren<Rigidbody>())
+            {
+                rb.isKinematic = false;
+                rb.useGravity = true;
 
-            // Die Explosion wird auf jedem Rechner lokal berechnet
-            rb.AddExplosionForce(explosionForce, _hitPoint, explosionRadius, 1f, ForceMode.Impulse);
+                // The explosion is calculated locally on every machine
+                rb.AddExplosionForce(explosionForce, _hitPoint, explosionRadius, 1f, ForceMode.Impulse);
+            }
+        }
+
+        CameraEffects.ShakeAt(_hitPoint, GameFeelSettings.Instance.wallBreakTrauma);
+    }
+
+    /// <summary>Mesh swap for the destroyed state. Idempotent (both the Rpc and the SyncVar hook call it).</summary>
+    private void ApplyBrokenVisuals()
+    {
+        if (brokenVisualsApplied) return;
+        brokenVisualsApplied = true;
+
+        if (wallNormal != null)
+        {
+            wallNormal.transform.DOKill(true);
+            wallNormal.SetActive(false);
+        }
+        if (wallBroken != null) wallBroken.SetActive(true);
+
+        WallDecorationsSetup();
+
+        // Doors are children of this Wall, not of wallNormal, so they are NOT
+        // deactivated by the line above. A destroyed wall has a hole, not a doorway,
+        // so we explicitly disable them here — runs on every client.
+        foreach (Door door in spawnedDoors)
+        {
+            if (door != null) door.DeactivateDoor();
         }
     }
 
+    // ── Hit Feedback (local) ─────────────────────────────────────────────────
+
+    private void PlayHitFeedback(float healthRatio, float strength = 1f)
+    {
+        if (wallNormal == null || !wallNormal.activeInHierarchy) return;
+
+        GameFeelSettings settings = GameFeelSettings.Instance;
+
+        if (settings.wallHitShake)
+        {
+            // Complete the previous shake first, otherwise the new one starts from the displaced
+            // position and the wall wanders off a little with every hit.
+            Transform t = wallNormal.transform;
+            t.DOKill(true);
+            t.DOShakePosition(0.18f, 0.035f * strength, 25, 90f, false, true).SetLink(wallNormal);
+        }
+
+        if (settings.wallDamageTint) ApplyDamageTint(healthRatio, settings.wallMaxDarken);
+    }
+
+    private void ApplyDamageTint(float healthRatio, float maxDarken)
+    {
+        if (normalRenderers == null)
+        {
+            normalRenderers = wallNormal.GetComponentsInChildren<Renderer>(true);
+            propertyBlock = new MaterialPropertyBlock();
+        }
+
+        float brightness = 1f - (1f - healthRatio) * maxDarken;
+
+        foreach (Renderer r in normalRenderers)
+        {
+            if (r == null) continue;
+
+            Material mat = r.sharedMaterial;
+            if (mat == null) continue;
+
+            int property = mat.HasProperty(BaseColorId) ? BaseColorId : mat.HasProperty(ColorId) ? ColorId : -1;
+            if (property == -1) continue;
+
+            Color baseColor = mat.GetColor(property);
+            r.GetPropertyBlock(propertyBlock);
+            propertyBlock.SetColor(property, new Color(baseColor.r * brightness, baseColor.g * brightness, baseColor.b * brightness, baseColor.a));
+            r.SetPropertyBlock(propertyBlock);
+        }
+    }
+
+    private static void SpawnOneShotParticles(ParticleSystem prefab, Vector3 position, Vector3 normal)
+    {
+        Quaternion rotation = normal.sqrMagnitude > 0.0001f ? Quaternion.LookRotation(normal) : Quaternion.identity;
+        ParticleSystem ps = Instantiate(prefab, position, rotation);
+
+        // The particle prefabs have no "Destroy" stop action – without this every instance
+        // would stay in the scene for the rest of the round.
+        ParticleSystem.MainModule main = ps.main;
+        Destroy(ps.gameObject, main.duration + main.startLifetime.constantMax + 0.5f);
+    }
+
+    // ── Wall Decorations ─────────────────────────────────────────────────────
+
     private void WallDecorationsSetup()
     {
-        fadeOutPieces = true;
+        wallDecorations.RemoveAll(piece => piece == null);
+        fadeOutPieces = wallDecorations.Count > 0;
 
         foreach (GameObject piece in wallDecorations)
         {
             piece.transform.parent = null;
-            piece.AddComponent<Rigidbody>();
+
+            if (!piece.TryGetComponent(out Rigidbody _)) piece.AddComponent<Rigidbody>();
 
             SphereCollider sc = piece.AddComponent<SphereCollider>();
             sc.radius = 0.1f;
 
-            piece.AddComponent<BillboardObject>();
+            // Purely local camera facing. BillboardObject used to be attached here – that is a
+            // NetworkBehaviour without a NetworkIdentity and threw exceptions every frame.
+            if (!piece.TryGetComponent(out CameraFacingSprite _)) piece.AddComponent<CameraFacingSprite>();
         }
     }
 
@@ -179,30 +279,34 @@ public class Wall : NetworkBehaviour, IDestructable
     {
         for (int i = wallDecorations.Count - 1; i >= 0; i--)
         {
-            SpriteRenderer sr = wallDecorations[i].GetComponent<SpriteRenderer>();
+            GameObject piece = wallDecorations[i];
+            SpriteRenderer sr = piece != null ? piece.GetComponent<SpriteRenderer>() : null;
 
             if (sr == null)
             {
-                Destroy(wallDecorations[i]);
+                if (piece != null) Destroy(piece);
                 wallDecorations.RemoveAt(i);
                 continue;
             }
 
-            Color currentColor = sr.material.color;
+            Color currentColor = sr.color;
             float newAlpha = currentColor.a - Time.deltaTime * wallDecorationsFadeOutSpeedMultiplier;
-            sr.material.color = new Color(currentColor.r, currentColor.g, currentColor.b, newAlpha);
+            sr.color = new Color(currentColor.r, currentColor.g, currentColor.b, newAlpha);
 
             if (newAlpha <= 0f)
             {
-                Destroy(wallDecorations[i]);
+                Destroy(piece);
                 wallDecorations.RemoveAt(i);
             }
-            else if (newAlpha <= 80f && !fadeOutSpeedIncreased)
+            // Alpha is between 0 and 1 – the old comparison against 80 triggered immediately.
+            else if (newAlpha <= speedUpBelowAlpha && !fadeOutSpeedIncreased)
             {
                 fadeOutSpeedIncreased = true;
                 wallDecorationsFadeOutSpeedMultiplier = speedUpWallDecorationsFadeOutSpeedMultiplier;
             }
         }
+
+        if (wallDecorations.Count == 0) fadeOutPieces = false;
     }
 
 

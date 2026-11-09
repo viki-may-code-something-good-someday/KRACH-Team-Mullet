@@ -12,31 +12,31 @@ public class TestDummySpawner : NetworkBehaviour
     }
 
     [Header("Dummy Settings")]
-    [Tooltip("Prefab mit NetworkIdentity + PlayerObjectController + PlayerRoleSetup + CapsuleCollider." +
-             " PlayerRoleSetup wird für Modell-Sichtbarkeit UND Catch/Respawn-Verhalten benötigt.")]
+    [Tooltip("Prefab with NetworkIdentity + PlayerObjectController + PlayerRoleSetup + CapsuleCollider." +
+             " PlayerRoleSetup is needed for model visibility AND catch/respawn behavior.")]
     [SerializeField] private GameObject dummyPrefab;
 
-    [Tooltip("Welche Rollen mit wie vielen Dummies gespawnt werden. So lassen sich z.B. gleichzeitig " +
-             "Vandalist- und Hunter-Dummies für unterschiedliche Testszenarien erzeugen.")]
+    [Tooltip("Which roles get spawned with how many dummies. This way e.g. vandalist and hunter " +
+             "dummies can be created at the same time for different test scenarios.")]
     [SerializeField]
     private DummySpawnGroup[] spawnGroups = new DummySpawnGroup[]
     {
         new DummySpawnGroup { role = PlayerRole.Vandalist, count = 2 }
     };
 
-    [Tooltip("Offset damit Dummies nicht exakt auf dem Spawnpunkt stehen.")]
+    [Tooltip("Offset so dummies don't stand exactly on the spawn point.")]
     [SerializeField] private float spawnSpread = 1.5f;
 
-    [Tooltip("Dummies per Raycast auf dem Boden absetzen. Spawnpunkte sind für Spieler gesetzt," +
-             " die nach dem Spawn herunterfallen – ein Dummy ohne Physik bliebe sonst in der Luft" +
-             " stehen und wäre für einen Hunter am Boden nicht erreichbar.")]
+    [Tooltip("Place dummies on the ground via raycast. Spawn points are set up for players," +
+             " who fall down after spawning – a dummy without physics would otherwise stay in the" +
+             " air and be out of reach for a hunter on the ground.")]
     [SerializeField] private bool dropToGround = true;
-    [Tooltip("Layer die als Boden gelten. Sollte der groundMask von PlayerMovement entsprechen.")]
+    [Tooltip("Layers that count as ground. Should match the groundMask of PlayerMovement.")]
     [SerializeField] private LayerMask groundMask = 8;
 
     private readonly List<GameObject> spawnedDummies = new List<GameObject>();
 
-    // ── Server-Start ──────────────────────────────────────────────────────────
+    // ── Server Start ──────────────────────────────────────────────────────────
 
     public override void OnStartServer()
     {
@@ -44,23 +44,23 @@ public class TestDummySpawner : NetworkBehaviour
 
         if (mgr == null || !mgr.IsTestMode)
         {
-            Debug.Log("[TestDummySpawner] Test-Modus nicht aktiv – Dummy-Spawn übersprungen.");
+            Debug.Log("[TestDummySpawner] Test mode not active – dummy spawn skipped.");
             return;
         }
 
         if (dummyPrefab == null)
         {
-            Debug.LogError("[TestDummySpawner] dummyPrefab ist nicht zugewiesen!");
+            Debug.LogError("[TestDummySpawner] dummyPrefab is not assigned!");
             return;
         }
 
-        // Kurz warten bis LevelManager sicher geladen ist
+        // Wait briefly until the LevelManager is definitely loaded
         StartCoroutine(SpawnAfterDelay());
     }
 
     public override void OnStopServer()
     {
-        // Verhindert Ghost-Dummies bei mehrfachem Play-Test im Editor (v.a. bei deaktiviertem Domain Reload).
+        // Prevents ghost dummies during repeated play tests in the editor (esp. with domain reload disabled).
         foreach (GameObject dummy in spawnedDummies)
         {
             if (dummy != null)
@@ -72,12 +72,12 @@ public class TestDummySpawner : NetworkBehaviour
 
     private System.Collections.IEnumerator SpawnAfterDelay()
     {
-        // Einen Frame warten damit Awake/Start im LevelManager abgeschlossen sind
+        // Wait one frame so Awake/Start of the LevelManager have finished
         yield return null;
 
         if (LevelManager.Instance == null)
         {
-            Debug.LogError("[TestDummySpawner] LevelManager nicht gefunden – Dummies konnten nicht gespawnt werden.");
+            Debug.LogError("[TestDummySpawner] LevelManager not found – dummies could not be spawned.");
             yield break;
         }
 
@@ -87,7 +87,7 @@ public class TestDummySpawner : NetworkBehaviour
         }
     }
 
-    // ── Spawn-Logik ───────────────────────────────────────────────────────────
+    // ── Spawn Logic ───────────────────────────────────────────────────────────
 
     private void SpawnDummies(PlayerRole role, int count)
     {
@@ -97,13 +97,13 @@ public class TestDummySpawner : NetworkBehaviour
 
         if (spawnPoints == null || spawnPoints.Length == 0)
         {
-            Debug.LogWarning($"[TestDummySpawner] Keine Spawn-Positionen für Rolle {role} im LevelManager konfiguriert!");
+            Debug.LogWarning($"[TestDummySpawner] No spawn positions configured in the LevelManager for role {role}!");
             return;
         }
 
         for (int i = 0; i < count; i++)
         {
-            // Spawnpunkt zyklisch nutzen, leichten Offset damit Dummies nicht übereinander stehen
+            // Use spawn points cyclically, small offset so dummies don't stand on top of each other
             Transform spawnPoint = spawnPoints[i % spawnPoints.Length];
             Vector3 offset = new Vector3(
                 Random.Range(-spawnSpread, spawnSpread),
@@ -117,7 +117,7 @@ public class TestDummySpawner : NetworkBehaviour
 
             GameObject dummy = Instantiate(dummyPrefab, spawnPos, spawnPoint.rotation);
 
-            // Rolle direkt auf dem Server setzen bevor Spawn → wird mit Spawn-Nachricht übertragen
+            // Set the role directly on the server before spawning → sent along with the spawn message
             PlayerObjectController poc = dummy.GetComponent<PlayerObjectController>();
             if (poc != null)
             {
@@ -125,19 +125,19 @@ public class TestDummySpawner : NetworkBehaviour
             }
             else
             {
-                Debug.LogWarning("[TestDummySpawner] Dummy-Prefab hat keinen PlayerObjectController!");
+                Debug.LogWarning("[TestDummySpawner] Dummy prefab has no PlayerObjectController!");
             }
 
             if (dummy.GetComponent<PlayerRoleSetup>() == null)
             {
-                Debug.LogWarning("[TestDummySpawner] Dummy-Prefab hat kein PlayerRoleSetup – " +
-                                  "Modell bleibt unsichtbar und Catch/Respawn funktioniert nicht für diesen Dummy!");
+                Debug.LogWarning("[TestDummySpawner] Dummy prefab has no PlayerRoleSetup – " +
+                                  "the model stays invisible and catch/respawn won't work for this dummy!");
             }
 
             NetworkServer.Spawn(dummy);
             spawnedDummies.Add(dummy);
 
-            Debug.Log($"[TestDummySpawner] {role}-Dummy #{i + 1} gespawnt bei {spawnPos}");
+            Debug.Log($"[TestDummySpawner] {role} dummy #{i + 1} spawned at {spawnPos}");
         }
     }
 }

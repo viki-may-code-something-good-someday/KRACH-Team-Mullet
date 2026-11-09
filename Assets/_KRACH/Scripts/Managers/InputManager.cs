@@ -20,6 +20,10 @@ public struct InputData
 // Subscribe to OnInputChanged or poll CurrentInput directly.
 // Requires a PlayerInput component with Action Map "Player" and actions:
 // Move, Look, Sprint, Action, Interact, Jump, Crouch
+//
+// Runs before all gameplay scripts so they read the current input in the same frame
+// (otherwise, depending on execution order, there's one frame of input latency).
+[DefaultExecutionOrder(-100)]
 [RequireComponent(typeof(PlayerInput))]
 public class InputManager : MonoBehaviour
 {
@@ -27,6 +31,12 @@ public class InputManager : MonoBehaviour
 
     public event System.Action<InputData> OnInputChanged;
     public InputData CurrentInput { get; private set; }
+
+    /// <summary>
+    /// Blocks all gameplay input (e.g. while the pause menu is open). Without the block a click
+    /// on "Resume" also triggered a punch/accusation and WASD kept moving in the menu.
+    /// </summary>
+    public bool InputBlocked { get; set; }
 
     private PlayerInput playerInput;
     private InputAction moveAction;
@@ -74,6 +84,17 @@ public class InputManager : MonoBehaviour
 
     private void ReadAndBroadcastInput()
     {
+        if (InputBlocked)
+        {
+            InputData blocked = new InputData { Role = CurrentInput.Role };
+            if (HasInputChanged(CurrentInput, blocked))
+            {
+                CurrentInput = blocked;
+                OnInputChanged?.Invoke(CurrentInput);
+            }
+            return;
+        }
+
         InputData newInput = new InputData
         {
             MoveInput = moveAction.ReadValue<Vector2>(),
@@ -85,7 +106,7 @@ public class InputManager : MonoBehaviour
             JumpPressed = jumpAction.WasPressedThisFrame(),
             JumpHeld = jumpAction.IsPressed(),
             CrouchHeld = crouchAction.IsPressed(),
-            Role = CurrentInput.Role  // Role wird lokal gehalten, nicht überschrieben
+            Role = CurrentInput.Role  // the role is kept locally, not overwritten
         };
 
         if (HasInputChanged(CurrentInput, newInput))

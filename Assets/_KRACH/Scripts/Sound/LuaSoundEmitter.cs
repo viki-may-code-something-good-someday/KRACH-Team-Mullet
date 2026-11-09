@@ -70,7 +70,7 @@ public class LuaSoundEmitter : FMODUnity.EventHandler
     [ShowIf("IsMultiplayerEnabled")]
     [SerializeField] private MirrorSyncMode mirrorSyncMode = MirrorSyncMode.All;
     [ShowIf("IsMirrorTargetMode")]
-    [InfoBox("Target = netId des Player-Avatars, der diesen Emitter hören soll. netIds werden erst zur Laufzeit vergeben — daher per Code setzen: SetTargetClient(playerNetworkIdentity). 0 = niemand.")]
+    [InfoBox("Target = netId of the player avatar that should hear this emitter. netIds are only assigned at runtime — so set it via code: SetTargetClient(playerNetworkIdentity). 0 = nobody.")]
     [SerializeField] private uint targetClientId = 0;
 
     private bool IsMultiplayerEnabled() => enableMultiplayer;
@@ -97,10 +97,10 @@ public class LuaSoundEmitter : FMODUnity.EventHandler
     public EventReference EventReference;
 
     [Header("Emitter Settings")]
-    [InfoBox("'Script' = wird von keinem Game-Event ausgelöst, sondern nur per Code: Play() / Stop() / PlayOneShot().")]
+    [InfoBox("'Script' = not triggered by any game event, only via code: Play() / Stop() / PlayOneShot().")]
     public SoundTrigger EventPlayTrigger = SoundTrigger.None;
     public SoundTrigger EventStopTrigger = SoundTrigger.None;
-    [InfoBox("OneShotTrigger feuert PlayOneShot() — unabhängig vom persistenten Play()/Stop()-State. Für discrete Events (Collision, Punch-Hit, Pickup) statt EventPlayTrigger nutzen.")]
+    [InfoBox("OneShotTrigger fires PlayOneShot() — independent of the persistent Play()/Stop() state. Use it for discrete events (collision, punch hit, pickup) instead of EventPlayTrigger.")]
     public SoundTrigger OneShotTrigger = SoundTrigger.None;
     [Space(5)]
     public bool AllowFadeout = true;
@@ -178,6 +178,9 @@ public class LuaSoundEmitter : FMODUnity.EventHandler
     private const string MaterialParam = "ReverbType";
     private const float MinDistance = 0f;
 
+    // Shared across all emitters – Update runs on the main thread, so no contention.
+    private static readonly RaycastHit[] OcclusionHitBuffer = new RaycastHit[16];
+
     private enum ReverbType { None, Room, Hallway, Arena, Padded }
 
     // ═════════════════════════════════════════════════════════════════════════
@@ -234,6 +237,11 @@ public class LuaSoundEmitter : FMODUnity.EventHandler
 
         if (!IsActive) return;
 
+        // The persistent instance only got its 3D position once at creation – on a moving
+        // object (player, billboard, debris) the loop stayed behind at its start position.
+        if (hasStartedEvent && audioSource.isValid())
+            audioSource.set3DAttributes(RuntimeUtils.To3DAttributes(gameObject));
+
         // Mirror sync: clients that shouldn't hear this emitter never start/keep the loop.
         // (No-op when multiplayer is disabled — ShouldReceiveAudio() then always returns true.)
         if (!ShouldReceiveAudio())
@@ -288,15 +296,17 @@ public class LuaSoundEmitter : FMODUnity.EventHandler
                 return;
             }
 
-            // ── Occlusion via RaycastAll ──────────────────────────────────────
-            // RaycastAll correctly handles destroyed obstacles: their colliders are
-            // removed from the physics scene immediately on Destroy(), so they never
-            // appear in the results — no phantom occlusion after destruction.
-            RaycastHit[] hits = Physics.RaycastAll(transform.position, dir, distToPlayer, obstacleLayer);
+            // ── Occlusion via a multi-hit raycast ─────────────────────────────
+            // Handles destroyed obstacles correctly: their colliders are removed from the
+            // physics scene immediately on Destroy(), so they never appear in the results —
+            // no phantom occlusion after destruction. NonAlloc: this runs every frame for every
+            // active emitter – RaycastAll allocated a fresh array each time (GC spikes).
+            int hitCount = Physics.RaycastNonAlloc(transform.position, dir, OcclusionHitBuffer, distToPlayer, obstacleLayer);
 
             bool anyObstacle = false;
-            foreach (RaycastHit h in hits)
+            for (int i = 0; i < hitCount; i++)
             {
+                RaycastHit h = OcclusionHitBuffer[i];
                 // Skip destroyed or null colliders (safety guard)
                 if (h.collider == null) continue;
 

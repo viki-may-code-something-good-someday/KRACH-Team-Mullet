@@ -3,15 +3,17 @@ using Sirenix.OdinInspector;
 using UnityEngine;
 
 /// <summary>
-/// Spielerbewegung: Laufen, Sprinten, Springen, Hocken, Footsteps, FOV.
-/// Enthält keine Rollenlogik – PlayerRoleSetup übergibt das passende RoleMovementConfig.
+/// Player movement: walking, sprinting, jumping, crouching, footsteps, FOV.
+/// Contains no role logic – PlayerRoleSetup passes in the matching RoleMovementConfig.
 ///
-/// Jump: asymmetrische Gravity (niedrig beim Steigen, hoch beim Fallen). Frühes Loslassen
-/// kappt die Restgeschwindigkeit und schaltet auf die stärkste Gravity-Stufe → kurze Hops.
+/// Walking: acceleration/deceleration via RoleMovementConfig (momentum, especially in the air).
+/// Jump: asymmetric gravity (low while rising, high while falling). Releasing early cuts the
+/// remaining velocity and switches to the strongest gravity stage → short hops.
+/// Coyote time and jump buffering make jumps at ledges and just before landing more forgiving.
 ///
-/// Prefab-Rig:
+/// Prefab rig:
 ///   Player (CharacterController, NetworkTransform, PlayerMovement, ...)
-///   ├── GroundCheck   ← muss exakt auf Höhe der Füße sitzen (gleicht Pivot-Offsets aus)
+///   ├── GroundCheck   ← must sit exactly at foot level (compensates pivot offsets)
 ///   └── CameraHolder
 ///       └── Camera
 /// </summary>
@@ -22,13 +24,13 @@ public class PlayerMovement : NetworkBehaviour
 
     [Header("References")]
     [SerializeField] private CharacterController controller;
-    [Tooltip("Direktes Kind des Player-Roots, exakt auf Höhe der Füße. Gleicht Pivot-Offsets des Modells aus.")]
+    [Tooltip("Direct child of the player root, exactly at foot level. Compensates pivot offsets of the model.")]
     [SerializeField] private Transform groundCheck;
     [SerializeField] private Camera playerCamera;
-    [Tooltip("Leeres Transform das die Camera trägt. Wird für den Crouch-Offset bewegt.")]
+    [Tooltip("Empty transform that carries the camera. Moved for the crouch offset.")]
     [SerializeField] private Transform cameraHolder;
-    [Tooltip("Kapsel auf dem Player-Layer die als Trefferzone dient (Ziel des Hunter-Raycasts)." +
-             " Wird auf allen Clients an die Controller-Kapsel angeglichen. Leer = CapsuleCollider am Root.")]
+    [Tooltip("Capsule on the Player layer that acts as the hit zone (target of the hunter raycast)." +
+             " Matched to the controller capsule on all clients. Empty = CapsuleCollider on the root.")]
     [SerializeField] private CapsuleCollider hitCollider;
 
     [Header("Ground Check")]
@@ -37,15 +39,17 @@ public class PlayerMovement : NetworkBehaviour
 
     [Header("Audio")]
     [SerializeField] private float baseStepInterval = 0.3f;
-    [Tooltip("LuaSoundEmitter am Fußpunkt, Script-Mode. Enable Multiplayer = false.")]
+    [Tooltip("LuaSoundEmitter at the feet, script mode. Enable Multiplayer = false.")]
     [SerializeField] private LuaSoundEmitter footstepSoundEmitter;
+    [Tooltip("From this fall speed (m/s) on, landing plays a footstep sound.")]
+    [SerializeField] private float landingSoundMinSpeed = 5f;
 
     // ── State ────────────────────────────────────────────────────────────────
 
     private RoleMovementConfig config;
 
-    private Vector3 velocity;          // vertikal
-    private Vector3 horizontalVelocity; // in HandleMovement gesetzt, in Update angewendet
+    private Vector3 velocity;           // vertical
+    private Vector3 horizontalVelocity; // set in HandleMovement, applied in Update
     private bool isGrounded;
 
     private bool sprinting;
@@ -53,18 +57,28 @@ public class PlayerMovement : NetworkBehaviour
     private float sprintTimer;
 
     private bool jumpButtonHeld;
+    private bool isJumping;
+    private float lastGroundedTime = float.NegativeInfinity;
+    private float lastJumpPressedTime = float.NegativeInfinity;
+
     private bool isCrouching;
     private float footstepTimer;
+    private float baseFov;
+
+    /// <summary>Fires on the owner when landing. Parameter: impact speed in m/s.</summary>
+    public event System.Action<float> Landed;
 
     public bool IsCrouching => isCrouching;
     public bool IsSprinting => sprinting;
     public bool IsGrounded => isGrounded;
+    public Vector3 HorizontalVelocity => horizontalVelocity;
+    public float WalkSpeed => config != null ? config.walkSpeed : 6f;
 
-    /// <summary>Lokale Y-Position der Füße relativ zum Root-Pivot.</summary>
+    /// <summary>Local Y position of the feet relative to the root pivot.</summary>
     private float FeetOffsetY => groundCheck != null ? groundCheck.localPosition.y : 0f;
 
-    // Höhe der Körperkapsel. Der Owner meldet jede Änderung (Stehen/Hocken) per Command,
-    // damit die Trefferzone auf allen Clients zum tatsächlichen Zustand passt.
+    // Height of the body capsule. The owner reports every change (standing/crouching) via
+    // Command so the hit zone matches the actual state on all clients.
     [SyncVar(hook = nameof(OnBodyHeightChanged))]
     private float syncedBodyHeight = 2f;
 
@@ -73,23 +87,28 @@ public class PlayerMovement : NetworkBehaviour
     private void Awake()
     {
         if (hitCollider == null) hitCollider = GetComponent<CapsuleCollider>();
+        if (controller == null) controller = GetComponent<CharacterController>();
     }
 
     void Start()
     {
-        controller.enabled = false; // gesperrt bis ApplyConfig aufgerufen wird
+        controller.enabled = false; // locked until ApplyConfig is called
 
-        // Remote-Spieler bekommen ihre Kapselmaße ausschließlich über die SyncVar.
+        // Remote players get their capsule dimensions exclusively via the SyncVar.
         if (!isOwned) ApplyHitColliderHeight(syncedBodyHeight);
     }
 
     /// <summary>
-    /// Wird von PlayerRoleSetup aufgerufen sobald die Rolle feststeht. Nur auf dem Owner-Client.
+    /// Called by PlayerRoleSetup as soon as the role is known. Only on the owner client.
     /// </summary>
     public void ApplyConfig(RoleMovementConfig roleConfig)
     {
         config = roleConfig;
         currentSprintSpeed = config.baseSprintSpeed;
+        isCrouching = false;
+        isJumping = false;
+        velocity = Vector3.zero;
+        horizontalVelocity = Vector3.zero;
 
         SetBodyHeight(config.standHeight);
 
@@ -100,8 +119,8 @@ public class PlayerMovement : NetworkBehaviour
             cameraHolder.localPosition = pos;
         }
 
-        if (playerCamera != null)
-            playerCamera.fieldOfView = config.normalFOV;
+        baseFov = config.normalFOV;
+        ApplyFov();
 
         controller.enabled = true;
 
@@ -109,9 +128,9 @@ public class PlayerMovement : NetworkBehaviour
     }
 
     /// <summary>
-    /// Die Kamerahöhen sind relativ zum Root-Pivot angegeben, die Kapselhöhen relativ zu den
-    /// Füßen. Liegt eine Kamera über ihrer Kapsel, schaut man durch niedrige Decken hindurch –
-    /// beim Hocken passiert das schnell unbemerkt.
+    /// Camera heights are given relative to the root pivot, capsule heights relative to the
+    /// feet. If a camera sits above its capsule, you can see through low ceilings – which
+    /// easily goes unnoticed while crouching.
     /// </summary>
     private void WarnIfCameraLeavesCapsule()
     {
@@ -124,14 +143,14 @@ public class PlayerMovement : NetworkBehaviour
         float eyeAboveFeet = cameraY - FeetOffsetY;
         if (eyeAboveFeet <= capsuleHeight) return;
 
-        Debug.LogWarning($"[PlayerMovement] {label}: Kamera liegt {eyeAboveFeet:F2}m über den Füßen, " +
-                         $"die Kapsel ist aber nur {capsuleHeight:F2}m hoch – man sieht durch Decken. " +
-                         $"{label}CameraY muss kleiner als {capsuleHeight + FeetOffsetY:F2} sein.");
+        Debug.LogWarning($"[PlayerMovement] {label}: camera sits {eyeAboveFeet:F2}m above the feet, " +
+                         $"but the capsule is only {capsuleHeight:F2}m tall – you can see through ceilings. " +
+                         $"{label}CameraY must be smaller than {capsuleHeight + FeetOffsetY:F2}.");
     }
 
     /// <summary>
-    /// Setzt Controller- und Trefferkapsel so, dass die Unterkante immer auf Höhe von groundCheck
-    /// liegt – unabhängig davon wo der Pivot des Modells sitzt. Nur der Owner ruft das auf.
+    /// Sets the controller and hit capsule so the bottom always sits at groundCheck height –
+    /// regardless of where the model's pivot is. Only the owner calls this.
     /// </summary>
     private void SetBodyHeight(float height)
     {
@@ -143,7 +162,7 @@ public class PlayerMovement : NetworkBehaviour
         if (isOwned && NetworkClient.ready) CmdSetBodyHeight(height);
     }
 
-    /// <summary>Trefferzone an die Körperhöhe angleichen. Läuft auf allen Clients.</summary>
+    /// <summary>Matches the hit zone to the body height. Runs on all clients.</summary>
     private void ApplyHitColliderHeight(float height)
     {
         if (hitCollider == null || height <= 0f) return;
@@ -155,19 +174,19 @@ public class PlayerMovement : NetworkBehaviour
     private Vector3 CapsuleCenter(float height) => new Vector3(0f, FeetOffsetY + height / 2f, 0f);
 
     [Command]
-    private void CmdSetBodyHeight(float height) => syncedBodyHeight = height;
+    private void CmdSetBodyHeight(float height) => syncedBodyHeight = Mathf.Clamp(height, 0.5f, 3f);
 
     private void OnBodyHeightChanged(float oldHeight, float newHeight)
     {
-        // Der Owner hat seine eigene Kapsel bereits lokal gesetzt.
+        // The owner already set its own capsule locally.
         if (!isOwned) ApplyHitColliderHeight(newHeight);
     }
 
     /// <summary>
-    /// Teleportiert den Spieler. Wird von PlayerRoleSetup beim Spawn/Respawn aufgerufen
-    /// (nur für den Owner sinnvoll, da das Movement client-authoritative ist).
-    /// Der Aktivierungszustand des Controllers bleibt erhalten – ein Teleport darf einen
-    /// eingefrorenen Spieler (Caught-Zustand) nicht vorzeitig wieder beweglich machen.
+    /// Teleports the player. Called by PlayerRoleSetup on spawn/respawn
+    /// (only meaningful for the owner, since movement is client-authoritative).
+    /// The controller's enabled state is preserved – a teleport must not make a frozen
+    /// player (caught state) movable again prematurely.
     /// </summary>
     public void TeleportTo(Vector3 position)
     {
@@ -184,36 +203,88 @@ public class PlayerMovement : NetworkBehaviour
 
     void Update()
     {
-        // Deaktivierter Controller = eingefroren (FreezeMovement). Ohne diese Prüfung liefe
-        // die komplette Bewegungslogik weiter: Hocken, Gravity-Aufbau und Move-Aufrufe auf
-        // einem deaktivierten CharacterController.
+        // Disabled controller = frozen (FreezeMovement). Without this check the entire
+        // movement logic would keep running: crouching, gravity build-up and Move calls on
+        // a disabled CharacterController.
         if (config == null || !isOwned || !controller.enabled) return;
 
+        UpdateGrounded();
         HandleMovement();
         HandleJump();
         HandleCrouch();
         HandleFOV();
 
-        // Ein einziger Move pro Frame: horizontal + vertikal kombiniert. Zwei getrennte
-        // Aufrufe kosten einen zusätzlichen Kapsel-Sweep und reagieren an Kanten anders.
-        controller.Move((horizontalVelocity + velocity) * Time.deltaTime);
+        // A single Move per frame: horizontal + vertical combined. Two separate calls cost
+        // an extra capsule sweep and behave differently at edges.
+        CollisionFlags flags = controller.Move((horizontalVelocity + velocity) * Time.deltaTime);
+        ResolveCollisions(flags);
     }
 
-    // ── Bewegung ─────────────────────────────────────────────────────────────
-
-    private void HandleMovement()
+    /// <summary>
+    /// Corrects the velocity after collisions: hitting a ceiling ends the ascent (otherwise
+    /// you "stick" up there until gravity has eaten the remaining velocity), and against a
+    /// wall the blocked part is discarded (otherwise players with momentum briefly stick to
+    /// walls when turning away).
+    /// </summary>
+    private void ResolveCollisions(CollisionFlags flags)
     {
-        isGrounded = Physics.CheckSphere(groundCheck.position, groundDistance, groundMask);
+        if ((flags & CollisionFlags.Above) != 0 && velocity.y > 0f)
+        {
+            velocity.y = 0f;
+            jumpButtonHeld = false;
+        }
+
+        if ((flags & CollisionFlags.Sides) != 0)
+        {
+            Vector3 actual = controller.velocity;
+            actual.y = 0f;
+            if (actual.sqrMagnitude < horizontalVelocity.sqrMagnitude)
+                horizontalVelocity = actual;
+        }
+    }
+
+    // ── Ground ───────────────────────────────────────────────────────────────
+
+    private void UpdateGrounded()
+    {
+        bool wasGrounded = isGrounded;
+        isGrounded = groundCheck != null &&
+                     Physics.CheckSphere(groundCheck.position, groundDistance, groundMask, QueryTriggerInteraction.Ignore);
 
         if (isGrounded)
         {
+            lastGroundedTime = Time.time;
+
+            if (!wasGrounded && velocity.y <= 0f)
+                OnLanded(-velocity.y);
+
             if (velocity.y < 0f) velocity.y = -2f;
+            if (velocity.y <= 0f) isJumping = false;
         }
         else
         {
             ApplyAirGravity();
         }
+    }
 
+    private void OnLanded(float impactSpeed)
+    {
+        // Ignore tiny "landings" (stair steps, ground check flickering at edges).
+        if (impactSpeed < 3f) return;
+
+        Landed?.Invoke(impactSpeed);
+
+        if (impactSpeed >= landingSoundMinSpeed)
+        {
+            footstepTimer = 0f;
+            PlayFootstep();
+        }
+    }
+
+    // ── Movement ─────────────────────────────────────────────────────────────
+
+    private void HandleMovement()
+    {
         Vector2 moveInput = InputManager.Instance != null
             ? InputManager.Instance.CurrentInput.MoveInput
             : Vector2.zero;
@@ -232,10 +303,17 @@ public class PlayerMovement : NetworkBehaviour
         HandleFootsteps(isMoving, speed);
 
         Vector3 direction = transform.right * moveInput.x + transform.forward * moveInput.y;
-        horizontalVelocity = direction * speed;
+        if (direction.sqrMagnitude > 1f) direction.Normalize();
+        Vector3 targetVelocity = direction * speed;
+
+        float rate = isGrounded
+            ? (isMoving ? config.groundAcceleration : config.groundDeceleration)
+            : (isMoving ? config.airAcceleration : config.airDeceleration);
+
+        horizontalVelocity = Vector3.MoveTowards(horizontalVelocity, targetVelocity, rate * Time.deltaTime);
     }
 
-    /// <summary>Sprint beschleunigt langsam an und bekommt nach sprintBurstThreshold einen Burst.</summary>
+    /// <summary>Sprint accelerates slowly and gets a burst after sprintBurstThreshold.</summary>
     private void UpdateSprintSpeed(bool isMoving)
     {
         if (sprinting && isMoving)
@@ -256,8 +334,8 @@ public class PlayerMovement : NetworkBehaviour
     }
 
     /// <summary>
-    /// Asymmetrische Gravity: niedrig beim Aufstieg (passend zur sqrt(2gh)-Formel in HandleJump),
-    /// stärker beim Fallen, am stärksten nach frühem Loslassen der Jump-Taste.
+    /// Asymmetric gravity: low while rising (matching the sqrt(2gh) formula in HandleJump),
+    /// stronger while falling, strongest after releasing the jump button early.
     /// </summary>
     private void ApplyAirGravity()
     {
@@ -278,7 +356,7 @@ public class PlayerMovement : NetworkBehaviour
         velocity.y = Mathf.Max(velocity.y, -config.maxFallSpeed);
     }
 
-    // ── Springen ─────────────────────────────────────────────────────────────
+    // ── Jumping ──────────────────────────────────────────────────────────────
 
     private void HandleJump()
     {
@@ -286,15 +364,27 @@ public class PlayerMovement : NetworkBehaviour
 
         InputData input = InputManager.Instance.CurrentInput;
 
-        if (input.JumpPressed && isGrounded && !isCrouching)
+        if (input.JumpPressed) lastJumpPressedTime = Time.time;
+
+        // Jump buffer: a jump pressed shortly before landing still counts.
+        // Coyote time: shortly after leaving a ledge you can still jump.
+        bool jumpRequested = Time.time - lastJumpPressedTime <= Mathf.Max(0f, config.jumpBufferTime);
+        bool groundAvailable = isGrounded || Time.time - lastGroundedTime <= Mathf.Max(0f, config.coyoteTime);
+
+        if (jumpRequested && groundAvailable && !isJumping && !isCrouching)
         {
             velocity.y = Mathf.Sqrt(config.jumpHeight * 2f * config.baseFallGravity * config.riseGravityMultiplier);
-            jumpButtonHeld = true;
-            return; // Cut darf im Startframe nicht greifen (JumpHeld ist evtl. noch false)
+            jumpButtonHeld = input.JumpHeld || input.JumpPressed;
+            isJumping = true;
+
+            // Consume both, so neither buffer nor coyote time can trigger a second jump.
+            lastJumpPressedTime = float.NegativeInfinity;
+            lastGroundedTime = float.NegativeInfinity;
+            return; // the cut must not apply in the start frame (JumpHeld may still be false)
         }
 
-        // Frühes Loslassen während des Aufstiegs: Velocity kappen und auf die stärkste
-        // Gravity-Stufe wechseln (siehe ApplyAirGravity).
+        // Releasing early during the ascent: cut the velocity and switch to the strongest
+        // gravity stage (see ApplyAirGravity).
         if (jumpButtonHeld && !input.JumpHeld && velocity.y > 0f)
         {
             jumpButtonHeld = false;
@@ -306,7 +396,7 @@ public class PlayerMovement : NetworkBehaviour
         }
     }
 
-    // ── Hocken ───────────────────────────────────────────────────────────────
+    // ── Crouching ────────────────────────────────────────────────────────────
 
     private void HandleCrouch()
     {
@@ -321,7 +411,7 @@ public class PlayerMovement : NetworkBehaviour
         {
             float targetY = isCrouching ? config.crouchCameraY : config.standCameraY;
             Vector3 pos = cameraHolder.localPosition;
-            pos.y = Mathf.Lerp(pos.y, targetY, config.crouchTransitionSpeed * Time.deltaTime);
+            pos.y = Mathf.Lerp(pos.y, targetY, 1f - Mathf.Exp(-config.crouchTransitionSpeed * Time.deltaTime));
             cameraHolder.localPosition = pos;
         }
     }
@@ -334,28 +424,34 @@ public class PlayerMovement : NetworkBehaviour
 
     private bool CanStandUp()
     {
-        // Prüfsphäre am oberen Ende der Stehkapsel – relativ zu den Füßen, nicht zum Pivot.
+        // Check sphere at the top of the standing capsule – relative to the feet, not the pivot.
         Vector3 top = transform.position
             + Vector3.up * (FeetOffsetY + config.standHeight - controller.radius);
-        return !Physics.CheckSphere(top, controller.radius, groundMask);
+        return !Physics.CheckSphere(top, controller.radius, groundMask, QueryTriggerInteraction.Ignore);
     }
 
     // ── FOV ──────────────────────────────────────────────────────────────────
 
     private void HandleFOV()
     {
-        if (playerCamera == null) return;
-
         float targetFOV = sprinting && sprintTimer >= config.sprintBurstThreshold
             ? config.sprintFOV
             : config.normalFOV;
 
-        playerCamera.fieldOfView = Mathf.Lerp(
-            playerCamera.fieldOfView, targetFOV,
-            config.fovChangeSpeed * Time.deltaTime);
+        baseFov = Mathf.Lerp(baseFov, targetFOV, 1f - Mathf.Exp(-config.fovChangeSpeed * Time.deltaTime));
+        ApplyFov();
     }
 
-    // ── Footstep-Audio ────────────────────────────────────────────────────────
+    /// <summary>Base FOV (sprint) plus short-lived kicks/zooms from CameraEffects.</summary>
+    private void ApplyFov()
+    {
+        if (playerCamera == null) return;
+
+        float offset = CameraEffects.Local != null ? CameraEffects.Local.FovOffset : 0f;
+        playerCamera.fieldOfView = Mathf.Clamp(baseFov + offset, 20f, 120f);
+    }
+
+    // ── Footstep Audio ───────────────────────────────────────────────────────
 
     private void HandleFootsteps(bool isMoving, float currentSpeed)
     {
@@ -365,8 +461,8 @@ public class PlayerMovement : NetworkBehaviour
             return;
         }
 
-        // Referenzgeschwindigkeit, bei der baseStepInterval gilt. Beim Sprint deutlich
-        // niedriger angesetzt → merklich schnellere Schrittfolge.
+        // Reference speed at which baseStepInterval applies. Set much lower while sprinting
+        // → noticeably faster step rate.
         float referenceSpeed = sprinting ? config.maxSprintSpeed * 0.25f : config.walkSpeed;
         float interval = baseStepInterval * referenceSpeed / Mathf.Max(0.0001f, currentSpeed);
 
@@ -374,11 +470,49 @@ public class PlayerMovement : NetworkBehaviour
         if (footstepTimer < interval) return;
 
         footstepTimer = 0f;
+        PlayFootstep();
+    }
+
+    private void PlayFootstep()
+    {
         if (footstepSoundEmitter != null) footstepSoundEmitter.PlayOneShot();
         CmdBroadcastFootstep();
     }
 
-    // ── Öffentliche API ──────────────────────────────────────────────────────
+    // ── Debris Pushing ───────────────────────────────────────────────────────
+
+    /// <summary>
+    /// CharacterControllers don't trigger OnCollisionEnter on rigidbodies – wall debris would
+    /// otherwise block the way like concrete. Loose, non-kinematic rigidbodies are kicked
+    /// away in the walking direction here. Purely local: debris physics is per client anyway.
+    /// </summary>
+    private void OnControllerColliderHit(ControllerColliderHit hit)
+    {
+        if (!isOwned) return;
+
+        GameFeelSettings settings = GameFeelSettings.Instance;
+        if (!settings.pushDebris) return;
+
+        Rigidbody body = hit.collider.attachedRigidbody;
+        if (body == null || body.isKinematic) return;
+        if (hit.moveDirection.y < -0.3f) return; // standing on it ≠ pushing it
+
+        Vector3 pushDirection = new Vector3(hit.moveDirection.x, 0f, hit.moveDirection.z);
+        if (pushDirection.sqrMagnitude < 0.0001f) return;
+        pushDirection.Normalize();
+
+        float speedFactor = Mathf.Clamp(horizontalVelocity.magnitude / Mathf.Max(0.1f, WalkSpeed), 0.3f, 1.6f);
+        float targetSpeed = settings.debrisPushSpeed * speedFactor;
+
+        // The callback fires every frame while walking against it: only push if the piece is
+        // slower than desired – otherwise the velocity keeps building up.
+        if (body.linearVelocity.sqrMagnitude >= targetSpeed * targetSpeed * 0.25f) return;
+
+        body.AddForce(pushDirection * targetSpeed + Vector3.up * (targetSpeed * 0.3f), ForceMode.VelocityChange);
+        body.AddTorque(Random.insideUnitSphere * targetSpeed, ForceMode.VelocityChange);
+    }
+
+    // ── Public API ───────────────────────────────────────────────────────────
 
     public void FreezeMovement()
     {
@@ -386,9 +520,15 @@ public class PlayerMovement : NetworkBehaviour
         velocity = Vector3.zero;
         horizontalVelocity = Vector3.zero;
         currentSprintSpeed = config != null ? config.baseSprintSpeed : 0f;
+        sprinting = false;
         jumpButtonHeld = false;
-        if (playerCamera != null && config != null)
-            playerCamera.fieldOfView = config.normalFOV;
+        isJumping = false;
+
+        if (config != null)
+        {
+            baseFov = config.normalFOV;
+            ApplyFov();
+        }
     }
 
     public void UnfreezeMovement() => controller.enabled = true;
@@ -411,16 +551,16 @@ public class PlayerMovement : NetworkBehaviour
     private void DebugJumpState()
     {
         Debug.Log($"[PlayerMovement] config={config != null}, isOwned={isOwned}, isGrounded={isGrounded}");
-        Debug.Log($"[PlayerMovement] groundMask={groundMask.value} (0 = Nothing → Sprung unmöglich!)");
+        Debug.Log($"[PlayerMovement] groundMask={groundMask.value} (0 = Nothing → jumping impossible!)");
         Debug.Log($"[PlayerMovement] groundCheck pos={groundCheck?.position}, groundDistance={groundDistance}");
-        Debug.Log($"[PlayerMovement] velocity.y={velocity.y}, jumpButtonHeld={jumpButtonHeld}");
+        Debug.Log($"[PlayerMovement] velocity.y={velocity.y}, jumpButtonHeld={jumpButtonHeld}, isJumping={isJumping}");
 
         if (groundMask.value == 0)
-            Debug.LogError("[PlayerMovement] groundMask ist 'Nothing' – isGrounded wird nie true! Layer im Inspector setzen.");
+            Debug.LogError("[PlayerMovement] groundMask is 'Nothing' – isGrounded will never be true! Set the layers in the Inspector.");
         if (groundCheck == null)
-            Debug.LogError("[PlayerMovement] groundCheck ist nicht zugewiesen!");
+            Debug.LogError("[PlayerMovement] groundCheck is not assigned!");
         if (config == null)
-            Debug.LogError("[PlayerMovement] config ist null – ApplyConfig() wurde noch nicht aufgerufen.");
+            Debug.LogError("[PlayerMovement] config is null – ApplyConfig() has not been called yet.");
     }
 #endif
 }

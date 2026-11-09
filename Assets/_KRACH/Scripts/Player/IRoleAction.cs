@@ -1,10 +1,10 @@
 /// <summary>
-/// Interface für rollenspezifische Aktionen.
-/// Implementiert von PlayerInteract (Vandalist) und HunterAccuse (Hunter).
+/// Interface for role-specific actions.
+/// Implemented by PlayerInteract (vandalist) and HunterAccuse (hunter).
 ///
-/// Wird von PlayerRoleSetup aufgerufen wenn die Rolle aktiviert/deaktiviert wird.
-/// Neue rollenspezifische Aktionen einfach dieses Interface implementieren lassen
-/// und in PlayerRoleSetup als IRoleAction-Referenz eintragen.
+/// Called by PlayerRoleSetup when the role gets activated/deactivated.
+/// For new role-specific actions, simply implement this interface and register them
+/// in PlayerRoleSetup as an IRoleAction reference.
 /// </summary>
 public interface IRoleAction
 {

@@ -3,9 +3,8 @@ using TMPro;
 using UnityEngine;
 
 /// <summary>
-/// Lebt in der Win-Screen-Scene. Liest beim Start, wer gewonnen hat
-/// (von GameManager vor dem Szenenwechsel in CustomNetworkManager hinterlegt)
-/// und zeigt es an.
+/// Lives in the win screen scene. Reads on start who won (stored in the CustomNetworkManager
+/// by the GameManager before the scene change) and displays it.
 /// </summary>
 public class WinScreenController : MonoBehaviour
 {
@@ -16,10 +15,16 @@ public class WinScreenController : MonoBehaviour
 
     private void Start()
     {
+        // Safety net: reset the round-end slow motion and the cursor lock from the game,
+        // so the buttons in the win screen are usable.
+        Time.timeScale = 1f;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
         CustomNetworkManager manager = NetworkManager.singleton as CustomNetworkManager;
         if (manager == null)
         {
-            Debug.LogError("[WinScreenController] Kein CustomNetworkManager gefunden – kann Gewinner nicht anzeigen.");
+            Debug.LogError("[WinScreenController] No CustomNetworkManager found – can't display the winner.");
             return;
         }
 
@@ -32,9 +37,9 @@ public class WinScreenController : MonoBehaviour
         {
             winnerText.text = winner switch
             {
-                WinningSide.Hunter => "Die Hunter haben gewonnen!",
-                WinningSide.Vandalist => "Die Vandalisten haben gewonnen!",
-                _ => "Unentschieden."
+                WinningSide.Hunter => "The Hunters won!",
+                WinningSide.Vandalist => "The Vandalists won!",
+                _ => "Draw."
             };
         }
 

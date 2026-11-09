@@ -3,8 +3,8 @@ using UnityEngine.UI;
 
 public enum RMF_State
 {
-    Low,   // Wert: 0
-    High   // Wert: 1
+    Low,   // value: 0
+    High   // value: 1
 }
 
 public class RMF_Script : MonoBehaviour

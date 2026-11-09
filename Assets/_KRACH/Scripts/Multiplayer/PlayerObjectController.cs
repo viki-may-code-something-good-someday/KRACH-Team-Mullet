@@ -17,9 +17,9 @@ public class PlayerObjectController : NetworkBehaviour
     public PlayerRole playerRole = PlayerRole.Vandalist;
 
     /// <summary>
-    /// Feuert auf jedem Client sobald die Rolle über die SyncVar ankommt oder sich ändert.
-    /// PlayerRoleSetup hängt sich hier ein, damit eine spät eintreffende Rolle (Lag, Late Join)
-    /// nicht verschluckt wird.
+    /// Fires on every client as soon as the role arrives via the SyncVar or changes.
+    /// PlayerRoleSetup hooks in here so that a late-arriving role (lag, late join)
+    /// doesn't get lost.
     /// </summary>
     public event System.Action<PlayerRole> RoleChanged;
 
@@ -80,10 +80,18 @@ public class PlayerObjectController : NetworkBehaviour
 
     public override void OnStartAuthority()
     {
-        CmdSetPlayerName(SteamFriends.GetPersonaName().ToString());
+        // Test dummies and other ownerless objects have no authority – only the real local
+        // player ends up here.
+        string personaName = SteamManager.Initialized ? SteamFriends.GetPersonaName() : $"Player {playerIdNumber}";
+        CmdSetPlayerName(personaName);
         gameObject.name = "LocalGamePlayer";
-        LobbyController.instance.FindLocalPlayer();
-        LobbyController.instance.UpdateLobbyName();
+
+        // When starting directly from the gameplay scene (GameManager.testInEditor) there is no lobby.
+        if (LobbyController.instance != null)
+        {
+            LobbyController.instance.FindLocalPlayer();
+            LobbyController.instance.UpdateLobbyName();
+        }
 
         if (isServer)
         {
@@ -101,8 +109,8 @@ public class PlayerObjectController : NetworkBehaviour
 
         networkManager.gamePlayers.Add(this);
 
-        // Der LobbyController lebt nur in der Lobby-Scene. Test-Dummies werden erst in der
-        // Gameplay-Scene gespawnt – ohne diese Prüfung wirft jeder Dummy-Spawn hier.
+        // The LobbyController only lives in the lobby scene. Test dummies are only spawned in
+        // the gameplay scene – without this check every dummy spawn throws here.
         if (LobbyController.instance != null)
         {
             LobbyController.instance.UpdateLobbyName();
@@ -124,6 +132,8 @@ public class PlayerObjectController : NetworkBehaviour
     [Command]
     private void CmdSetPlayerName(string playerName)
     {
+        if (string.IsNullOrWhiteSpace(playerName)) playerName = $"Player {playerIdNumber}";
+        if (playerName.Length > 32) playerName = playerName.Substring(0, 32);
         this.PlayerNameUpdate(this.playerName, playerName);
     }
 
@@ -147,9 +157,9 @@ public class PlayerObjectController : NetworkBehaviour
 
 
     /// <param name="testMode">
-    /// Spiegelt LobbyController.IsTestMode zum Startzeitpunkt. Wird bis zum Server
-    /// (CustomNetworkManager.StartGame) durchgereicht, da LobbyController nur client-seitig
-    /// existiert und der Server diesen Wert nicht direkt auslesen kann.
+    /// Mirrors LobbyController.IsTestMode at start time. Passed through to the server
+    /// (CustomNetworkManager.StartGame), because the LobbyController only exists client-side
+    /// and the server can't read this value directly.
     /// </param>
     public void CanStartGame(string sceneName, bool useCustomNetworkGameplayScene, bool testMode)
     {
@@ -162,6 +172,9 @@ public class PlayerObjectController : NetworkBehaviour
     [Command]
     public void CmdCanStartGame(string sceneName, bool useCustomNetworkGameplayScene, bool testMode)
     {
+        // The start button is only active for the host – still secure it on the server side,
+        // otherwise any client could start the game.
+        if (!(connectionToClient is LocalConnectionToClient)) return;
         NetworkManager.StartGame(sceneName, useCustomNetworkGameplayScene, testMode);
     }
 
@@ -175,10 +188,10 @@ public class PlayerObjectController : NetworkBehaviour
     {
         if (!NetworkServer.active)
         {
-            Debug.LogWarning("[PlayerObjectController] SetPlayerRole darf nur auf dem Server aufgerufen werden.");
+            Debug.LogWarning("[PlayerObjectController] SetPlayerRole may only be called on the server.");
             return;
         }
-        playerRole = role; // SyncVar → wird automatisch an alle Clients repliziert
+        playerRole = role; // SyncVar → replicated to all clients automatically
     }
 
     private void OnPlayerRoleChanged(PlayerRole oldRole, PlayerRole newRole)
@@ -187,7 +200,7 @@ public class PlayerObjectController : NetworkBehaviour
 
         if (isClient && LobbyController.instance != null)
         {
-            // Wenn die Rolle im Netzwerk geändert wurde, UI aktualisieren!
+            // The role changed on the network – refresh the UI!
             LobbyController.instance.UpdatePlayerList();
         }
 
@@ -197,7 +210,8 @@ public class PlayerObjectController : NetworkBehaviour
     [Command]
     public void CmdReturnToLobby()
     {
-        if (playerIdNumber != 1) return; // nur der Host darf das auslösen
+        // Only the host may trigger this – recognizable by its local connection.
+        if (!(connectionToClient is LocalConnectionToClient)) return;
         (Mirror.NetworkManager.singleton as CustomNetworkManager)?.ReturnToLobby();
     }
 
@@ -205,7 +219,7 @@ public class PlayerObjectController : NetworkBehaviour
     public void ResetForLobby()
     {
         ready = false;
-        // playerRole bewusst NICHT zurücksetzen – LobbyController.UpdatePlayerItem()
-        // liest die Rolle aus dem SyncVar und sortiert die UI-Liste danach automatisch neu.
+        // Deliberately NOT resetting playerRole – LobbyController.UpdatePlayerItem() reads the
+        // role from the SyncVar and re-sorts the UI list automatically.
     }
 }

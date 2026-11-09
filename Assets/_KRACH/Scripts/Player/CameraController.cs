@@ -1,5 +1,4 @@
 ﻿using Mirror;
-using System.Collections;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -14,7 +13,7 @@ public class CameraController : NetworkBehaviour
     [Header("Settings")]
     public float mouseSensitivity = 1.5f;
 
-    // Gameplay-Scene-Pfad kommt direkt vom NetworkManager – kein doppeltes Feld nötig.
+    // Gameplay scene path comes directly from the NetworkManager – no duplicate field needed.
     private string GameplayScene => (NetworkManager.singleton as CustomNetworkManager)?.GameplayScene ?? string.Empty;
 
     private float xRotation = 0f;
@@ -24,13 +23,23 @@ public class CameraController : NetworkBehaviour
 
     void Start()
     {
-        // Cursor in der Lobby immer freigeben.
-        // Locken passiert erst beim Betreten der Gameplay-Scene.
+        // Always release the cursor in the lobby.
+        // Locking only happens when entering the gameplay scene.
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
 
-    // ── OnStartClient: Fremdspieler-Cleanup ───────────────────────────────────
+    // ── Local Player Setup ────────────────────────────────────────────────────
+
+    public override void OnStartLocalPlayer()
+    {
+        base.OnStartLocalPlayer();
+
+        // Shake, head bob, landing dip etc. – only for the own camera.
+        CameraEffects.Attach(playerCamera != null ? playerCamera : GetComponentInChildren<Camera>());
+    }
+
+    // ── OnStartClient: Clean Up Remote Players ────────────────────────────────
 
     public override void OnStartClient()
     {
@@ -56,13 +65,13 @@ public class CameraController : NetworkBehaviour
 
         bool inGameplay = SceneManager.GetActiveScene().path == GameplayScene;
 
-        // Lobby → Gameplay: Cursor locken
+        // Lobby → gameplay: lock the cursor
         if (inGameplay && !wasInGameplay)
         {
             Cursor.lockState = CursorLockMode.Locked;
             Cursor.visible = false;
         }
-        // Gameplay → Lobby: Cursor freigeben, Rotation zurücksetzen
+        // Gameplay → lobby: release the cursor, reset the rotation
         else if (!inGameplay && wasInGameplay)
         {
             Cursor.lockState = CursorLockMode.None;
@@ -100,7 +109,7 @@ public class CameraController : NetworkBehaviour
         }
     }
 
-    // ── Kamera-Rotation ───────────────────────────────────────────────────────
+    // ── Camera Rotation ───────────────────────────────────────────────────────
 
     private void HandleCameraRotation()
     {
@@ -116,31 +125,16 @@ public class CameraController : NetworkBehaviour
         playerBody.Rotate(Vector3.up * mouseDelta.x);
     }
 
-    // ── Kamera-Shake ─────────────────────────────────────────────────────────
+    // ── Camera Shake ──────────────────────────────────────────────────────────
 
+    /// <summary>
+    /// Compatibility API. Runs through the trauma system of CameraEffects – the old
+    /// coroutine shake permanently displaced the camera when calls overlapped.
+    /// New callers please use CameraEffects.Shake / ShakeAt directly.
+    /// </summary>
     public void StartCameraShake(float duration, float magnitude)
     {
-        StartCoroutine(CameraShake(duration, magnitude));
-    }
-
-    private IEnumerator CameraShake(float duration, float magnitude)
-    {
-        if (playerCamera == null) yield break;
-
-        Vector3 originalPos = playerCamera.transform.localPosition;
-        float elapsed = 0f;
-
-        while (elapsed < duration)
-        {
-            playerCamera.transform.localPosition = originalPos + new Vector3(
-                Random.Range(-1f, 1f) * magnitude,
-                Random.Range(-1f, 1f) * magnitude,
-                0f
-            );
-            elapsed += Time.deltaTime;
-            yield return null;
-        }
-
-        playerCamera.transform.localPosition = originalPos;
+        if (!isLocalPlayer) return;
+        CameraEffects.Shake(Mathf.Clamp01(magnitude * 4f + duration * 0.2f));
     }
 }

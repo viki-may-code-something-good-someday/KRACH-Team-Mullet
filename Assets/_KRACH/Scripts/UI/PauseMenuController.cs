@@ -28,6 +28,12 @@ public class PauseMenuController : MonoBehaviour
         SetPaused(false);
     }
 
+    private void OnDestroy()
+    {
+        // When the scene changes while the menu is open, the input block must not stay stuck.
+        if (isPaused && InputManager.Instance != null) InputManager.Instance.InputBlocked = false;
+    }
+
     private void Update()
     {
         if (restrictToGameplayScene && !InGameplayScene) return;
@@ -51,8 +57,16 @@ public class PauseMenuController : MonoBehaviour
         if (hostOnlyControls != null)
             hostOnlyControls.SetActive(paused && NetworkServer.active);
 
-        Cursor.lockState = paused ? CursorLockMode.None : CursorLockMode.Locked;
-        Cursor.visible = paused;
+        // Block gameplay input while the menu is open – otherwise clicking "Resume" also
+        // punched/accused and WASD kept moving the player.
+        if (InputManager.Instance != null)
+            InputManager.Instance.InputBlocked = paused;
+
+        // Outside the gameplay scene (e.g. win screen) the mouse must stay free,
+        // otherwise the buttons there aren't clickable.
+        bool lockCursor = !paused && InGameplayScene;
+        Cursor.lockState = lockCursor ? CursorLockMode.Locked : CursorLockMode.None;
+        Cursor.visible = !lockCursor;
     }
 
     /// <summary>Called by the "Resume" button.</summary>
@@ -64,14 +78,14 @@ public class PauseMenuController : MonoBehaviour
     {
         if (!NetworkServer.active)
         {
-            Debug.LogWarning("[PauseMenuController] EndGameAsHost() aufgerufen, aber kein Host/Server – ignoriert.");
+            Debug.LogWarning("[PauseMenuController] EndGameAsHost() called, but not host/server – ignored.");
             return;
         }
 
         CustomNetworkManager manager = NetworkManager.singleton as CustomNetworkManager;
         if (manager == null)
         {
-            Debug.LogError("[PauseMenuController] Kein CustomNetworkManager gefunden – kann nicht zur Lobby zurückkehren.");
+            Debug.LogError("[PauseMenuController] No CustomNetworkManager found – can't return to the lobby.");
             return;
         }
 
@@ -87,15 +101,15 @@ public class PauseMenuController : MonoBehaviour
     {
         if (NetworkServer.active)
         {
-            Debug.LogWarning("[PauseMenuController] LeaveGameAsClient() als Host aufgerufen – " +
-                             "nutze stattdessen EndGameAsHost().");
+            Debug.LogWarning("[PauseMenuController] LeaveGameAsClient() called as host – " +
+                             "use EndGameAsHost() instead.");
             return;
         }
 
         NetworkManager manager = NetworkManager.singleton;
         if (manager == null)
         {
-            Debug.LogError("[PauseMenuController] Kein NetworkManager gefunden – kann Session nicht verlassen.");
+            Debug.LogError("[PauseMenuController] No NetworkManager found – can't leave the session.");
             return;
         }
 

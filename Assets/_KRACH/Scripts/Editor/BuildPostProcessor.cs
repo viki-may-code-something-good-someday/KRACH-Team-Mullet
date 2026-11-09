@@ -9,22 +9,22 @@ public class BuildPostProcessor : IPostprocessBuildWithReport
 
     public void OnPostprocessBuild(BuildReport report)
     {
-        // Pfad zur Quelldatei (liegt im Projekt-Root, neben dem Assets-Ordner)
+        // Path to the source file (lives in the project root, next to the Assets folder)
         string sourcePath = Path.Combine(Application.dataPath, "..", "steam_appid.txt");
         sourcePath = Path.GetFullPath(sourcePath);
 
         if (!File.Exists(sourcePath))
         {
-            Debug.LogWarning($"[BuildPostProcessor] steam_appid.txt nicht gefunden unter: {sourcePath}\n" +
-                             "Bitte lege die Datei im Projekt-Root ab (neben dem Assets-Ordner).");
+            Debug.LogWarning($"[BuildPostProcessor] steam_appid.txt not found at: {sourcePath}\n" +
+                             "Please put the file in the project root (next to the Assets folder).");
             return;
         }
 
-        // Zielordner = der Ordner, in dem die .exe liegt
+        // Target folder = the folder the .exe is in
         string buildFolder = Path.GetDirectoryName(report.summary.outputPath);
         string destPath = Path.Combine(buildFolder, "steam_appid.txt");
 
         File.Copy(sourcePath, destPath, overwrite: true);
-        Debug.Log($"[BuildPostProcessor] steam_appid.txt kopiert nach: {destPath}");
+        Debug.Log($"[BuildPostProcessor] steam_appid.txt copied to: {destPath}");
     }
 }

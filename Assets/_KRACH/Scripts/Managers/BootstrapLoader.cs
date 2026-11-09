@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 using Mirror;
 
 /// <summary>
-/// Lädt die Menu-Scene direkt nach dem Start der Bootstrap-Scene.
+/// Loads the menu scene right after the bootstrap scene has started.
 /// </summary>
 public class BootstrapLoader : MonoBehaviour
 {

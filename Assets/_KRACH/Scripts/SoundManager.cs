@@ -33,7 +33,7 @@ public class SoundManager : MonoBehaviour
         Instance = this;
         DontDestroyOnLoad(gameObject);
 
-        // Music Bus initialisieren
+        // Initialize the music bus
         //musicBus = RuntimeManager.GetBus("bus:/Music");
         //musicBus.setVolume();
 
@@ -54,6 +54,12 @@ public class SoundManager : MonoBehaviour
         for (int i = 0; i < soundboxes.Length; i++)
         {
             soundboxEmitters[i] = soundboxes[i].GetComponent<StudioEventEmitter>();
+            if (soundboxEmitters[i] == null)
+            {
+                Debug.LogWarning($"[SoundManager] '{soundboxes[i].name}' is tagged as SoundBox but has no StudioEventEmitter.");
+                continue;
+            }
+
             if (i < soundboxEvents.Length)
             {
                 soundboxEmitters[i].EventReference = soundboxEvents[i];
@@ -63,8 +69,20 @@ public class SoundManager : MonoBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        if (Instance != this) return;
+        Instance = null;
+
+        // Release the persistent music instances cleanly.
+        if (classicSchubertInstance.isValid()) { classicSchubertInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE); classicSchubertInstance.release(); }
+        if (remixSchubertInstance.isValid()) { remixSchubertInstance.stop(FMOD.Studio.STOP_MODE.IMMEDIATE); remixSchubertInstance.release(); }
+    }
+
     public void PlaySoundBoxEvent(int index)
     {
+        if (soundboxEmitters == null) return;
+
         if (index >= 0 && index < soundboxEmitters.Length && soundboxEmitters[index] != null)
         {
             soundboxEmitters[index].Play();
